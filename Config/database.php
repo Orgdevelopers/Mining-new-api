@@ -14,7 +14,7 @@ class Database{
             echo $conn->connect_error;
             die;
         }else{
-            define('DB_CONNECTION',$conn);
+            $GLOBALS['DB_CONNECTION'] = $conn;
         }
 
     }

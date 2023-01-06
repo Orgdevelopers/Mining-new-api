@@ -1,7 +1,7 @@
 <?php
 
 require 'Utility.php';
-require 'Funtions.php';
+require 'Functions.php';
 require 'Response.php'
 
 ?>

@@ -29,6 +29,9 @@ class ApiController extends Controller {
 
     public function __construct(){
         $json_data = json_decode(file_get_contents("php://input"), true);
+        if ($json_data==null) {
+            $json_data = array();
+        }
         $post = $_POST;
         $get = $_GET;
         $this->params = array_merge($json_data, $post, $get);

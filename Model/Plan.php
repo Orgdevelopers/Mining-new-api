@@ -2,10 +2,8 @@
 
 class Plan {
 
-    public $conn = null;
-
     public function __construct(){
-        $this->conn = $GLOBALS['DB_CONNECTION'];
+        $this->conn = DB_CONNECTION;
     }
 
     public function showAll(){

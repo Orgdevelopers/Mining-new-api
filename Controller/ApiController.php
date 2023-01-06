@@ -8,8 +8,11 @@ class ApiController extends Controller {
         /*
         *100-199 informative (yellow indecation)
         * 100 - no records
-        * 
+        * 110 - already exists 
+        *
+        *
         * 113 - login( no accound found on email, username)
+        * 
         *
         * 200 - success or semi success (mostly green indecation)
         * 300 - redirection, work in progress (yellow)
@@ -24,6 +27,15 @@ class ApiController extends Controller {
         *
         *
         */
+
+        $this->params = array(
+            'email' => "kinddusingh1k2k@gmail.com",
+            'username' => "kulvinder",
+            'password' => '12345678',
+            1
+        );
+
+        $this->signup();
 
     }
 
@@ -46,7 +58,7 @@ class ApiController extends Controller {
 
     }
 
-    public function login()
+    public function login() //112
     {
 
         if(isset($this->params['password'])){
@@ -55,7 +67,7 @@ class ApiController extends Controller {
                 //username login
                 
                 $user = $this->User->showDetailsByUsername($this->params['username']);
-                if(count($user)>0){
+                if($user){
                     $db_password = $user['password'];
                     $password = $this->params['password'];
 
@@ -89,7 +101,7 @@ class ApiController extends Controller {
                 //email login
 
                 $user = $this->User->showDetailsByEmail($this->params['email']);
-                if(count($user)>0){
+                if($user){
                     $db_password = $user['password'];
                     $password = $this->params['password'];
 
@@ -135,9 +147,9 @@ class ApiController extends Controller {
             $email_user = $this->User->showDetailsByEmail($this->params['email']);
             $username_user = $this->User->showDetailsByUsername($this->params['username']);
 
-            if(count($email_user)>0 || count($username_user)>0){
+            if($email_user || $username_user){
                 //email or username already exists
-                if (count($email_user)>0) {
+                if ($email_user) {
                     $output = array(
                         'code' => 110,
                         'dev_msg' => "an account already exists with this email",

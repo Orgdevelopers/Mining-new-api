@@ -62,7 +62,7 @@ class User {
                     '$email', 
                     '$password_hash', 
                     '$date',
-                    '$date',
+                    '$date'
                     );"
         ;
 

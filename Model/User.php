@@ -17,7 +17,7 @@ class User {
     public function showDetailsByEmail($var = "")
     {
 
-        $qry = mysqli_query($this->conn, "SELECT * FROM users WHERE user.email = '$var'");
+        $qry = mysqli_query($this->conn, "SELECT * FROM user WHERE user.email = '$var'");
 
         $output = mysqli_fetch_array($qry, 1);
         return $output;
@@ -26,7 +26,7 @@ class User {
 
     public function showDetailsByUsername($var = null)
     {
-        $qry = mysqli_query($this->conn, "SELECT * FROM users WHERE user.username = '$var'");
+        $qry = mysqli_query($this->conn, "SELECT * FROM user WHERE user.username = '$var'");
 
         $output = mysqli_fetch_array($qry, 1);
         return $output;
@@ -35,7 +35,7 @@ class User {
 
     public function showDetailsById($var = 0)
     {
-        $qry = mysqli_query($this->conn, "SELECT * FROM users WHERE user.id = '$var'");
+        $qry = mysqli_query($this->conn, "SELECT * FROM user WHERE user.id = '$var'");
 
         $output = mysqli_fetch_array($qry, 1);
         return $output;

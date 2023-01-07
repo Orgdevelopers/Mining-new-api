@@ -10,32 +10,53 @@ class ApiController extends Controller {
         * 100 - no records
         * 110 - already exists 
         *
-        *
-        * 113 - login( no accound found on email, username)
+        * 112 - no username acc
+        * 113 - no accound found on email
+        * 114 - user not found
         * 
         *
-        * 200 - success or semi success (mostly green indecation)
-        * 300 - redirection, work in progress (yellow)
-        * 400 - error, rejected, (RED)
-        * 500 - serious server issue (RED)
+        *200 - success or semi success (mostly green indecation)
+        *
+        * 201 - failed to send email
         *
         *
+        *300 - redirection, work in progress (yellow)
+        *
+        *400 - error, rejected, (RED)
+        * 
+        * 401 - auth failed
+        * 402 - request failed, rejected
         *
         *
-        *
-        *
+        *500 - serious server issue (RED)
         *
         *
         */
 
-        $this->params = array(
-            'email' => "kinddusingh1k2k@gmail.com",
-            'username' => "kulvinder",
-            'password' => '12345678',
-            1
-        );
+        // $this->params = array(
+        //     //'email' => "kinddusingh1k2k3@gmail.com",
+        //     'username' => "kulvinder",
+        //     'password' => '12345678',
+        //     1
+        // );
 
-        $this->signup();
+        // $this->login();
+
+
+        // $data = array(
+        //     'id' => 1,
+        //     //'username' => "kulvinder",
+        //     'pic'=>""
+        // );
+
+        // $this->loadModel('User');
+        // if ($this->User->update($data)) {
+        //     echo "updated";
+        // }else{
+        //     echo "failed " . $this->User->error;
+        // }
+
+        // die;
 
     }
 
@@ -123,7 +144,7 @@ class ApiController extends Controller {
                     
                 }else{
                     $output = array(
-                        'code' => 112,
+                        'code' => 113,
                         'dev_msg' => 'no account matched to this email:'.$this->params['email'],
                         'msg' => 'No account matched to username or email'
                     );
@@ -198,6 +219,155 @@ class ApiController extends Controller {
             Response::IncompleteParams();
         }
     }
+
+
+    public function updatePasword()
+    {
+        $this->loadModel('User');
+        if (isset($this->params['id']) && isset($this->params['password']) && isset($this->params['new_password'])) {
+
+            $user = $this->User->showDetailsById($this->params['id']);
+            if ($user) {
+
+                if (ValidatePassword($this->params['password'],$user['password'])) {
+
+                    $data = array();
+                    $data['id'] = $user['id'];
+                    $data['password'] = Utility::EncryptPassword($user['new_password']);
+
+                    if($this->User->update($data)){
+
+                        $new_user = $this->User->showDetailsById($this->params['id']);
+
+                        $output = array(
+                            'code' => 200,
+                            'msg' => $new_user
+                        );
+
+                    }else{
+                        $output = array(
+                            'code' => 402,
+                            'dev_msg' => $this->User->error,
+                            'msg' => "Failed to update password"
+                        );
+                    }
+
+                    echo json_encode($output);
+
+               }else{
+                Response::AuthFailed("Password did not matched");
+               }
+
+                die;
+                
+            }else{
+                $output = array(
+                    'code' => 114,
+                    'dev_msg' => "User not found in database id:" . $this->params['id'],
+                    'msg' => "user not found"
+                );
+
+                echo json_encode($output);
+                die;
+
+            }
+
+
+        }else{
+            Response::IncompleteParams();
+        }
+
+    }
+
+
+    public function forgetPassword()
+    {
+
+        $this->loadModel('User');
+
+        if (isset($this->params['email']) && isset($this->params['otp_verified'])) {
+            $email = $this->params['email'];
+            $user = $this->User->showDetailsByEmail($email);
+
+            if ($user) {
+
+                $data = array();
+                $data['id'] = $user['id'];
+                $data['password'] = Utility::EncryptPassword($this->params['password']);
+
+                if($this->User->update($data)){
+
+                    $output = array(
+                        'code' => 200,
+                        'msg' => "Password has been reset successfully"
+                    );
+
+                }else{
+                    $output = array(
+                        'code' => 402,
+                        'dev_msg' => $this->User->error,
+                        'msg' => "Failed to reset password"
+                    );
+
+                }
+
+                echo json_encode($output);
+                die;
+
+
+            }else{
+                $output = array(
+                    'code' => 113,
+                    'dev_msg' => 'no account matched to this email:'.$email,
+                    'msg' => 'No account matched to username or email'
+                );
+                echo json_encode($output);
+                die;
+            }
+
+        }
+        else
+        if (isset($this->params['email'])) {
+
+            $email = $this->params['email'];
+            $user = $this->User->showDetailsByEmail($email);
+
+            if($user){
+                $otp = Utility::GenerateOtp();
+                $result = sendVerificationEmail($user['email'],$otp,$user['username']);
+
+                if ($result['code']==200) {
+                    $output = array(
+                        'code' => 200,
+                        'msg' => $otp
+                    );
+
+                }else{
+                    $output = array(
+                        'code' => 201,
+                        'dev_msg' => $result['msg'],
+                        'msg' => "Failed to send email please try again later"
+                    );
+                }
+
+                echo json_encode($output);
+                die;
+
+            }else{
+                $output = array(
+                    'code' => 113,
+                    'dev_msg' => 'no account matched to this email:'.$email,
+                    'msg' => 'No account matched to username or email'
+                );
+                echo json_encode($output);
+                die;
+            }
+            
+        }else{
+            Response::IncompleteParams();
+        }
+    }
+
 
 }
 

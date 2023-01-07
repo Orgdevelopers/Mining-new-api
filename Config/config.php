@@ -14,13 +14,20 @@ define('APP_RECORDS_PER_PAGE',20);
 
 
 define('DATABASE_HOST', 'localhost');
-define('DATABASE_USER', 'zfmgroup_db');
-define('DATABASE_PASSWORD', 'zfmgroup_db');
+define('DATABASE_USER', 'root');
+define('DATABASE_PASSWORD', '');
 define('DATABASE_NAME', 'zfmgroup_db');
 
 
+define('MAIL_HOST', "localhost");
+define('MAIL_USERNAME', "no-reply@zfm-group.com");
+define('MAIL_PASSWORD', "no-reply@zfm-group.com");
+define('MAIL_FROM', "no-reply@zfm-group.com"); //apps mail address ex app@domain.com
+define('MAIL_NAME', "TestEmail"); //app name
+define('MAIL_REPLYTO', "no-reply@zfm-group.com");
 
 
+define('EMAIL_TEMPLATE_PATH', 'Templates/VerificationEmail.html');
 define('UPLOADS_FOLDER_URI', 'webroot/uploads');
 define('TEMP_UPLOADS_FOLDER_URI', 'webroot/temp_uploads');
 define('FONT_FOLDER_URI', 'webroot/font');

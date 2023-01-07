@@ -11,7 +11,7 @@ class Response{
         );
 
         echo json_encode($body);
-        
+        die;
     }
 
 

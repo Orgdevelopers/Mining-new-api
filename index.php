@@ -1,5 +1,6 @@
 <?php
 
+define('HOME_PATH', __DIR__);
 require "Controller/AppController.php" ;
 
 

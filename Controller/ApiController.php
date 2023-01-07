@@ -33,14 +33,14 @@ class ApiController extends Controller {
         *
         */
 
-        // $this->params = array(
-        //     //'email' => "kinddusingh1k2k3@gmail.com",
-        //     'username' => "kulvinder",
-        //     'password' => '12345678',
-        //     1
-        // );
+        $this->params = array(
+            'email' => "kinddusingh1k2k3@gmail.com",
+            //'username' => "kulvinder",
+            //'password' => '12345678',
+            1
+        );
 
-        // $this->login();
+        $this->forgetPassword();
 
 
         // $data = array(
@@ -221,7 +221,7 @@ class ApiController extends Controller {
     }
 
 
-    public function updatePasword()
+    public function updatePassword()
     {
         $this->loadModel('User');
         if (isset($this->params['id']) && isset($this->params['password']) && isset($this->params['new_password'])) {

@@ -33,15 +33,19 @@ class ApiController extends Controller {
         *
         */
 
-        $this->params = array(
-            'email' => "kinddusingh1k2k3@gmail.com",
+        //$this->params = array(
+            //'email' => "kinddusingh1k2k3@gmail.com",
             //'username' => "kulvinder",
             //'password' => '12345678',
-            1
-        );
+            
+        //);
 
-        $this->forgetPassword();
+        //$this->forgetPassword();
 
+        $res = sendVerificationEmail("kinddusingh1k2k3@gmail.com","433444","kulvinder");
+
+        echo json_encode($res)." email sent";
+        die;
 
         // $data = array(
         //     'id' => 1,

@@ -19,7 +19,7 @@ define('DATABASE_PASSWORD', 'zfmgroup_db');
 define('DATABASE_NAME', 'zfmgroup_db');
 
 
-define('MAIL_HOST', "localhost");
+define('MAIL_HOST', "zfm-group.com");
 define('MAIL_USERNAME', "no-reply@zfm-group.com");
 define('MAIL_PASSWORD', "no-reply@zfm-group.com");
 define('MAIL_FROM', "no-reply@zfm-group.com"); //apps mail address ex app@domain.com

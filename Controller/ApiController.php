@@ -13,7 +13,8 @@ class ApiController extends Controller {
         * 112 - no username acc
         * 113 - no accound found on email
         * 114 - user not found
-        * 
+        *  
+        *
         *
         *200 - success or semi success (mostly green indecation)
         *
@@ -26,7 +27,7 @@ class ApiController extends Controller {
         * 
         * 401 - auth failed
         * 402 - request failed, rejected
-        *
+        * 404 - not found
         *
         *500 - serious server issue (RED)
         *
@@ -42,10 +43,10 @@ class ApiController extends Controller {
 
         //$this->forgetPassword();
 
-        $res = sendVerificationEmail("kinddusingh1k2k3@gmail.com","433444","kulvinder");
+        // $res = sendVerificationEmail("kinddusingh1k2k3@gmail.com","433444","kulvinder");
 
-        echo json_encode($res)." email sent";
-        die;
+        // echo json_encode($res)." email sent";
+        // die;
 
         // $data = array(
         //     'id' => 1,
@@ -78,8 +79,31 @@ class ApiController extends Controller {
 
     public function showAllPlans(){
 
-        $this->loadModel('Plan');
-        
+        $this->loadModel('Plans');
+        if (isset($this->params['user_id'])) {
+
+            $plans = $this->plans->showUserDefault($this->params['user_id']);
+        }else{
+            $plans = $this->Plans->showAllDefault();
+        }
+
+        if ($plans) {
+
+            $output = array(
+
+                'code' => 200,
+                'msg' => $plans
+            );
+            
+        }else{
+            $output = array(
+                'code' => 100,
+                'msg' => "no plans found in database"
+            );
+
+        }
+
+        echo json_encode($output);
 
     }
 
@@ -228,7 +252,7 @@ class ApiController extends Controller {
     public function updatePassword()
     {
         $this->loadModel('User');
-        if (isset($this->params['id']) && isset($this->params['password']) && isset($this->params['new_password'])) {
+        if (isset($this->params['user_id']) && isset($this->params['password']) && isset($this->params['new_password'])) {
 
             $user = $this->User->showDetailsById($this->params['id']);
             if ($user) {
@@ -367,6 +391,207 @@ class ApiController extends Controller {
                 die;
             }
             
+        }else{
+            Response::IncompleteParams();
+        }
+    }
+
+
+    public function showPlanDetails()
+    {
+        if (isset($this->params['plan_id'])) {
+
+            $this->loadModel('Plans');
+
+            $plan = $this->Plans->showDetailById($this->params['plan_id']);
+
+            if($plan){
+
+                $output = array(
+                    'code' => 200,
+                    'msg' => $plan
+                );
+
+            }else{
+                $output = array(
+                    'code' => 404,
+                    'msg' => 'plan not found',
+                    'dev_msg' => 'plan not found related to this id'
+                );
+            }
+
+            echo json_encode($output);
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+
+    }
+
+
+    public function showUserDetails()
+    {
+        if (isset($this->params['user_id']) || isset($this->params['username'])) {
+            $this->loadModel('User');
+            if(isset($this->params['user_id'])){
+                $user = $this->User->showDetailsById($this->params['user_id']);
+
+                if($user){
+                    $output = array(
+                        'code' => 200,
+                        'msg' => $user
+                    );
+                }else{
+                    $output = array(
+                        'code' => 114,
+                        'msg' => "user not found",
+                        'dev_msg'=>"user not found"
+                    );
+                }
+
+
+            }else{
+
+                $user = $this->User->showDetailsByUsername($this->params['username']);
+
+                if($user){
+
+                    $output = array(
+                        'code' => 200,
+                        'msg' => $user
+                    );
+
+                }else{
+                    $output = array(
+                        'code' => 112,
+                        'dev_msg' => 'no account matched to this username:'.$this->params['username'],
+                        'msg' => 'No account matched to username or email'
+                    );
+                    
+                }
+
+            }
+
+            echo json_encode($output);
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+    }
+
+
+    public function verifyUser()
+    {
+        if(isset($this->params['user_id']) && isset($this->params['code'])){
+            $this->loadModel('User');
+
+            $otp = $this->params['code'];
+            $user = $this->User->showDetailById($this->params['user_id']);
+
+            if($user && $otp==$user['code']){
+                $update_data = array(
+                    'id' => $user['id'],
+                    'status' => 1,
+                    'code' => 0
+                );
+
+                $update = $this->User->update($update_data);
+                $user['status'] = 1;
+                $output = array(
+                    'code' => 200,
+                    'msg' => $user
+                );
+
+            }else{
+
+                if($user){
+                    $output = array(
+                        'code' => 201,
+                        'msg' => "incorrect otp"
+                    );
+                }else{
+                    $output = array(
+                        'code' => 114,
+                        'msg' => "user not found"
+                    );
+                }
+
+            }
+
+            echo json_encode($output);
+            die;
+
+        }
+        else
+        if (isset($this->params['user_id'])) {
+            $this->loadModel('User');
+        
+            $user = $this->User->showDetailsById($this->params['user_id']);
+
+            if($user){
+                
+                if($user['status'] == 0){
+
+                    //send verification email
+                    $otp = Utility::GenerateOtp();
+                    $data = sendVerificationEmail($user['email'], $otp, $user['username']);
+
+                    if($data['code']==200){
+                        //email sent
+                        $update_data = array(
+                            'id'=>$user['id'],
+                            'code'=>$user['code'],
+                        );
+
+                        $this->User->update($update_data);
+                        $output = array(
+                            'code' => 200,
+                            'msg' => "success"
+                        );
+
+                    }else{
+
+                        $output = array(
+                            'code' => 101,
+                            'msg' => "failed to send email please try again later",
+                            'dev_msg' => $data['msg']
+                        );
+
+                    }
+
+                }else{
+
+                    if($user['status'] == 1)
+                    {
+                            $output = array(
+                                'code' => 201,
+                                'msg' => 'account already verified'
+                            );
+                    }
+                    else
+                    {
+                            $output = array(
+                                'code' => 402,
+                                'msg' => "Your account has been suspended"
+                            );
+                    }
+
+                }
+
+
+            }else{
+                $output = array(
+                    'code' => 114,
+                    'msg' => "user not found",
+                    'dev_msg'=>"user not found"
+                );
+            }
+
+            echo json_encode($output);
+            die;
+
         }else{
             Response::IncompleteParams();
         }

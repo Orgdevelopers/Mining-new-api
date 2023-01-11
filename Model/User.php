@@ -129,6 +129,9 @@ class User {
         if (isset($data['last_plan_purchased'])) {
             $qry1 = $qry1 . ", last_plan_purchased = '" . $data['last_plan_purchased']."'";
         }
+        if (isset($data['code'])) {
+            $qry1 = $qry1 . ", code = '" . $data['code']."'";
+        }
         if (isset($data['updated'])) {
             $qry1 = $qry1 . ", updated = '" . $data['updated']."'";
         }

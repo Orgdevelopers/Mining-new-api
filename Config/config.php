@@ -5,7 +5,7 @@ define('ADMIN_API_KEY', '115cds-9857-5789-4433-0011');
 
 
 date_default_timezone_set('Asia/Karachi');
-define('BASE_URL', 'https://hosting.tiktalkvideo.com/');
+define('BASE_URL', 'https://hosting.tiktalkvideo.online/');
 define('APP_STATUS', 'live');///demo/live
 define('APP_NAME', 'Test');
 define('TEAM_NAME', "App name Team");

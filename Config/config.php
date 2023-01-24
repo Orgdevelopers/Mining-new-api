@@ -20,6 +20,7 @@ define('DATABASE_PASSWORD', 'host_min');
 define('DATABASE_NAME', 'host_min');
 
 
+
 define('MAIL_HOST', "zfm-group.com");
 define('MAIL_USERNAME', "no-reply@zfm-group.com");
 define('MAIL_PASSWORD', "no-reply@zfm-group.com");

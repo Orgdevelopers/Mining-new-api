@@ -23,7 +23,7 @@ class AppController {
             }
 
         }else if($request == "admin"){
-            echo "admin".$request;
+            echo "admin".$controller;
 
         }else{
             echo $request;

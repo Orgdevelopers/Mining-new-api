@@ -15,9 +15,9 @@ define('APP_RECORDS_PER_PAGE',20);
 
 
 define('DATABASE_HOST', 'localhost');
-define('DATABASE_USER', 'root');
-define('DATABASE_PASSWORD', '');
-define('DATABASE_NAME', 'zong_data');
+define('DATABASE_USER', 'host_min');
+define('DATABASE_PASSWORD', 'host_min');
+define('DATABASE_NAME', 'host_min');
 
 
 

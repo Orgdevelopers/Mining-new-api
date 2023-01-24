@@ -20,6 +20,9 @@ if(strpos($request_uri,"?")){
 
 $request = explode('/',$request_uri);
 
+echo json_encode($request);
+die;
+
 $controller = new AppController();
 $controller->handle_rquest($request);
 

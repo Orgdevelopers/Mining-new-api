@@ -586,8 +586,9 @@ class ApiController extends Controller {
         $file  = file_get_contents("http://www.google.com/search?q=btc+to+usd");
 
         $file = substr($file, strpos($file,'<div><div><div class="BNeawe iBp4i AP7Wnd"><div><div class="BNeawe iBp4i AP7Wnd">'));
-        $file = substr($file,0, strpos($file, 'United States Dollar'));
-        // echo $file;
+        $file = str_replace('<div><div><div class="BNeawe iBp4i AP7Wnd"><div><div class="BNeawe iBp4i AP7Wnd">', "", $file);
+        $file = substr($file,0, strpos($file, ' United States Dollar'));
+        // echo json_encode($file);
         // die;
         // $file = json_decode($file, true);
 

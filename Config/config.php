@@ -5,9 +5,10 @@ define('ADMIN_API_KEY', '115cds-9857-5789-4433-0011');
 
 
 date_default_timezone_set('Asia/Karachi');
-define('BASE_URL', 'https://domain.com/');
+define('BASE_URL', 'https://zfm-group.com/mobileapi/');
 define('APP_STATUS', 'live');///demo/live
 define('APP_NAME', 'Test');
+define('TEAM_NAME', "App name Team");
 
 define('ADMIN_RECORDS_PER_PAGE',20);
 define('APP_RECORDS_PER_PAGE',20);
@@ -27,7 +28,9 @@ define('MAIL_NAME', "TestEmail"); //app name
 define('MAIL_REPLYTO', "no-reply@zfm-group.com");
 
 
-define('EMAIL_TEMPLATE_PATH', 'Templates/VerificationEmail.html');
+define('VERIFICATION_EMAIL_TEMPLATE_PATH', 'Templates/VerificationEmail.html');
+define('WELCOME_EMAIL_TEMPLATE_PATH', 'Templates/WelcomEmail.html');
+
 define('UPLOADS_FOLDER_URI', 'webroot/uploads');
 define('TEMP_UPLOADS_FOLDER_URI', 'webroot/temp_uploads');
 define('FONT_FOLDER_URI', 'webroot/font');

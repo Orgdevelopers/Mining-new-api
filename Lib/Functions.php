@@ -16,21 +16,20 @@ function ValidatePassword($password,$db_password,$email="")
 function sendVerificationEmail($email,$otp,$username)
 {
 
-    $template = file_get_contents(EMAIL_TEMPLATE_PATH);
+    $template = file_get_contents(VERIFICATION_EMAIL_TEMPLATE_PATH);
 
-    $fill = '<strong><span style="text-decoration: underline;">11</span> <span style="text-decoration: underline;">22</span> <span style="text-decoration: underline;">33</span> <span style="text-decoration: underline;">44</span> <span style="text-decoration: underline;">55</span> <span style="text-decoration: underline;">66</span></strong>';
+    $otp_fill = str_replace("!1!", substr($otp, 0, 1), $template);
+    $otp_fill = str_replace("!2!", substr($otp, 1, 1), $otp_fill);
+    $otp_fill = str_replace("!3!", substr($otp, 2, 1), $otp_fill);
+    $otp_fill = str_replace("!4!", substr($otp, 3, 1), $otp_fill);
+    $otp_fill = str_replace("!5!", substr($otp, 4, 1), $otp_fill);
+    $otp_fill = str_replace("!6!", substr($otp, 5, 1), $otp_fill);
 
-    $otp_fill = $fill;
+    $otp_fill = str_replace("!base_url!", BASE_URL, $otp_fill);
+    $otp_fill = str_replace("!username!", $username, $otp_fill);
+    $otp_fill = str_replace("!app_name!", APP_NAME, $otp_fill);
+    $otp_fill = str_replace("!team_name!", TEAM_NAME, $otp_fill);
 
-    $otp_fill = str_replace("11", substr($otp, 0, 1), $otp_fill);
-    $otp_fill = str_replace("22", substr($otp, 1, 1), $otp_fill);
-    $otp_fill = str_replace("33", substr($otp, 2, 1), $otp_fill);
-    $otp_fill = str_replace("44", substr($otp, 3, 1), $otp_fill);
-    $otp_fill = str_replace("55", substr($otp, 4, 1), $otp_fill);
-    $otp_fill = str_replace("66", substr($otp, 5, 1), $otp_fill);
-
-    $template = str_replace($fill, $otp_fill, $template);
-    $template = str_replace("https://domain.com", BASE_URL, $template);
 
     $data = array(
         'to' => $email,
@@ -42,6 +41,29 @@ function sendVerificationEmail($email,$otp,$username)
     $result = Utility::sendMail($data);
 
     return $result;
+
+}
+
+
+function sendWelcomeEmail($email,$username,$user_id){
+    $template = file_get_contents(WELCOME_EMAIL_TEMPLATE_PATH);
+
+    $verification_link = BASE_URL."verify.php?code=".Utility::EncryptPassword($user_id);
+
+    $template = str_replace("!base_url!", BASE_URL, $template);
+    $template = str_replace("!username!", $username, $template);
+    $template = str_replace("!app_name!", APP_NAME, $template);
+    $template = str_replace("!team_name!", TEAM_NAME, $template);
+    $template = str_replace("!verification_link!", $verification_link, $template);
+
+    $data = array(
+        'to' => $email,
+        'name' => $username,
+        'subject' => "Welcome Email",
+        'message' => $template
+    );
+
+    return Utility::sendMail($data);
 
 }
 

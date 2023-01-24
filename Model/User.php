@@ -45,7 +45,7 @@ class User {
     }
 
 
-    public function create($email,$username,$password, $date)
+    public function create($email,$username,$password, $date,$ref)
     {
 
         $password_hash = Utility::EncryptPassword($password);
@@ -56,6 +56,7 @@ class User {
                 username, 
                 email, 
                 password, 
+                referral, 
                 updated, 
                 created) 
                 VALUES (
@@ -63,6 +64,7 @@ class User {
                     '$username', 
                     '$email', 
                     '$password_hash', 
+                    '$ref', 
                     '$date',
                     '$date'
                     );"
@@ -85,6 +87,9 @@ class User {
         }
 
         $id = $data['id'];
+        $date = Utility::GetTimeStamp();
+
+        $data['updated'] = $date;
 
         $qry1 = 'UPDATE user SET id = '.$id;
         $qry2 = ' WHERE user.id = ' . $id;

@@ -15,9 +15,9 @@ define('APP_RECORDS_PER_PAGE',20);
 
 
 define('DATABASE_HOST', 'localhost');
-define('DATABASE_USER', 'zfmgroup_db');
-define('DATABASE_PASSWORD', 'zfmgroup_db');
-define('DATABASE_NAME', 'zfmgroup_db');
+define('DATABASE_USER', 'host_min');
+define('DATABASE_PASSWORD', 'host_min');
+define('DATABASE_NAME', 'host_min');
 
 
 define('MAIL_HOST', "zfm-group.com");

@@ -612,7 +612,11 @@ class ApiController extends Controller {
 
         $qry = "INSERT INTO live_rate(id, name, price, time) VALUES('0', 'BTC', '$btc_rate_usd', '$date')";
         $conn = $GLOBALS['DB_CONNECTION'];
-        $conn->query($qry);
+        if($conn->query($qry)){
+            echo 200;
+        }else{
+            echo $conn->error;
+        }
         
         
     }

@@ -650,7 +650,7 @@ class ApiController extends Controller {
 
         $btc_rate_usd = $btc_rate_usdt * $usdt_rate;
 
-        echo json_encode(['code' => 200, 'msg' => $btc_rate_usd]);
+        echo json_encode(['code' => 200, 'msg' => $btc_rate_usd, 'usdt'=>$btc_rate_usdt]);
         die;
 
     }

@@ -20,6 +20,7 @@ if(strpos($request_uri,"?")){
 
 $request = explode('/',$request_uri);
 
+echo $request_uri . "<br><br>";
 echo json_encode($request);
 die;
 

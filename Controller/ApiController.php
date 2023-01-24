@@ -582,33 +582,34 @@ class ApiController extends Controller {
     public function getBitcoinRateFromApi()
     {
         
-        $file  = file_get_contents("https://api.nomics.com/v1/exchange-rates?key=c90d0b4d956e2e43d28ce969b1682447");
-        // $file  = file_get_contents("http://www.google.com/search?q=btc+to+usd");
+        //$file  = file_get_contents("https://api.nomics.com/v1/exchange-rates?key=c90d0b4d956e2e43d28ce969b1682447");
+        $file  = file_get_contents("http://www.google.com/search?q=btc+to+usd");
 
-        // $file = substr($file, strpos($file,'<div><div><div class="BNeawe iBp4i AP7Wnd"><div><div class="BNeawe iBp4i AP7Wnd">'));
-        // $file = substr($file,0, strpos($file, 'United States Dollar'));
+        $file = substr($file, strpos($file,'<div><div><div class="BNeawe iBp4i AP7Wnd"><div><div class="BNeawe iBp4i AP7Wnd">'));
+        $file = substr($file,0, strpos($file, 'United States Dollar'));
         // echo $file;
         // die;
-        $file = json_decode($file, true);
+        // $file = json_decode($file, true);
 
-        $btc_rate_usdt = 0.0;
-        $btc_rate_usd = 0.0;
-        $usdt_rate = 0.0;
-        $date = Utility::GetTimeStamp();
+        // $btc_rate_usdt = 0.0;
+         $btc_rate_usd = 0.0;
+        $btc_rate_usd = $file;
+        // $usdt_rate = 0.0;
+         $date = Utility::GetTimeStamp();
 
-        for ($i=0; $i < count($file); $i++) { 
-            $single = $file[$i];
-            if($single['currency'] == "BTC"){
-                $btc_rate_usdt = $single['rate'];
-            }
+        // for ($i=0; $i < count($file); $i++) { 
+        //     $single = $file[$i];
+        //     if($single['currency'] == "BTC"){
+        //         $btc_rate_usdt = $single['rate'];
+        //     }
 
-            if($single['currency'] == "USDT"){
-                $usdt_rate = $single['rate'];
-            }
+        //     if($single['currency'] == "USDT"){
+        //         $usdt_rate = $single['rate'];
+        //     }
 
-        }
+        // }
 
-        $btc_rate_usd = $btc_rate_usdt * $usdt_rate;
+        // $btc_rate_usd = $btc_rate_usdt * $usdt_rate;
 
         $qry = "INSERT INTO live_rate(id, name, price, time) VALUES('0', 'BTC', '$btc_rate_usd', '$date')";
         $conn = $GLOBALS['DB_CONNECTION'];

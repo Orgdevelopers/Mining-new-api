@@ -19,11 +19,6 @@ if(strpos($request_uri,"?")){
 }
 
 $request = explode('/',$request_uri);
-// echo $_SERVER['PHP_SELF']. "<br><br>";
-// echo $_SERVER['REQUEST_URI']. "<br><br>";
-// echo $request_uri . "<br><br>";
-// echo json_encode($request);
-// die;
 
 $controller = new AppController();
 $controller->handle_rquest($request);

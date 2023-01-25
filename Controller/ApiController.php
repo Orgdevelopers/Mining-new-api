@@ -39,6 +39,8 @@ class ApiController extends Controller {
 
         $this->showChart();
 
+        echo Utility::GetTimeStamp();
+
     }
 
     public function __construct(){

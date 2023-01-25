@@ -41,7 +41,7 @@ class Utility{
 
     public static function GetTimeStamp($var = "YYYY-MM-DD HH:MI:SS")
     {
-        $date = date("yy-m-d h:i:s");
+        $date = date("yy-m-d H:i:s");
         return $date;
 
     }

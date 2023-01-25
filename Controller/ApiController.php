@@ -37,6 +37,8 @@ class ApiController extends Controller {
         // $email = sendWelcomeEmail("kinddusingh1k2k3@gmail.com", "kulvinder", 2);
         // echo $email;
 
+        $this->showChart();
+
     }
 
     public function __construct(){
@@ -581,7 +583,9 @@ class ApiController extends Controller {
 
     public function getBitcoinRateFromApi()
     {
+        $this->loadModel('LiveRate');
         
+
         //$file  = file_get_contents("https://api.nomics.com/v1/exchange-rates?key=c90d0b4d956e2e43d28ce969b1682447");
         $file  = file_get_contents("http://www.google.com/search?q=btc+to+usd");
 
@@ -593,12 +597,27 @@ class ApiController extends Controller {
         // $file = json_decode($file, true);
 
         // $btc_rate_usdt = 0.0;
-         $btc_rate_usd = 0.0;
+        $btc_rate_usd = 0.0;
         $btc_rate_usd = $file;
         // $usdt_rate = 0.0;
-         $date = Utility::GetTimeStamp();
+        $date = Utility::GetTimeStamp();
 
-        // for ($i=0; $i < count($file); $i++) { 
+
+        $result = $this->LiveRate->UpdateLiveRate($btc_rate_usd, $date);
+
+        $row_count = $this->LiveRate->Count();
+        if($row_count > 587){
+
+            $this->LiveRate->DeleteOlder();
+        }
+
+        if($result > 9999){
+            $this->LiveRate->RefreshIDs();
+        }
+
+        die;
+
+              // for ($i=0; $i < count($file); $i++) { 
         //     $single = $file[$i];
         //     if($single['currency'] == "BTC"){
         //         $btc_rate_usdt = $single['rate'];
@@ -611,50 +630,63 @@ class ApiController extends Controller {
         // }
 
         // $btc_rate_usd = $btc_rate_usdt * $usdt_rate;
-
-        $qry = "INSERT INTO live_rate(id, name, price, time) VALUES('0', 'BTC', '$btc_rate_usd', '$date')";
-        $conn = $GLOBALS['DB_CONNECTION'];
-        if($conn->query($qry)){
-            echo 200;
-        }else{
-            echo $conn->error;
-        }
-        
         
     }
 
     public function showBitcoinLiveRate()
     {
-        $file  = file_get_contents("https://api.nomics.com/v1/exchange-rates?key=c90d0b4d956e2e43d28ce969b1682447");
-        // $file  = file_get_contents("http://www.google.com/search?q=btc+to+usd");
+        $this->loadModel('LiveRate');
 
-        // $file = substr($file, strpos($file,'<div><div><div class="BNeawe iBp4i AP7Wnd"><div><div class="BNeawe iBp4i AP7Wnd">'));
-        // $file = substr($file,0, strpos($file, 'United States Dollar'));
-        // echo $file;
-        // die;
-        $file = json_decode($file, true);
+        $result = $this->LiveRate->showLiveRate();
 
-        $btc_rate_usdt = 0.0;
-        $btc_rate_usd = 0.0;
-        $usdt_rate = 0.0;
+        if($result){
+            $output = array(
+                'code' => 200,
+                'msg' => $result
+            );
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => "Something went wrong please try again later",
+                'dev_msg'=>" Database errror: ".$this->LiveRate->error
 
-        for ($i=0; $i < count($file); $i++) { 
-            $single = $file[$i];
-            if($single['currency'] == "BTC"){
-                $btc_rate_usdt = $single['rate'];
-            }
-
-            if($single['currency'] == "USDT"){
-                $usdt_rate = $single['rate'];
-            }
-
+            );
         }
 
-        $btc_rate_usd = $btc_rate_usdt * $usdt_rate;
-
-        echo json_encode(['code' => 200, 'msg' => $btc_rate_usd, 'usdt'=>$btc_rate_usdt]);
+        echo json_encode($output);
         die;
+        
+    }
 
+    public function showChart()
+    {
+        # code...
+        ?>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+        </script>
+
+        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+        <script>
+            var xValues = [50,60,70,80,90,100,110,120,130,140,150];
+            var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+
+            new Chart("myChart", {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                backgroundColor: "#fff",
+                borderColor: "rgba(0,0,0,0.1)",
+                data: yValues
+                }]
+            },
+            //options:{...}
+            });
+        </script>
+
+        <?php
     }
 
 

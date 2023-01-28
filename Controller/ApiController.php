@@ -41,6 +41,21 @@ class ApiController extends Controller {
         
         //echo Utility::GetTimeStamp();
 
+        $this->loadModel('LiveRate');
+
+        $all = $this->LiveRate->ShowAll();
+
+        foreach($all as $single){
+            
+            $date = str_replace("2323","2023",$single['time'])."<br>";
+
+            $this->LiveRate->id = $single['id'];
+            echo json_encode($this->LiveRate->saveField('time', $date));
+
+        }
+
+        die;
+
     }
 
     public function __construct(){

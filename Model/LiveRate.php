@@ -3,6 +3,9 @@
 class LiveRate extends AppModel{
 
     public $conn = null;
+    public $db = 'live_rate';
+
+    public $id = "0";
 
     public function __construct()
     {
@@ -53,6 +56,22 @@ class LiveRate extends AppModel{
         ALTER TABLE live_rate AUTO_INCREMENT =1; ");
     }
 
+
+    public function ShowAll()
+    {
+        return $this->Query($this->conn, "SELECT * FROM $this->db ")->fetch_all(1);
+    }
+
+    
+    public function saveField($field,$value)
+    {
+        if($this->id != "0"){
+            $result = $this->Query($this->conn, "UPDATE $this->db SET $field = '$value' WHERE id = '$this->id'");
+        }else{
+            $result = false;
+        }
+        return $result;
+    }
 
 }
 

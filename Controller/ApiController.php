@@ -47,7 +47,7 @@ class ApiController extends Controller {
 
         foreach($all as $single){
             
-            $date = str_replace("2323","2023",$single['time'])."<br>";
+            $date = str_replace("2323","2023",$single['time']);
 
             $this->LiveRate->id = $single['id'];
             echo json_encode($this->LiveRate->saveField('time', $date));

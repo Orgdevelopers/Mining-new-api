@@ -34,12 +34,12 @@ class ApiController extends Controller {
         *
         */
 
-        // $email = sendWelcomeEmail("kinddusingh1k2k3@gmail.com", "kulvinder", 2);
+        //$email = sendWelcomeEmail("kinddusingh1k2k3@gmail.com", "kulvinder",2);
         // echo $email;
 
-        $this->showChart();
-
-        echo Utility::GetTimeStamp();
+        //$this->showChart();
+        
+        //echo Utility::GetTimeStamp();
 
     }
 

@@ -57,9 +57,9 @@ class LiveRate extends AppModel{
     }
 
 
-    public function ShowAll()
+    public function ShowAll($count = 600)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db ")->fetch_all(1);
+        return $this->Query($this->conn, "SELECT * FROM $this->db ORDER BY id DESC LIMIT 0,$count")->fetch_all(1);
     }
 
     
@@ -70,6 +70,43 @@ class LiveRate extends AppModel{
         }else{
             $result = false;
         }
+        return $result;
+    }
+
+    public function Save($data)
+    {
+        if($this->id != "0" || isset($data['id'])){
+
+            if(isset($data['id'])){
+                $this->id = $data['id'];
+            }
+
+            $keys = array_keys($data);
+
+            $qry = "UPDATE $this->db SET ";
+
+            for ($i=0; $i < count($keys); $i++) { 
+
+                $key = $keys[$i];
+
+                if($key != "id"){
+                    $value = $data[$key];
+                    $qry .= $key . " = '$value' ";
+
+                    if(count($keys) != ($i+1)){
+                        $qry .= ", ";
+                    }
+                }
+            }
+
+            $qry .= "WHERE id = '$this->id' ;";
+
+            $result = $this->Query($this->conn,$qry);
+
+        }else{
+            $result = false;
+        }
+
         return $result;
     }
 

@@ -34,27 +34,9 @@ class ApiController extends Controller {
         *
         */
 
-        //$email = sendWelcomeEmail("kinddusingh1k2k3@gmail.com", "kulvinder",2);
-        // echo $email;
-
-        //$this->showChart();
         
-        //echo Utility::GetTimeStamp();
-
-        $this->loadModel('LiveRate');
-
-        $all = $this->LiveRate->ShowAll();
-
-        foreach($all as $single){
-            
-            $date = str_replace("2323","2023",$single['time']);
-
-            $this->LiveRate->id = $single['id'];
-            echo json_encode($this->LiveRate->saveField('time', $date));
-
-        }
-
-        die;
+        $this->showChart();
+        $this->showChart2();
 
     }
 
@@ -186,6 +168,8 @@ class ApiController extends Controller {
     {
         if(isset($this->params['email'])){
             $this->loadModel('User');
+            $this->loadModel('Wallets');
+
             $email_user = $this->User->showDetailsByEmail($this->params['email']);
             $username_user = $this->User->showDetailsByUsername($this->params['username']);
 
@@ -230,6 +214,7 @@ class ApiController extends Controller {
                     );
 
                     $email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
+                    $this->Wallets->create($result['id']);
 
                 }else{
                     $output = array(
@@ -438,10 +423,18 @@ class ApiController extends Controller {
                 $user = $this->User->showDetailsById($this->params['user_id']);
 
                 if($user){
+
+                    $wallets = $this->Wallets->getUserWallets($user['id']);
+                    if(!$wallets){
+                        $wallets = null;
+                    }
+                    $msg['User'] = $user;
+                    $msg['Wallets'] = $wallets;
                     $output = array(
                         'code' => 200,
-                        'msg' => $user
+                        'msg' => $msg
                     );
+
                 }else{
                     $output = array(
                         'code' => 114,
@@ -457,9 +450,15 @@ class ApiController extends Controller {
 
                 if($user){
 
+                    $wallets = $this->Wallets->getUserWallets($user['id']);
+                    if(!$wallets){
+                        $wallets = null;
+                    }
+                    $msg['User'] = $user;
+                    $msg['Wallets'] = $wallets;
                     $output = array(
                         'code' => 200,
-                        'msg' => $user
+                        'msg' => $msg
                     );
 
                 }else{
@@ -677,29 +676,151 @@ class ApiController extends Controller {
 
     public function showChart()
     {
+
+        $this->loadModel('LiveRate');
+
+        $data = array_reverse($this->LiveRate->ShowAll(144));
+
+        $x_val = array();
+        $y_val = array();
+
+        foreach ($data as $key => $single) {
+            
+            if($single['price'] != ""){
+                $time = strtotime($single['time']);
+
+                $x_val[] = date('h:i ',$time);
+                $y_val[] = round((float) str_replace(",","",$single['price']));
+
+            }
+
+        }
+
         # code...
         ?>
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         </script>
 
-        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+        <div class="line-chart">
+            <div class="aspect-ratio">
+                <canvas id="chart"></canvas>
+            </div>
+        </div>
+
+        <style>
+            $bg: #252429;
+
+            html,body{height:100%;}body{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;background:$bg;}
+
+            *:before,
+            *:after {
+            box-sizing: inherit;
+            }
+
+            html {
+            box-sizing: border-box;
+                padding: 20px;
+            }
+
+            .line-chart {
+                animation: fadeIn 600ms cubic-bezier(.57,.25,.65,1) 1 forwards;
+            opacity: 0;
+                max-width: 640px;
+                width: 100%;
+            }
+
+            .aspect-ratio {
+            height: 0;
+            padding-bottom: 50%; // 495h / 990w
+            }
+
+            @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+            }
+        </style>
 
         <script>
-            var xValues = [50,60,70,80,90,100,110,120,130,140,150];
-            var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+            // ============================================
+            // As of Chart.js v2.5.0
+            // http://www.chartjs.org/docs
+            // ============================================
 
-            new Chart("myChart", {
-            type: "line",
-            data: {
-                labels: xValues,
+            var chart    = document.getElementById('chart').getContext('2d'),
+                gradient = chart.createLinearGradient(0, 0, 0, 450);
+
+            gradient.addColorStop(0, 'rgba(255, 0,0, 0.5)');
+            gradient.addColorStop(0.5, 'rgba(255, 0, 0, 0.25)');
+            gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+
+
+            var data  = {
+                labels: <?php echo json_encode($x_val); ?>,
                 datasets: [{
-                backgroundColor: "#fff",
-                borderColor: "rgba(0,0,0,0.1)",
-                data: yValues
+                        label: '$',
+                        backgroundColor: gradient,
+                        pointBackgroundColor: 'white',
+                        borderWidth: 1,
+                        borderColor: '#911215',
+                        data: <?php echo json_encode($y_val); ?>
                 }]
-            },
-            //options:{...}
+            };
+
+
+            var options = {
+                responsive: true,
+                maintainAspectRatio: true,
+                animation: {
+                    easing: 'easeInOutQuad',
+                    duration: 520
+                }
+                ,
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            color: 'rgba(200, 200, 200, 0.05)',
+                            lineWidth: 1
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            color: 'rgba(200, 200, 200, 0.08)',
+                            lineWidth: 1
+                        }
+                    }]
+                },
+                elements: {
+                    line: {
+                        tension: 0.1
+                    },
+                    point: {
+                        backgroundColor: "#ffff80",
+                        borderColor: "#fff",
+                        radius: 1
+                    }
+                    
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    titleFontFamily: 'Open Sans',
+                    backgroundColor: 'rgba(0,0,0,0.3)',
+                    titleFontColor: 'red',
+                    caretSize: 5,
+                    cornerRadius: 2,
+                    xPadding: 10,
+                    yPadding: 10
+                }
+            };
+
+
+            var chartInstance = new Chart(chart, {
+                type: 'line',
+                data: data,
+                    options: options
             });
         </script>
 
@@ -707,6 +828,114 @@ class ApiController extends Controller {
     }
 
 
+    public function showChart2()
+    {
+
+        
+        $this->loadModel('LiveRate');
+
+        $data = array_reverse($this->LiveRate->ShowAll(144));
+      
+
+        ?>
+        <!DOCTYPE HTML>
+        <html>
+        <head>
+        <script type="text/javascript">
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer",
+            {
+
+            title:{
+            text: ""
+            },
+            axisX: {
+                //valueFormatString: "MMM",
+                
+                interval:1,
+                intervalType: "hour"
+            },
+            axisY:{
+                gridColor: "#fff",
+                interval:100,
+                //intervalType: "number"
+            },
+            toolTip:{
+                    shared: false,
+                    content: function(e){
+                        var body = new String;
+                        var head ;
+                        for (var i = 0; i < e.entries.length; i++){
+
+                            const options = {
+                                //day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric"
+
+                            };
+                            var str = e.entries[i].dataPoint.x.toLocaleString("en-US",options) + " - $" + e.entries[i].dataPoint.y ;
+                            
+                            body = body.concat(str);
+                        }
+                        head = "";// Date Time + ':' + (parseDate(e.entries[0].dataPoint.x));
+
+                        return (head.concat(body));
+                    }
+            },
+            data: [
+            {
+                type: "line",
+                
+                dataPoints: [
+                
+                <?php
+
+                foreach ($data as $key => $single) {
+            
+                    if($single['price'] != ""){
+
+                        $date = new DateTime($single['time']);
+                        $echo = "{ x: new Date(";
+                        $echo .= $date->format("Y").",";
+                        $echo .= $date->format("m").",";
+                        $echo .= $date->format("d").",";
+                        $echo .= $date->format("H").",";
+                        $echo .= $date->format("i")."), y: ";
+
+                        $echo .= round((float) str_replace(",", "", $single['price']))."},";
+
+                        echo $echo;
+        
+                    }
+        
+                }
+
+                ?>
+
+                ]
+
+                
+
+            }
+            ]
+            });
+
+            chart.render();
+        }
+        </script>
+        <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script></head>
+        <body>
+        <div id="chartContainer" style="height: 300px; width: 100%;">
+        </div>
+        </body>
+        </html>
+        <?php
+    }
+
+
+
+
 }
 
 ?>
+

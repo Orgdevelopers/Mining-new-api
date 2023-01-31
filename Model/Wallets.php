@@ -30,9 +30,12 @@ class Wallets extends AppModel
 
             $created = Utility::GetTimeStamp();
 
-            $result = $this->Query($this->conn, "INSERT INTO $this->db('id', 'user_id', 'address_invest', 'address_mine', 'address_task', 'created')
-                                                VALUES('0', '$user_id', '$adr_invest', '$adr_mine', '$adr_task', '$created');");
+            $qry = "INSERT INTO $this->db(id, user_id, address_invest, address_mine, address_task, created)
+            VALUES('0', '$user_id', '$adr_invest', '$adr_mine', '$adr_task', '$created');";
+            //echo $qry; 
+            $result = $this->Query($this->conn, $qry);
 
+                                           
             if($result){
                 $result = $this->getUserWallets($user_id);
             }else{

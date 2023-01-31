@@ -33,8 +33,12 @@ class ApiController extends Controller {
         *
         *
         */
+        //echo '(`id`, `active_miners`, `quantity`, `version_code`, `version`, `force_update`, `updated`) <br> <br>';
 
-        
+        $methods = get_class_methods($this);
+        foreach($methods as $method){
+            echo $method."<br>";
+        }
         $this->showChart();
         $this->showChart2();
 
@@ -208,13 +212,16 @@ class ApiController extends Controller {
 
                 if ($result) {
                     //account created successfully
-                    $output = array(
-                        'code' => 200,
-                        'msg' => $result
-                    );
 
                     $email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
                     $this->Wallets->create($result['id']);
+
+                    $wallets = $this->Wallets->getUserWallets($result['id']);
+
+                    $output = array(
+                        'code' => 200,
+                        'msg' => array('User'=>$result, 'Wallets' => $wallets)
+                    );
 
                 }else{
                     $output = array(
@@ -419,6 +426,8 @@ class ApiController extends Controller {
     {
         if (isset($this->params['user_id']) || isset($this->params['username'])) {
             $this->loadModel('User');
+            $this->loadModel('Wallets');
+
             if(isset($this->params['user_id'])){
                 $user = $this->User->showDetailsById($this->params['user_id']);
 

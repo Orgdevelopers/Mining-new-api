@@ -91,6 +91,8 @@ class ApiController extends Controller {
 
         if(isset($this->params['password'])){
             $this->loadModel('User');
+            $this->loadModel('Wallets');
+
             if(isset($this->params['username'])){
                 //username login
                 
@@ -99,11 +101,13 @@ class ApiController extends Controller {
                     $db_password = $user['password'];
                     $password = $this->params['password'];
 
+                    $wallets = $this->Wallets->getUserWallets($user['id']);
+
                     if(ValidatePassword($password,$db_password,$user['email'])){
                         //password matched
                         $output = array(
                             'code' => 200,
-                            'msg' => $user
+                            'msg' => array('User'=>$user, 'Wallets'=>$wallets)
                         );
                         echo json_encode($output);
                    
@@ -133,11 +137,13 @@ class ApiController extends Controller {
                     $db_password = $user['password'];
                     $password = $this->params['password'];
 
+                    $wallets = $this->Wallets->getUserWallets($user['id']);
+
                     if(ValidatePassword($password,$db_password,$user['email'])){
                         //password matched
                         $output = array(
                             'code' => 200,
-                            'msg' => $user
+                            'msg' => array('User'=>$user, 'Wallets'=>$wallets)
                         );
                         echo json_encode($output);
                    

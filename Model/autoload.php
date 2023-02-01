@@ -6,5 +6,6 @@ require 'User.php';
 require 'LiveRate.php';
 require 'Wallets.php';
 require 'Transactions.php';
+require 'AppSettings.php';
 
 ?>

@@ -35,6 +35,11 @@ class ApiController extends Controller {
         */
         //echo '(`id`, `active_miners`, `quantity`, `version_code`, `version`, `force_update`, `updated`) <br> <br>';
 
+        $this->loadModel('LiveRate');
+
+        echo json_encode($this->LiveRate->showLiveRate());
+        die;
+        
         $methods = get_class_methods($this);
         foreach($methods as $method){
             echo $method."<br>";
@@ -688,6 +693,45 @@ class ApiController extends Controller {
         die;
         
     }
+
+
+    public function showAppSettings()
+    {
+        $this->loadModel('AppSettings');
+
+        $settings = $this->AppSettings->getAppSettings();
+
+        if($settings){
+            $output['code'] = 200;
+            $output['msg'] = $settings;
+
+        }else{
+            $output['code'] = 201;
+            $output['msg'] = "Failed to get app settings";
+            $output['dev_msg'] = $this->AppSettings->error;
+        }
+
+        echo json_encode($output);
+        die;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function showChart()
     {

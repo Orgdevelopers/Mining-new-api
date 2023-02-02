@@ -63,7 +63,8 @@ function sendWelcomeEmail($email,$username,$user_id){
         'message' => $template
     );
 
-    return Utility::sendMail($data);
+    $mm = Utility::sendMail($data);
+    return $mm;
 
 }
 

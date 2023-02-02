@@ -35,6 +35,10 @@ class ApiController extends Controller {
         */
         //echo '(`id`, `active_miners`, `quantity`, `version_code`, `version`, `force_update`, `updated`) <br> <br>';
 
+
+        $email = sendWelcomeEmail('kinddusingh1k2k3@gmail.com', "username", 2);
+
+        die;
         $this->loadModel('Plans');
 
         echo json_encode($this->Plans->showDetailById(1));
@@ -274,16 +278,16 @@ class ApiController extends Controller {
 
                 if ($result) {
                     //account created successfully
-
-                    $email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
                     $this->Wallets->create($result['id']);
-
+                    
                     $wallets = $this->Wallets->getUserWallets($result['id']);
 
                     $output = array(
                         'code' => 200,
                         'msg' => array('User'=>$result, 'Wallets' => $wallets)
                     );
+
+                    $email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
 
                 }else{
                     $output = array(

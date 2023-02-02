@@ -288,12 +288,6 @@ class ApiController extends Controller {
                         'msg' => array('User'=>$result, 'Wallets' => $wallets)
                     );
 
-                    $email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
-                    if($email['code']== 200){
-                        $output['mail_sent'] = true;
-                    }else{
-                        $output['mail_sent'] = false;
-                    }
                     echo json_encode($output);
                     
                     die;
@@ -314,6 +308,22 @@ class ApiController extends Controller {
         }
     }
 
+
+    public function sendWelcomeEmail()
+    {
+        if(isset($this->params['user_id'])){
+            $this->loadModel('User');
+            $user = $this->User->showDetailsById($this->params['user_id']);
+
+            $email = sendWelcomeEmail($user['email'], $user['username'], $user['id']);
+
+            echo json_encode($email);
+
+        }else{
+            Response::IncompleteParams();
+        }
+        die;
+    }
 
     public function updatePassword()
     {

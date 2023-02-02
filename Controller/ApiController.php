@@ -287,7 +287,7 @@ class ApiController extends Controller {
                         'msg' => array('User'=>$result, 'Wallets' => $wallets)
                     );
 
-                    $email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
+                    //$email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
 
                 }else{
                     $output = array(

@@ -287,8 +287,10 @@ class ApiController extends Controller {
                         'msg' => array('User'=>$result, 'Wallets' => $wallets)
                     );
 
-                    //$email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
+                    echo json_encode($output);
+                    $email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
 
+                    die;
                 }else{
                     $output = array(
                         'code' => 401,

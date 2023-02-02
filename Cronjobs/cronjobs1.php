@@ -1,16 +1,20 @@
 <?php
-require_once("Config/config.php");
 
-bitcoinRateUpdate();
+require_once("../Config/config.php");
 
-function bitcoinRateUpdate(){
+setupMiningScore();
+
+
+
+function setupMiningScore()
+{
     $headers = [
         "Accept: application/json",
         "Content-Type: application/json",
-        "api-key: "
+        "api-key: ".API_KEY." "
     ];
-    
-    $url = BASE_URL."api/getBitcoinRateFromApi";
+
+    $url = BASE_URL."api/setupMiningScore";
 
     // echo "<script>window.location='$url'</script>";
     // //exit();
@@ -28,7 +32,9 @@ function bitcoinRateUpdate(){
     
     $curl_error = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    die;
+
 }
 
 ?>
-

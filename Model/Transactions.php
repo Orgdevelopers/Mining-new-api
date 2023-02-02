@@ -35,7 +35,7 @@ class Transactions extends AppModel
         if(isset($data['updated'])){$updated = $data['updated'];}
 
 
-        $result = $this->Query($this->conn,"INSERT INTO $this->db('id', 'user_id', 'type', 'wallet_type', 'amount', 'title', 'message', 'status', 'update', 'created')
+        $result = $this->Query("INSERT INTO $this->db('id', 'user_id', 'type', 'wallet_type', 'amount', 'title', 'message', 'status', 'update', 'created')
                                                     VALUES('0', '$user_id', '$type', '$wallet_type', '$amount', '$title', '$msg', '$status', '$updated', '$created');");
 
         
@@ -46,53 +46,53 @@ class Transactions extends AppModel
 
     public function getUserAll($user_id,$starting_point = 0, $limit = 10)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db WHERE user_id = '$user_id' ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
     public function getAll($user_id,$starting_point = 0, $limit = 10)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
     public function getUserInvest($user_id,$starting_point = 0, $limit = 10)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db WHERE user_id = '$user_id' AND wallet_type = 0 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND wallet_type = 0 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
     public function getUserTask($user_id,$starting_point = 0, $limit = 10)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db WHERE user_id = '$user_id' AND wallet_type = 1 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND wallet_type = 1 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
     public function getUserMine($user_id,$starting_point = 0, $limit = 10)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db WHERE user_id = '$user_id' AND wallet_type = 2 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND wallet_type = 2 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
     public function getUserWithdraw($user_id,$starting_point = 0, $limit = 10)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db WHERE user_id = '$user_id' AND type = 1 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND type = 1 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
     public function getUserDeposit($user_id,$starting_point = 0, $limit = 10)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db WHERE user_id = '$user_id' AND type = 2 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND type = 2 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
     public function getUserPending($user_id)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db WHERE user_id = '$user_id' AND status = 0 ;")->fetch_array(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND status = 0 ;")->fetch_array(1);
     }
 
     public function getField($id, $field)
     {
-        return $this->Query($this->conn, "SELECT $field FROM $this->db WHERE id = '$id' ;")->fetch_array(1);
+        return $this->Query("SELECT $field FROM $this->db WHERE id = '$id' ;")->fetch_array(1);
     }
 
     public function saveField($field,$value)
     {
         if($this->id != "0"){
-            $result = $this->Query($this->conn, "UPDATE $this->db SET $field = '$value' WHERE id = '$this->id'");
+            $result = $this->Query("UPDATE $this->db SET $field = '$value' WHERE id = '$this->id'");
         }else{
             $result = false;
         }
@@ -127,7 +127,7 @@ class Transactions extends AppModel
 
             $qry .= "WHERE id = '$this->id' ;";
 
-            $result = $this->Query($this->conn,$qry);
+            $result = $this->Query($qry);
 
         }else{
             $result = false;

@@ -1,10 +1,10 @@
 <?php
 
-class Wallets extends AppModel
+class Miners extends AppModel
 {
 
     public $conn = null;
-    public $db = 'wallets';
+    public $db = 'miners';
 
     public $id = "0";
 
@@ -14,48 +14,30 @@ class Wallets extends AppModel
     }
 
 
-    public function create($user_id)
+    public function create($user_id, $plan_id, $status = 0)
     {
 
-        $wallet = $this->getUserWallets($user_id);
-        if(!$wallet){
-
-            $adr_invest = '{"'.$user_id.'":"invest"}';
-            $adr_mine = '{"'.$user_id.'":"mine"}';
-            $adr_task = '{"'.$user_id.'":"task"}';
-
-            $adr_invest = Utility::EncryptPassword($adr_invest);
-            $adr_mine = Utility::EncryptPassword($adr_mine);
-            $adr_task = Utility::EncryptPassword($adr_task);
-
-            $created = Utility::GetTimeStamp();
-
-            $qry = "INSERT INTO $this->db(id, user_id, address_invest, address_mine, address_task, created)
-            VALUES('0', '$user_id', '$adr_invest', '$adr_mine', '$adr_task', '$created');";
-            //echo $qry; 
-            $result = $this->Query($qry);
-
-                                           
-            if($result){
-                $result = $this->getUserWallets($user_id);
-            }else{
-                $this->error = $this->conn->error;
-            }
-
-        }else{
-            $result = $wallet;
-            $this->error = "Already exists";
+        if($this->getUserMiner($user_id)){
+            $this->Delete($user_id);
         }
+        $date = Utility::GetTimeStamp();
+        $qry = "INSERT INTO miners(id, user_id, plan_id, status, activation_time, cron_hit_time, created) 
+                            VALUES ('0','$user_id','$plan_id','$status','$date','$date','$date') ;";
 
-        
-        return $result;
+        return $this->Query($qry);
+    }
 
+    public function getUserMiner($user_id)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' ;")->fetch_array(1);
     }
 
 
-    public function getUserWallets($user_id)
+    public function Delete($user_id)
     {
-        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' ;")->fetch_array(1);
+        $qry = "DELETE FROM $this->db WHERE user_id = '$user_id' ;";
+
+        return $this->Query($qry);
     }
 
     public function getField($user_id, $field)
@@ -111,3 +93,6 @@ class Wallets extends AppModel
     }
 
 }
+
+
+?>

@@ -1,6 +1,6 @@
 <?php
 
-class User {
+class User extends AppModel {
 
     public $error = null;
 
@@ -11,9 +11,9 @@ class User {
         $this->conn = $GLOBALS['DB_CONNECTION'];
     }
 
-    public function showAll()
+    public function showAll($sp = 0,$limit = 999)
     {
-        $qry = mysqli_query($this->conn, "SELECT * FROM user ORDER BY user.name ");
+        $qry = mysqli_query($this->conn, "SELECT * FROM user ORDER BY user.id DESC LIMIT $sp,$limit ;");
     }
 
     public function showDetailsByEmail($var = "")
@@ -125,8 +125,8 @@ class User {
         if (isset($data['balance_earned'])) {
             $qry1 = $qry1 . ", balance_earned = '" . $data['balance_earned']."'";
         }
-        if (isset($data['minig_started'])) {
-            $qry1 = $qry1 . ", minig_started = '" . $data['minig_started']."'";
+        if (isset($data['plan_ending'])) {
+            $qry1 = $qry1 . ", plan_ending = '" . $data['plan_ending']."'";
         }
         if (isset($data['plan_purchased'])) {
             $qry1 = $qry1 . ", plan_purchased = '" . $data['plan_purchased']."'";
@@ -155,30 +155,18 @@ class User {
 
     }
 
+    public function showAllPlanUsers($sp = 0,$limit = 9999)
+    {
+        return $this->Query("SELECT * FROM user WHERE user.plan != 0 AND user.plan_purchased != 'null' ORDER BY user.id ASC LIMIT $sp,$limit ;")->fetch_all(1);
+    }
+
+    public function getAllPlanExpiredUsers()
+    {
+        $date = Utility::GetTimeStamp();
+        return $this->Query("SELECT * FROM user WHERE user.plan != 0 AND user.plan_ending < '$date'")->fetch_all(1);
+    }
+
 }
 
-/* $qry = mysqli_query($this->conn,
-            "INSERT INTO user(
-                id, 
-                username, 
-                email, 
-                password, 
-                pic, 
-                plan, 
-                last_plan, 
-                status, 
-                role, 
-                balance_deposit, 
-                balance_earned, 
-                minig_started, 
-                plan_purchased, 
-                last_plan_purchased, 
-                updated, 
-                created) 
-                VALUES (
-                    '0', 
-                    '$username', 
-                    '$email', 
-                    '$password_hash', 
-                    )") */
+
 ?>

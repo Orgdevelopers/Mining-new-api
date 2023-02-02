@@ -1,9 +1,9 @@
 <?php
 
-class Plans {
+class Plans extends AppModel {
 
     public function __construct(){
-        $this->conn = DB_CONNECTION;
+        $this->conn = $GLOBALS['DB_CONNECTION'];
     }
 
     public function showAll(){
@@ -43,6 +43,12 @@ class Plans {
         $result = mysqli_fetch_array($qry,1);
 
         return $result;
+    }
+
+
+    public function create()
+    {
+        # code...
     }
 
 

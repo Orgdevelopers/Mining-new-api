@@ -15,18 +15,18 @@ class AppSettings extends AppModel
 
     public function getAppSettings()
     {
-        return $this->Query($this->conn, "SELECT * FROM app_settings WHERE id = 1 ;")->fetch_array(1);
+        return $this->Query("SELECT * FROM app_settings WHERE id = 1 ;")->fetch_array(1);
     }
     
     public function getField($id, $field)
     {
-        return $this->Query($this->conn, "SELECT $field FROM $this->db WHERE id = '$id' ;")->fetch_array(1);
+        return $this->Query("SELECT $field FROM $this->db WHERE id = '$id' ;")->fetch_array(1);
     }
 
     public function saveField($field,$value)
     {
         if($this->id != "0"){
-            $result = $this->Query($this->conn, "UPDATE $this->db SET $field = '$value' WHERE id = '$this->id'");
+            $result = $this->Query("UPDATE $this->db SET $field = '$value' WHERE id = '$this->id'");
         }else{
             $result = false;
         }
@@ -61,7 +61,7 @@ class AppSettings extends AppModel
 
             $qry .= "WHERE id = '$this->id' ;";
 
-            $result = $this->Query($this->conn,$qry);
+            $result = $this->Query($qry);
 
         }else{
             $result = false;

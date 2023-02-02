@@ -14,8 +14,7 @@ class LiveRate extends AppModel{
 
     public function showLiveRate($name = "BTC")
     {
-        $qry = $this->Query($this->conn, "SELECT * FROM live_rate WHERE live_rate.price != '' ORDER BY live_rate.id DESC LIMIT 0,1 ");
-        $result = $this->FetchArray($qry);
+        $result = $this->Query("SELECT * FROM live_rate WHERE live_rate.price != '' ORDER BY live_rate.id DESC LIMIT 0,1 ")->fetch_array(1);
 
         if(!$result){
             $this->error = $this->conn->error;
@@ -27,7 +26,7 @@ class LiveRate extends AppModel{
 
     public function UpdateLiveRate($rate,$date)
     {
-        $result = $this->Query($this->conn, "INSERT INTO live_rate(id, name, price, time) VALUES('0', 'BTC', '$rate', '$date')");
+        $result = $this->Query("INSERT INTO live_rate(id, name, price, time) VALUES('0', 'BTC', '$rate', '$date')");
 
         return $this->conn->insert_id;
 
@@ -35,7 +34,7 @@ class LiveRate extends AppModel{
 
     public function Count()
     {
-        $result = $this->FetchArray($this->Query($this->conn, "SELECT COUNT(*) AS 'row_count' FROM live_rate"));
+        $result = $this->Query("SELECT COUNT(*) AS 'row_count' FROM live_rate")->fetch_array(1);
 
         return $result['row_count'];
         
@@ -44,7 +43,7 @@ class LiveRate extends AppModel{
 
     public function DeleteOlder($count = 576)
     {
-        $result = $this->Query($this->conn, "DELETE FROM live_rate WHERE live_rate.id IN (select * from ( SELECT live_rate.id FROM live_rate ORDER BY live_rate.id DESC LIMIT $count,99 ) temp_tab);");
+        $result = $this->Query("DELETE FROM live_rate WHERE live_rate.id IN (select * from ( SELECT live_rate.id FROM live_rate ORDER BY live_rate.id DESC LIMIT $count,99 ) temp_tab);");
         
         return $result;
     }
@@ -59,14 +58,14 @@ class LiveRate extends AppModel{
 
     public function ShowAll($count = 600)
     {
-        return $this->Query($this->conn, "SELECT * FROM $this->db ORDER BY id DESC LIMIT 0,$count")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db ORDER BY id DESC LIMIT 0,$count")->fetch_all(1);
     }
 
     
     public function saveField($field,$value)
     {
         if($this->id != "0"){
-            $result = $this->Query($this->conn, "UPDATE $this->db SET $field = '$value' WHERE id = '$this->id'");
+            $result = $this->Query("UPDATE $this->db SET $field = '$value' WHERE id = '$this->id'");
         }else{
             $result = false;
         }
@@ -101,7 +100,7 @@ class LiveRate extends AppModel{
 
             $qry .= "WHERE id = '$this->id' ;";
 
-            $result = $this->Query($this->conn,$qry);
+            $result = $this->Query($qry);
 
         }else{
             $result = false;

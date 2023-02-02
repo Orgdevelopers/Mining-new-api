@@ -35,9 +35,9 @@ class ApiController extends Controller {
         */
         //echo '(`id`, `active_miners`, `quantity`, `version_code`, `version`, `force_update`, `updated`) <br> <br>';
 
-        $this->loadModel('LiveRate');
+        $this->loadModel('Plans');
 
-        echo json_encode($this->LiveRate->showLiveRate());
+        echo json_encode($this->Plans->showDetailById(1));
         die;
         
         $methods = get_class_methods($this);
@@ -178,6 +178,57 @@ class ApiController extends Controller {
         
     }
 
+
+    public function planPurchase()
+    {
+        if(isset($this->params['user_id']) && $this->params['plan_id']){
+
+            $this->loadModels(['User','Miners','Plans','Transactions']);
+
+            $user_id = $this->params['user_id'];
+            $plan_id = $this->params['plan_id'];
+
+            $plan_details = $this->Plans->showDetailById($plan_id);
+
+            $date = Utility::GetTimeStamp();
+
+            $user_update = array('id'=>$user_id, 'plan'=>$plan_id, 'plan_purchased'=> $date );
+            $result = $this->User->update($user_update);
+
+            if($result){
+                $this->Miners->create($user_id, $plan_id, 0);
+                $t_data = array(
+                    'type' => 0,
+                    'wallet_type' => 3,
+                    'title' => "Server " . $plan_details['name'] . " Purchased successfully",
+                    'msg' => "You have successfully purchased server now you can start mining",
+                    'status' => 1,
+
+                );
+
+                $this->Transactions->create($user_id, $t_data);
+
+                //send notificaiton
+
+                $output = array(
+                    'code' => 200,
+                    'msg' => "Success"
+                );
+            }else{
+                $output = array(
+                    'code' => 201,
+                    'msg' => "Error " . $this->User->conn->error
+                );
+            }
+
+            echo json_encode($output);
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+        die;
+    }
 
     public function signup()
     {
@@ -438,6 +489,8 @@ class ApiController extends Controller {
         if (isset($this->params['user_id']) || isset($this->params['username'])) {
             $this->loadModel('User');
             $this->loadModel('Wallets');
+            $this->loadModel('Miners');
+            $this->loadModel('Plans');
 
             if(isset($this->params['user_id'])){
                 $user = $this->User->showDetailsById($this->params['user_id']);
@@ -450,6 +503,13 @@ class ApiController extends Controller {
                     }
                     $msg['User'] = $user;
                     $msg['Wallets'] = $wallets;
+
+                    if($user['plan']!=0){
+                        $msg['Plan'] = $this->Plans->showDetailById($user['plan']);
+                        $msg['Miner'] = $this->Miners->getUserMiner($user['id']);
+
+                    }
+
                     $output = array(
                         'code' => 200,
                         'msg' => $msg
@@ -717,12 +777,73 @@ class ApiController extends Controller {
     }
 
 
+    public function setupMiningScore()
+    {
+        $this->loadModel('User');
+        $this->loadModel('Wallets');
+        $this->loadModel('Miners');
+        $this->loadModel('Plans');
+
+        $time = Utility::GetTimeStamp();
+
+        $users = $this->User->showAllPlanUsers();
+
+        if(count($users)<1){
+            //echo count($users);
+            die;
+        }
+
+        foreach ($users as $user) {
+            if($user['plan'] != 0 && $user['plan'] !="" ){
+
+                $miner = $this->Miners->getUserMiner($user['id']);
+                if($miner['status'] == 1){
+                    $wallets = $this->Wallets->getUserWallets($user['id']);
+                    $plan = $this->Plans->showDetailById($user['plan']);
+
+                    if($wallets !=null && $plan !=null){
+                        $balance = $wallets['balance_mine'];
+                        $balance = $balance + $plan['true_speed'];
+
+                        $this->Wallets->id = $user['id'];
+                        $this->Wallets->saveField('balance_mine', $balance);
+
+                        $this->Miners->id = $user['id'];
+                        $this->Miners->saveField('cron_hit_time', $time);
+                    }
+                }
+
+            }
+
+        }
+
+
+    }
 
 
 
+    public function planExpireCheck()
+    {
+        $this->loadModel('User');
+        $this->loadModel('Plans');
+        $this->loadModel('Miners');
 
 
+        $users = $this->User->getAllPlanExpiredUsers();
 
+        foreach($users as $user){
+            $update_data['id'] = $user['id'];
+            $update_data['last_plan'] = $user['plan'];
+            $update_data['last_plan_purchased'] = $user['plan_purchased'];
+            $update_data['plan'] = 0;
+            $update_data['plan_purchased'] = null;
+
+            $this->User->update($update_data);
+            $this->Miners->Delete($user['id']);
+
+        }
+
+    }
 
 
 

@@ -4,11 +4,11 @@ class AppModel {
 
     public $error = "";
 
-    public function Query($conn,$qry)
+    public function Query($qry)
     {
-        $result = mysqli_query($conn, $qry);
+        $result = mysqli_query($this->conn, $qry);
         if(!$result){
-            $this->error = $conn->error;
+            $this->error = $this->conn->error;
         }
 
         return $result;

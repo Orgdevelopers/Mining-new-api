@@ -237,10 +237,6 @@ class ApiController extends Controller {
     public function signup()
     {
 
-        $email = sendWelcomeEmail($this->params['email'], $this->params['username'], 0);
-        echo json_encode($email);
-        die;
-
         if(isset($this->params['email'])){
             $this->loadModel('User');
             $this->loadModel('Wallets');
@@ -292,8 +288,14 @@ class ApiController extends Controller {
                         'msg' => array('User'=>$result, 'Wallets' => $wallets)
                     );
 
-                    echo json_encode($output);
                     $email = sendWelcomeEmail($result['email'], $result['username'], $result['id']);
+                    if($email['code']== 200){
+                        $output['mail_sent'] = true;
+                    }else{
+                        $output['mail_sent'] = false;
+                    }
+                    echo json_encode($output);
+                    
                     die;
                 }else{
                     $output = array(
@@ -304,8 +306,8 @@ class ApiController extends Controller {
                 }
 
                 echo json_encode($output);
+                die;
             }
-            die;
 
         }else{
             Response::IncompleteParams();

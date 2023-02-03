@@ -950,12 +950,12 @@ class ApiController extends Controller {
 
                     }else{
                         $output['code'] = 211;
-                        $ouput['msg'] = "Your server has been stopped. please contact customer support for more info";
+                        $output['msg'] = "Your server has been stopped. please contact customer support for more info";
                     }
 
                 }else{
                     $output['code'] = 201;
-                    $ouput['msg'] = "not subscribed";
+                    $output['msg'] = "not subscribed";
                     $output['dev_msg'] = $user['plan'];
                 }
 
@@ -964,7 +964,7 @@ class ApiController extends Controller {
                 $output['msg'] = "user not found";
             }
 
-            echo json_encode($ouput);
+            echo json_encode($output);
             
         }else{
             Response::IncompleteParams();

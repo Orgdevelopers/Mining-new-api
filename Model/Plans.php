@@ -22,14 +22,14 @@ class Plans extends AppModel {
     }
 
     public function showByUserId($user_id){
-        $qry = mysqli_query($this->conn, "SELECT * FROM plans WHERE plans.user_id = '$user_id' ORDER BY plans.id ASC");
+        $qry = mysqli_query($this->conn, "SELECT * FROM plans WHERE plans.id != 0 AND plans.user_id = '$user_id' ORDER BY plans.id ASC");
         $result = mysqli_fetch_all($qry,1);
         return $result;
 
     }
 
     public function showUserDefault($user_id){
-        $qry = mysqli_query($this->conn, "SELECT * FROM plans WHERE plans.user_id = '$user_id' OR plans.user_id = '0' ORDER BY plans.id ASC");
+        $qry = mysqli_query($this->conn, "SELECT * FROM plans WHERE plans.id != 0 AND plans.user_id = '$user_id' OR plans.user_id = '0' ORDER BY plans.id ASC");
         $result = mysqli_fetch_all($qry,1);
 
         return $result;
@@ -49,6 +49,11 @@ class Plans extends AppModel {
     public function create()
     {
         # code...
+    }
+
+    public function showFreePlan()
+    {
+        return $this->Query("SELECT * FROM plans WHERE plans.id = '1' ;")->fetch_array(1);
     }
 
 

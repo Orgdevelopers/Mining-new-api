@@ -35,14 +35,10 @@ class ApiController extends Controller {
         */
         //echo '(`id`, `active_miners`, `quantity`, `version_code`, `version`, `force_update`, `updated`) <br> <br>';
 
+        // $date = Utility::GetTimeStamp();
 
-        $email = sendWelcomeEmail('kinddusingh1k2k3@gmail.com', "username", 2);
-
-        die;
-        $this->loadModel('Plans');
-
-        echo json_encode($this->Plans->showDetailById(1));
-        die;
+        // echo $date . "<br>";
+        // echo Utility::GetPlanExpiry($date, 5). "<br>";
         
         $methods = get_class_methods($this);
         foreach($methods as $method){
@@ -869,11 +865,177 @@ class ApiController extends Controller {
 
 
 
+    public function startMining()
+    {
+        
+        if(isset($this->params['user_id'])){
+
+            $this->loadModel('User');
+            $this->loadModel('Plans');
+            $this->loadModel('Miners');
+
+            $user = $this->User->showDetailsById($this->params['user_id']);
+            
+            if($user){
+                if($user['plan'] > 0){
+
+                    $status = $this->Miners->getUserMiner($user['id']);
+
+                    if($status['status']!=2){
+                        $miners = $this->Miners->saveField('status','1');
+
+                        $output['code'] = 200;
+                        $output['msg'] = "success";
+
+                    }else{
+                        $output['code'] = 211;
+                        $ouput['msg'] = "Your server has been stopped. please contact customer support for more info";
+                    }
+
+                }else{
+                    $output['code'] = 201;
+                    $ouput['msg'] = "not subscribed";
+                    $output['dev_msg'] = $user['plan'];
+                }
+
+            }else{
+                $output['code'] = 114;
+                $output['msg'] = "user not found";
+            }
+
+            echo json_encode($output);
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+    }
 
 
 
+    public function stopMining()
+    {
+        
+        if(isset($this->params['user_id'])){
+
+            $this->loadModel('User');
+            $this->loadModel('Plans');
+            $this->loadModel('Miners');
+
+            $user = $this->User->showDetailsById($this->params['user_id']);
+            
+            if($user){
+                if($user['plan'] > 0){
+
+                    $status = $this->Miners->getUserMiner($user['id']);
+
+                    if($status['status']!=2){
+                        $miners = $this->Miners->saveField('status','0');
+
+                        $output['code'] = 200;
+                        $output['msg'] = "success";
+
+                    }else{
+                        $output['code'] = 211;
+                        $ouput['msg'] = "Your server has been stopped. please contact customer support for more info";
+                    }
+
+                }else{
+                    $output['code'] = 201;
+                    $ouput['msg'] = "not subscribed";
+                    $output['dev_msg'] = $user['plan'];
+                }
+
+            }else{
+                $output['code'] = 114;
+                $output['msg'] = "user not found";
+            }
+
+            echo json_encode($ouput);
+            
+        }else{
+            Response::IncompleteParams();
+        }
+        die;
+    }
 
 
+    public function activateFreeTrial()
+    {
+        if(isset($this->params['user_id'])){
+
+            $this->loadModel('User');
+            $this->loadModel('Plans');
+            $this->loadModel('Miners');
+
+            $time = Utility::GetTimeStamp();
+            $user = $this->User->showDetailsById($this->params['user_id']);
+
+            if($user){
+
+                $plan = $this->Plans->showFreePlan();
+                $expiry = Utility::GetPlanExpiry($time,$plan['duration']);
+                if($user['plan'] < 1 && $user['free_trial'] == 0){
+
+                    $data = array(
+                        'id' => $user['id'],
+                        'plan' => $plan['id'],
+                        'plan_purchased' => $time,
+                        'plan_ending' => $expiry,
+                        'free_trial' => 1,
+                    );
+
+                    if($this->User->update($data)){
+                        $this->Miners->create($user['id'], $plan['id']);
+
+                        $output = array(
+                            'code' => 200,
+                            'msg' => "success"
+                        );
+                    }else{
+                        $output = array(
+                            'code' => 201,
+                            'msg' => "something went wrong",
+                            'dev_msg' => "Error " . $this->User->conn->error
+                        );
+                    }
+
+                }else{
+
+                    if($user['free_trial'] !=0){
+                        $output = array(
+                            'code' =>100,
+                            'msg' => "Free trial not available for this user",
+                        );
+
+                    }else{
+                        $output = array(
+                            'code' => 101,
+                            'msg' => "Existing plan detected please reload your page",
+                            'dev_msg' => $user['plan'],
+                        );
+                    }
+
+                }
+
+            }else{
+
+                $output = array(
+                    'code' => 214,
+                    'msg' => "Acctess restricted",
+                );
+                
+            }
+
+            echo json_encode($output);
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+        die;
+        
+    }
 
 
     public function showChart()

@@ -47,6 +47,19 @@ class Utility{
     }
 
 
+    public static function GetPlanExpiry($purchase_date, $duration_d,$duration_h = 0, $format = "Y-m-d H:i:s")
+    {
+        $date = date_create($purchase_date);
+        $interval = $duration_d . " days";
+        if($duration_h>0){
+            $interval = $interval . " " . $duration_h . " hours";
+        }
+        date_add($date, date_interval_create_from_date_string($interval));
+
+        return date_format($date, $format);
+    }
+
+
     public static function GenerateOtp($var = 6)
     {
 

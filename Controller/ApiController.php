@@ -823,11 +823,15 @@ class ApiController extends Controller {
                         $balance = $wallets['balance_mine'];
                         $balance = $balance + $plan['true_speed'];
 
+                        $energy = $miner['energy'];
+                        $energy = $energy - 1;
+
                         $this->Wallets->id = $user['id'];
                         $this->Wallets->saveField('balance_mine', $balance);
 
                         $this->Miners->id = $user['id'];
                         $this->Miners->saveField('cron_hit_time', $time);
+                        $this->Miners->saveField('energy',$energy);
                     }
                 }
 

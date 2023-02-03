@@ -33,7 +33,6 @@ function setupMiningScore()
     $curl_error = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    die;
 
 }
 
@@ -65,7 +64,6 @@ function setupEnergey()
     $curl_error = curl_error($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    die;
 
 }
 

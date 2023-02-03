@@ -869,6 +869,7 @@ class ApiController extends Controller {
 
             $this->User->update($update_data);
             $this->Miners->Delete($user['id']);
+            //notification
 
         }
 
@@ -892,6 +893,7 @@ class ApiController extends Controller {
                 $energy = $energy + ENERGEY_RECHARGE_RATE;
             }else{
                 $energy = 1440;
+                //notification
             }
 
             $this->Miners->saveField('energy', $energy);

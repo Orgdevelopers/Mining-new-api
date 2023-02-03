@@ -882,10 +882,16 @@ class ApiController extends Controller {
                     $status = $this->Miners->getUserMiner($user['id']);
 
                     if($status['status']!=2){
-                        $miners = $this->Miners->saveField('status','1');
+                        $miner = $this->Miners->saveField('status','1');
 
-                        $output['code'] = 200;
-                        $output['msg'] = "success";
+                        if($miner){
+                            $output['code'] = 200;
+                            $output['msg'] = "success";
+                        }else{
+                            $output['code'] = 201;
+                            $output['msg'] = "something went wrong";
+                            $output['dev_msg'] = "Error " . $this->Miners->error;
+                        }
 
                     }else{
                         $output['code'] = 211;

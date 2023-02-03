@@ -820,18 +820,26 @@ class ApiController extends Controller {
                     $plan = $this->Plans->showDetailById($user['plan']);
 
                     if($wallets !=null && $plan !=null){
-                        $balance = $wallets['balance_mine'];
-                        $balance = $balance + $plan['true_speed'];
+                        if($miner['energy'] > 0){
+                            $balance = $wallets['balance_mine'];
+                            $balance = $balance + $plan['true_speed'];
 
-                        $energy = $miner['energy'];
-                        $energy = $energy - 1;
+                            $energy = $miner['energy'];
+                            $energy = $energy - 1;
 
-                        $this->Wallets->id = $user['id'];
-                        $this->Wallets->saveField('balance_mine', $balance);
+                            $this->Wallets->id = $user['id'];
+                            $this->Wallets->saveField('balance_mine', $balance);
 
-                        $this->Miners->id = $user['id'];
-                        $this->Miners->saveField('cron_hit_time', $time);
-                        $this->Miners->saveField('energy',$energy);
+                            $this->Miners->id = $user['id'];
+                            $this->Miners->saveField('cron_hit_time', $time);
+                            $this->Miners->saveField('energy',$energy);
+                        }else{
+
+                            $this->Miners->id = $user['id'];
+                            //$this->Miners->saveField('cron_hit_time', $time);
+                            $this->Miners->saveField('status','0');
+
+                        }
                     }
                 }
 

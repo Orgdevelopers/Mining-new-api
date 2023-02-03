@@ -882,6 +882,8 @@ class ApiController extends Controller {
                     $status = $this->Miners->getUserMiner($user['id']);
 
                     if($status['status']!=2){
+
+                        $this->Miners->id = $user['id'];
                         $miner = $this->Miners->saveField('status','1');
 
                         if($miner){

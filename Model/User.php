@@ -170,6 +170,12 @@ class User extends AppModel {
         return $this->Query("SELECT * FROM user WHERE user.plan != 0 AND user.plan_ending < '$date'")->fetch_all(1);
     }
 
+    public function getAllEnrgyRechargeableUsers()
+    {
+        $date = Utility::GetTimeStamp();
+        return $this->Query("SELECT user.*, miners.energy, miners.status AS 'miner_status' FROM `user` JOIN miners ON miners.user_id = user.id WHERE miners.energy < 1440 AND miners.status = 0")->fetch_all(1);
+    }
+
 }
 
 

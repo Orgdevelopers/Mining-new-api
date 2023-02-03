@@ -851,7 +851,6 @@ class ApiController extends Controller {
     }
 
 
-
     public function planExpireCheck()
     {
         $this->loadModel('User');
@@ -875,6 +874,30 @@ class ApiController extends Controller {
 
     }
 
+
+    public function setupEnergey()
+    {
+        $this->loadModel('User');
+        $this->loadModel('Plans');
+        $this->loadModel('Miners');
+
+
+        $users = $this->User->getAllEnrgyRechargeableUsers();
+
+        foreach($users as $user){
+            $this->Miners->id = $user['id'];
+
+            $energy = $user['energy'];
+            if(1440-$energy >= ENERGEY_RECHARGE_RATE){
+                $energy = $energy + ENERGEY_RECHARGE_RATE;
+            }else{
+                $energy = 1440;
+            }
+
+            $this->Miners->saveField('energy', $energy);
+
+        }
+    }
 
 
     public function startMining()

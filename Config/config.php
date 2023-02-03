@@ -13,6 +13,7 @@ define('TEAM_NAME', "App name Team");
 define('ADMIN_RECORDS_PER_PAGE',20);
 define('APP_RECORDS_PER_PAGE',20);
 
+define('ENERGEY_RECHARGE_RATE', 20); //per min
 
 define('DATABASE_HOST', 'localhost');
 define('DATABASE_USER', 'host_min');

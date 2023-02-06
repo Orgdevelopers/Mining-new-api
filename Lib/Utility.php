@@ -129,6 +129,7 @@ class Utility{
         $key=FIREBASE_PUSH_NOTIFICATION_KEY;
 
         $keys = "authorization: key=" . $key;
+        $content_type = "Content-Type: application/json";
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -140,12 +141,7 @@ class Utility{
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => array(
-                $keys,
-                "cache-control: no-cache",
-                "Content-Type: application/json",
-                
-            ),
+            CURLOPT_HTTPHEADER => array(0 => $keys, 1=> $content_type),
         ));
 
         $response = curl_exec($curl);

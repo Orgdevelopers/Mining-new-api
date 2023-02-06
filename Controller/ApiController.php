@@ -1084,6 +1084,28 @@ class ApiController extends Controller {
     }
 
 
+    public function showInvestPlans(){
+
+        $this->loadModel('InvestPlans');
+
+        $plans = $this->InvestPlans->getAll();
+        
+        if(count($plans) > 0){
+            $output = array(
+                'code' => 200,
+                'msg' => $plans
+            );
+
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => 'no records found'
+            );
+        }
+
+    }
+
+
     public function showChart()
     {
 
@@ -1341,8 +1363,6 @@ class ApiController extends Controller {
         </html>
         <?php
     }
-
-
 
 
 }

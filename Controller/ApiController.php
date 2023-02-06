@@ -1083,6 +1083,40 @@ class ApiController extends Controller {
         
     }
 
+    public function updateToken(){
+        if (isset($this->params['user_id'])) {
+
+            $this->loadModel('User');
+
+            $user = $this->User->showDetailsById($this->params['user_id']);
+            if($user){
+
+                $data['id'] = $this->params['user_id'];
+                $data['token'] = $this->params['token'];
+
+                $this->User->update($data);
+
+                $output = array(
+                    'code' => 200,
+                    'msg' => 'success'
+                );
+
+            }else{
+                $output = array(
+                    'code' => 201,
+                    'msg' => "user not found"
+                );
+
+            }
+
+            echo json_encode($output);
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+
+    }
 
     public function showInvestPlans(){
 
@@ -1107,7 +1141,6 @@ class ApiController extends Controller {
         die;
 
     }
-
 
     public function showChart()
     {

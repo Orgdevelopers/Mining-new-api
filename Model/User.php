@@ -137,6 +137,9 @@ class User extends AppModel {
         if (isset($data['code'])) {
             $qry1 = $qry1 . ", code = '" . $data['code']."'";
         }
+        if (isset($data['token'])) {
+            $qry1 = $qry1 . ", token = '" . $data['token']."'";
+        }
         if (isset($data['free_trial'])) {
             $qry1 = $qry1 . ", free_trial = '" . $data['free_trial']."'";
             

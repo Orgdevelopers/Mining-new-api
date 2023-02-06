@@ -39,7 +39,10 @@ class ApiController extends Controller {
 
         // echo $date . "<br>";
         // echo Utility::GetPlanExpiry($date, 5). "<br>";
-        
+
+        $this->sendNotification('cvoRy4bkQm-kxEVNIbn9M_:APA91bECkHZEkFWoTH8eutd-qqwwRPlcltLs6i1XCB7_dUYhuO6Y7n9C8yC3TEjCXyemYihCg2xLGQYdOhT0qHBfMw9mx7uOAK_Iv98D5AzLbbRKeUAHVMNkcgfeBkiZlo3EQSKHwTEH');
+
+        return;
         $methods = get_class_methods($this);
         foreach($methods as $method){
             echo $method."<br>";
@@ -1400,6 +1403,13 @@ class ApiController extends Controller {
         <?php
     }
 
+    public function sendNotification($to)
+    {
+        $notification = Utility::getNotificationBody($to, "hey this is test msg", "test body", "test");
+
+        echo Utility::sendNotification($notification);
+
+    }
 
 }
 

@@ -2,7 +2,7 @@
 
 define('API_KEY', '115cds-9857-5789-4433-0011');
 define('ADMIN_API_KEY', '115cds-9857-5789-4433-0011');
-
+define('FIREBASE_PUSH_NOTIFICATION_KEY', 'AAAAQka6olY:APA91bE2WzdQRJK0q_LYllIc2IiadvVCBDeMTGG2e-qHzOc4vMjQhhUfnopdDjehDY40zSRiHaHp6j-YNKB0LOEY_mqQ7qztQdxJsnuqwJ8v_HhaWuaDNDVpSHb-8qLvQNf9AEtO8RdP');
 
 date_default_timezone_set('Asia/Karachi');
 define('BASE_URL', 'https://hosting.tiktalkvideo.online/');

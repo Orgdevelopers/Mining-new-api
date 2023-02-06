@@ -144,7 +144,7 @@ class Utility{
                 $keys,
                 "cache-control: no-cache",
                 "Content-Type: application/json",
-                "postman-token: 85f96364-bf24-d01e-3805-bccf838ef837"
+                
             ),
         ));
 

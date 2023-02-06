@@ -1407,7 +1407,7 @@ class ApiController extends Controller {
     {
         $notification = Utility::getNotificationBody($to, "hey this is test msg", "test body", "test");
 
-        echo Utility::sendNotification($notification);
+        echo json_encode(Utility::sendNotification($notification));
 
     }
 

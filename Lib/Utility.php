@@ -143,7 +143,7 @@ class Utility{
             CURLOPT_HTTPHEADER => array(
                 $keys,
                 "cache-control: no-cache",
-                "content-type: application/json",
+                "Content-Type: application/json",
                 "postman-token: 85f96364-bf24-d01e-3805-bccf838ef837"
             ),
         ));

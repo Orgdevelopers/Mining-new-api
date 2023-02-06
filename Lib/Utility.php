@@ -128,6 +128,7 @@ class Utility{
 
         $key=FIREBASE_PUSH_NOTIFICATION_KEY;
 
+        $keys = "authorization: key=" . $key;
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -140,7 +141,7 @@ class Utility{
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => $data,
             CURLOPT_HTTPHEADER => array(
-                "authorization: key=".$key."",
+                $keys,
                 "cache-control: no-cache",
                 "content-type: application/json",
                 "postman-token: 85f96364-bf24-d01e-3805-bccf838ef837"

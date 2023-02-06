@@ -4,7 +4,7 @@ class InvestPlans extends AppModel
 {
 
     public $conn = null;
-    public $db = 'invest_plans';
+    public $db = 'investment_plans';
 
     public $id = "0";
 

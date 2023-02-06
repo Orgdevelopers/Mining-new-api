@@ -141,7 +141,7 @@ class Utility{
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => array(0 => $keys, 1=> $content_type),
+            CURLOPT_HTTPHEADER => json_encode(array(0 => $keys, 1=> $content_type)),
         ));
 
         $response = curl_exec($curl);

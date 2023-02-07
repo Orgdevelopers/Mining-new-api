@@ -873,6 +873,8 @@ class ApiController extends Controller {
             $this->User->update($update_data);
             $this->Miners->Delete($user['id']);
             //notification
+            $notification = PushNotifications::getNotificationBodyData($user['token'],MINING_EXPIRED, MINING_EXPIRED_BODY, 'default',$user['id'],"",$user['username']);
+            PushNotifications::send($notification);
 
         }
 

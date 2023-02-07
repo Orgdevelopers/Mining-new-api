@@ -896,10 +896,15 @@ class ApiController extends Controller {
                 $energy = $energy + ENERGEY_RECHARGE_RATE;
             }else{
                 $energy = 1440;
-                //notification
-                $notification = PushNotifications::getNotificationBodyData($user['token'],CONGRATULATIONS, FREE_TRIAL_ACTIVATED, 'default',$user['id'],"",$user['username']);
-                PushNotifications::send($notification);
 
+            }
+
+            if($energy == 1440){
+                //notification
+                if($user['token'] != null && $user['token'] != ""){
+                    $notification = PushNotifications::getNotificationBodyData($user['token'],ENERGEY_REFILLED, ENERGEY_REFILLED_BODY, 'default',$user['id'],"",$user['username']);
+                    PushNotifications::send($notification);
+                }
             }
 
             $this->Miners->saveField('energy', $energy);

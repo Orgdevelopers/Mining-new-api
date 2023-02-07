@@ -13,6 +13,14 @@ define('TEAM_NAME', "App name Team");
 define('ADMIN_RECORDS_PER_PAGE',20);
 define('APP_RECORDS_PER_PAGE',20);
 
+//output responses
+define('CONGRATULATIONS', 'Congratulations');
+define('FREE_TRIAL_ACTIVATED', 'Your free trial has been activated successfully');
+
+define('ENERGEY_REFILLED', 'Your mining energey has been refilled');
+define('ENERGEY_REFILLED_BODY', 'Go and start mining now');
+//define(;)
+
 define('ENERGEY_RECHARGE_RATE', 20); //per min
 
 define('DATABASE_HOST', 'localhost');

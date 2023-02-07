@@ -124,69 +124,6 @@ class Utility{
     }
 
 
-    public static function sendNotification($data){
-
-        $key=FIREBASE_PUSH_NOTIFICATION_KEY;
-
-        $keys = "authorization: key=" . $key;
-        $content_type = "Content-Type: application/json";
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => json_encode(array(0 => $keys, 1=> $content_type)),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-            return "cURL Error #:" . $err;
-        } else {
-            return $response;
-        }
-
-    }
-
-
-    public static function getNotificationBody($to,$title,$body,$type,$user_id="",$image="", $username="")
-    {
-        /*********************************START NOTIFICATION******************************/
-
-        $notification['to'] = $to;
-
-
-        $notification['notification']['title'] = $title;
-        $notification['notification']['body'] = $body;
-        $notification['notification']['user_id'] = $user_id;
-        $notification['notification']['image'] = $image;
-        $notification['notification']['name'] = $username;
-        $notification['notification']['badge'] = "1";
-        $notification['notification']['sound'] = "default";
-        $notification['notification']['icon'] = "";
-        $notification['notification']['type'] = $type;
-
-        $notification['data']['title'] = $title;
-        $notification['data']['body'] = $body;
-        $notification['data']['user_id'] = $user_id;
-        $notification['data']['image'] = $image;
-        $notification['data']['name'] = $username;
-        $notification['data']['badge'] = "1";
-        $notification['data']['sound'] = "default";
-        $notification['data']['icon'] = "";
-        $notification['data']['type'] = $type;
-
-        return $notification;
-    }
 
 }
 

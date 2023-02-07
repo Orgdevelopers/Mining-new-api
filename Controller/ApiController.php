@@ -40,7 +40,7 @@ class ApiController extends Controller {
         // echo $date . "<br>";
         // echo Utility::GetPlanExpiry($date, 5). "<br>";
 
-        $this->sendNotification('cvoRy4bkQm-kxEVNIbn9M_:APA91bECkHZEkFWoTH8eutd-qqwwRPlcltLs6i1XCB7_dUYhuO6Y7n9C8yC3TEjCXyemYihCg2xLGQYdOhT0qHBfMw9mx7uOAK_Iv98D5AzLbbRKeUAHVMNkcgfeBkiZlo3EQSKHwTEH');
+        $this->sendNotification('eUttHAAcSfqYhB2mPYCUVd:APA91bHc54d0xo6bzFtDKlgBqS02VboJ6tRB8oq-0_uN2ah-TpccrxMre3-r3F0Efcwya3lU1IY7beq1ZS5MVGZNPjmJHsr5aLhtvLGkHg1UpHdci8Um2fuunsW4VjGeeLfYQYVdhtI6');
 
         return;
         $methods = get_class_methods($this);
@@ -897,6 +897,9 @@ class ApiController extends Controller {
             }else{
                 $energy = 1440;
                 //notification
+                $notification = PushNotifications::getNotificationBodyData($user['token'],CONGRATULATIONS, FREE_TRIAL_ACTIVATED, 'default',$user['id'],"",$user['username']);
+                PushNotifications::send($notification);
+
             }
 
             $this->Miners->saveField('energy', $energy);
@@ -1040,7 +1043,12 @@ class ApiController extends Controller {
                         $output = array(
                             'code' => 200,
                             'msg' => "success"
+
                         );
+
+                        $notification = PushNotifications::getNotificationBodyData($user['token'],CONGRATULATIONS, FREE_TRIAL_ACTIVATED, 'default',$user['id'],"",$user['username']);
+                        PushNotifications::send($notification);
+
                     }else{
                         $output = array(
                             'code' => 201,
@@ -1405,9 +1413,10 @@ class ApiController extends Controller {
 
     public function sendNotification($to)
     {
-        $notification = Utility::getNotificationBody($to, "hey this is test msg", "test body", "test");
 
-        echo json_encode(Utility::sendNotification($notification));
+        $notification = PushNotifications::getNotificationBodyData($to, "hey this is test msg", "test body","test");
+
+        echo json_encode(PushNotifications::send($notification));
 
     }
 

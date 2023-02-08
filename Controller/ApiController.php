@@ -1220,7 +1220,7 @@ class ApiController extends Controller {
                         $output['code'] = 200;
                         $output['msg'] = "success";
 
-                        $this->Wallets->id = $user[['id']];
+                        $this->Wallets->id = $user['id'];
                         if($this->params['wallet_type'] == 0){
                             $bal = $balance - $this->params['amount'];
 

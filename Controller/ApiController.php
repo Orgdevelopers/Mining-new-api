@@ -1170,7 +1170,6 @@ class ApiController extends Controller {
             $this->loadModel('Wallets');
             $this->loadModel('LiveRate');
 
-            //$live_rate = $this->LiveRate->showLiveRate();
 
             $user = $this->User->showDetailsById($this->params['user_id']);
             $wallet = $this->Wallets->getUserWallets($user['id']);
@@ -1215,16 +1214,23 @@ class ApiController extends Controller {
 
                         $this->Wallets->id = $user['id'];
                         if($this->params['wallet_type'] == 0){
-                            //$bal = $balance - $total_sats;
-                            //$this->Wallets->saveField('balance_invest', $balance);
+                            $bal = $balance - $this->params['amount'];
+                            if($bal<0){
+                                $bal = 0;
+                            }
+                            $this->Wallets->saveField('balance_invest', $bal);
 
                         }else if($this->params['wallet_type'] == 1 ){
                             //$bal = $balance - $total_sats;
                             //$this->Wallets->saveField('balance_task', $balance);
             
                         }else{
-                            $bal = round($balance - $sats);
-                            echo $bal . '<br>';
+                            
+                            $bal = round($balance - $sats + 1);
+                            if($bal < 0){
+                                $bal = 0;
+                            }
+                            //echo $bal . '<br>';
                             $this->Wallets->saveField('balance_mine', $bal);
 
                         }

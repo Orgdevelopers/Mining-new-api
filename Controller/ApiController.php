@@ -1195,7 +1195,7 @@ class ApiController extends Controller {
                     $output['code'] = 201;
                     $output['msg'] = "Request already exist";
                 }
-                else if (($sats - 1) >= $wallet['balance_mine']) {
+                else if (($sats - 1) >= $balance) {
                     $output['code'] = 215;
                     $output['msg'] = "insufficient balance";
 

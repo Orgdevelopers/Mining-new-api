@@ -1178,9 +1178,11 @@ class ApiController extends Controller {
 
             if($this->params['wallet_type'] == 0){
                 $balance = $wallet['balance_invest'];
+                $sats = $this->params['amount'];
                 
             }else if($this->params['wallet_type'] == 1 ){
                 $balance = $wallet['balance_task'];
+                $sats = $this->params['amount'];
 
             }else{
                 $balance = $wallet['balance_mine'];

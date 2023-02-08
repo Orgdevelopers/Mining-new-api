@@ -1265,13 +1265,6 @@ class ApiController extends Controller {
 
     }
 
-    public function test()
-    {
-        $n = (int) 56.955650;
-        echo "<br> " . ($n);
-
-    }
-
     public function showChart()
     {
 

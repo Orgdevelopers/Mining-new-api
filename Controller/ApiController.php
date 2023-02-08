@@ -1172,14 +1172,6 @@ class ApiController extends Controller {
 
             $live_rate = $this->LiveRate->showLiveRate();
 
-            $btc_usdt = str_replace(",", "", $live_rate['price']);
-
-            $usdt_btc = 1 / $btc_usdt;
-
-            $usdt_sat = $usdt_btc * 100000000;
-
-            $total_sats = $usdt_sat * $this->params['amount'];
-
             $user = $this->User->showDetailsById($this->params['user_id']);
             $wallet = $this->Wallets->getUserWallets($user['id']);
 
@@ -1193,6 +1185,15 @@ class ApiController extends Controller {
 
             }else{
                 $balance = $wallet['balance_mine'];
+
+                $btc_usdt = str_replace(",", "", $live_rate['price']);
+
+                $usdt_btc = 1 / $btc_usdt;
+    
+                $usdt_sat = $usdt_btc * 100000000;
+    
+                $total_sats = $usdt_sat * $this->params['amount'];
+                echo $total_sats.'<br>';
             }
 
             if($user){
@@ -1231,7 +1232,12 @@ class ApiController extends Controller {
             
                         }else{
                             $bal = $balance - $total_sats;
-                            $this->Wallets->saveField('balance_mine', $balance);
+                            echo $bal . '<br>';
+                            if($this->Wallets->saveField('balance_mine', $balance)){
+                                echo "done";
+                            }else{
+                                echo 'fail';
+                            }
 
                         }
 

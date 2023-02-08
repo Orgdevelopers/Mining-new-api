@@ -1179,11 +1179,11 @@ class ApiController extends Controller {
 
             if($this->params['wallet_type'] == 0){
                 $balance = $wallet['balance_invest'];
-                $sats = $this->params['amount'];
+                $sats = $this->params['amount']  * $settings['point_value'];
                 
             }else if($this->params['wallet_type'] == 1 ){
                 $balance = $wallet['balance_task'];
-                $sats = $this->params['amount'] * $settings['point_value'];
+                $sats = $this->params['tp'];
 
             }else{
                 $balance = $wallet['balance_mine'];
@@ -1267,21 +1267,8 @@ class ApiController extends Controller {
 
     public function test()
     {
-        $price = $_GET['rate'];
-        //$balance = $wallet['balance_mine'];
-
-        $btc_usdt = str_replace(",", "", $price);
-
-        $usdt_btc = 1 / $btc_usdt;
-
-        $usdt_sat = $usdt_btc * 100000000;
-
-        $sat_usdt = 1 / $usdt_sat;
-
-
-
-        echo number_format($usdt_btc,10,".") . "<br>" . number_format($usdt_sat,2,".","");
-        echo "<br> " . (115.95 * $usdt_sat);
+        $n = (int) 56.955650;
+        echo "<br> " . ($n);
 
     }
 

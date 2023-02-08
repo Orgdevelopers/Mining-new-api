@@ -1239,7 +1239,7 @@ class ApiController extends Controller {
                         }
 
                         //$msg = "Amount: ".$this->params['amount']." Fee: ".$this->params['fee'];
-                        $notification = PushNotifications::getNotificationBodyData($user['token'], WITHDRAW_REQUEST_REGISTERED, "", "default", $user['id'], "", $user['username']);
+                        $notification = PushNotifications::getNotificationBodyData($user['token'], CONGRATULATIONS, WITHDRAW_REQUEST_REGISTERED, "default", $user['id'], "", $user['username']);
                         PushNotifications::send($notification);
 
                     }else{
@@ -1526,9 +1526,8 @@ class ApiController extends Controller {
     public function sendNotification($to)
     {
 
-        $notification = PushNotifications::getNotificationBodyData($to, "hey this is test msg", "test body","test");
-
-        echo json_encode(PushNotifications::send($notification));
+        $notification = PushNotifications::getNotificationBodyData($to, CONGRATULATIONS, WITHDRAW_REQUEST_REGISTERED, "default");
+        PushNotifications::send($notification);
 
     }
 

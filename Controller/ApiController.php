@@ -1222,16 +1222,15 @@ class ApiController extends Controller {
 
                         $this->Wallets->id = $user['id'];
                         if($this->params['wallet_type'] == 0){
-                            $bal = $balance - $this->params['amount'];
-
+                            $bal = $balance - $total_sats;
                             $this->Wallets->saveField('balance_invest', $balance);
 
                         }else if($this->params['wallet_type'] == 1 ){
-                            $bal = $balance - $this->params['amount'];
+                            $bal = $balance - $total_sats;
                             $this->Wallets->saveField('balance_task', $balance);
             
                         }else{
-                            $bal = $balance - $this->params['amount'];
+                            $bal = $balance - $total_sats;
                             $this->Wallets->saveField('balance_mine', $balance);
 
                         }

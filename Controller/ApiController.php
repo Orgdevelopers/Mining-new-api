@@ -1167,13 +1167,44 @@ class ApiController extends Controller {
             
             $this->loadModel('User');
             $this->loadModel('Transactions');
+            $this->loadModel('Wallets');
+            $this->loadModel('LiveRate');
+
+            $live_rate = $this->LiveRate->showLiveRate();
+
+            $btc_usdt = str_replace(",", "", $live_rate['price']);
+
+            $usdt_btc = 1 / $btc_usdt;
+
+            $usdt_sat = $usdt_btc * 100000000;
+
+            $total_sats = $usdt_sat * $this->params['amount'];
 
             $user = $this->User->showDetailsById($this->params['user_id']);
+            $wallet = $this->Wallets->getUserWallets($user['id']);
+
+            $balance = 0;
+
+            if($this->params['wallet_type'] == 0){
+                $balance = $wallet['balance_invest'];
+                
+            }else if($this->params['wallet_type'] == 1 ){
+                $balance = $wallet['balance_task'];
+
+            }else{
+                $balance = $wallet['balance_mine'];
+            }
+
             if($user){
 
                 if($this->Transactions->getUserPending($this->params['user_id'], $this->params['wallet_type'])){
                     $output['code'] = 201;
                     $output['msg'] = "Request already exist";
+                }
+                else if (($total_sats - 0.01) >= $wallet['balance_mine']) {
+                    $output['code'] = 215;
+                    $output['msg'] = "insufficient balance";
+
                 }else{
 
                     $data = array(
@@ -1188,6 +1219,22 @@ class ApiController extends Controller {
                     if($T){
                         $output['code'] = 200;
                         $output['msg'] = "success";
+
+                        $this->Wallets->id = $user[['id']];
+                        if($this->params['wallet_type'] == 0){
+                            $bal = $balance - $this->params['amount'];
+
+                            $this->Wallets->saveField('balance_invest', $balance);
+
+                        }else if($this->params['wallet_type'] == 1 ){
+                            $bal = $balance - $this->params['amount'];
+                            $this->Wallets->saveField('balance_task', $balance);
+            
+                        }else{
+                            $bal = $balance - $this->params['amount'];
+                            $this->Wallets->saveField('balance_mine', $balance);
+
+                        }
 
                     }else{
                         $output['code'] = 202;

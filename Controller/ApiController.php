@@ -1160,6 +1160,58 @@ class ApiController extends Controller {
 
     }
 
+
+    public function confirmTransaction()
+    {
+        if (isset($this->params['user_id'])) {
+            
+            $this->loadModel('User');
+            $this->loadModel('Transactions');
+
+            $user = $this->User->showDetailById($this->params['user_id']);
+            if($user){
+
+                if($this->Transactions->getUserPending($this->params['user_id'], $this->params['wallet_type'])){
+                    $output['code'] = 201;
+                    $output['msg'] = "Request already exist";
+                }else{
+
+                    $data = array(
+                        'type' => 1,
+                        'wallet_type' => $this->params['wallet_type'],
+                        'amount' => $this->params['amount'],
+                        'charge' => $this->params['fee'],
+
+                    );
+
+                    $T = $this->Transactions->create($this->params['user_id'], $data);
+                    if($T){
+                        $output['code'] = 200;
+                        $output['msg'] = "success";
+
+                    }else{
+                        $output['code'] = 202;
+                        $output['msg'] = "Failed to update database";
+                    }
+
+
+                }
+
+            }else{
+                $output['code'] = 114;
+                $output['msg'] = "not found";
+            }
+
+            echo json_encode($output);
+
+        }else{
+            Response::IncompleteParams();
+        }
+
+        die;
+
+    }
+
     public function showChart()
     {
 

@@ -25,6 +25,7 @@ class Transactions extends AppModel
         $status = 0;
         $updated = Utility::GetTimeStamp();
         $created = $updated;
+        $charge = 0;
 
         if(isset($data['type'])){$type = $data['type'];}
         if(isset($data['wallet_type'])){$wallet_type = $data['wallet_type'];}
@@ -33,10 +34,11 @@ class Transactions extends AppModel
         if(isset($data['message'])){$msg = $data['message'];}
         if(isset($data['status'])){$status = $data['status'];}
         if(isset($data['updated'])){$updated = $data['updated'];}
+        if(isset($data['charge'])){$updated = $data['charge'];}
 
 
-        $result = $this->Query("INSERT INTO $this->db('id', 'user_id', 'type', 'wallet_type', 'amount', 'title', 'message', 'status', 'update', 'created')
-                                                    VALUES('0', '$user_id', '$type', '$wallet_type', '$amount', '$title', '$msg', '$status', '$updated', '$created');");
+        $result = $this->Query("INSERT INTO $this->db('id', 'user_id', 'type', 'wallet_type', 'amount', 'title', 'charge', 'message', 'status', 'update', 'created')
+                                                    VALUES('0', '$user_id', '$type', '$wallet_type', '$amount', '$title', '$charge', '$msg', '$status', '$updated', '$created');");
 
         
         return $result;
@@ -79,9 +81,9 @@ class Transactions extends AppModel
         return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND type = 2 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
-    public function getUserPending($user_id)
+    public function getUserPending($user_id,$wallet)
     {
-        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND status = 0 ;")->fetch_array(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND status = 0 AND wallet_type = '$wallet' ;")->fetch_array(1);
     }
 
     public function getField($id, $field)

@@ -34,7 +34,7 @@ class Transactions extends AppModel
         if(isset($data['message'])){$msg = $data['message'];}
         if(isset($data['status'])){$status = $data['status'];}
         if(isset($data['updated'])){$updated = $data['updated'];}
-        if(isset($data['charge'])){$updated = $data['charge'];}
+        if(isset($data['charge'])){$charge = $data['charge'];}
 
 
         $result = $this->Query("INSERT INTO $this->db(id, user_id, type, wallet_type, amount, title, charge, message, status, updated, created)

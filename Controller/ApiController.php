@@ -1170,7 +1170,7 @@ class ApiController extends Controller {
             $this->loadModel('Wallets');
             $this->loadModel('LiveRate');
 
-            $live_rate = $this->LiveRate->showLiveRate();
+            //$live_rate = $this->LiveRate->showLiveRate();
 
             $user = $this->User->showDetailsById($this->params['user_id']);
             $wallet = $this->Wallets->getUserWallets($user['id']);
@@ -1185,15 +1185,7 @@ class ApiController extends Controller {
 
             }else{
                 $balance = $wallet['balance_mine'];
-
-                $btc_usdt = str_replace(",", "", $live_rate['price']);
-
-                $usdt_btc = 1 / $btc_usdt;
-    
-                $usdt_sat = $usdt_btc * 100000000;
-    
-                $total_sats = $usdt_sat * $this->params['amount'];
-                echo $total_sats.'<br>';
+                $sats = $this->params['sats'];
             }
 
             if($user){
@@ -1202,7 +1194,7 @@ class ApiController extends Controller {
                     $output['code'] = 201;
                     $output['msg'] = "Request already exist";
                 }
-                else if (($total_sats - 0.01) >= $wallet['balance_mine']) {
+                else if (($sats - 1) >= $wallet['balance_mine']) {
                     $output['code'] = 215;
                     $output['msg'] = "insufficient balance";
 
@@ -1223,21 +1215,17 @@ class ApiController extends Controller {
 
                         $this->Wallets->id = $user['id'];
                         if($this->params['wallet_type'] == 0){
-                            $bal = $balance - $total_sats;
-                            $this->Wallets->saveField('balance_invest', $balance);
+                            //$bal = $balance - $total_sats;
+                            //$this->Wallets->saveField('balance_invest', $balance);
 
                         }else if($this->params['wallet_type'] == 1 ){
-                            $bal = $balance - $total_sats;
-                            $this->Wallets->saveField('balance_task', $balance);
+                            //$bal = $balance - $total_sats;
+                            //$this->Wallets->saveField('balance_task', $balance);
             
                         }else{
-                            $bal = $balance - $total_sats;
+                            $bal = round($balance - $sats);
                             echo $bal . '<br>';
-                            if($this->Wallets->saveField('balance_mine', $balance)){
-                                echo "done";
-                            }else{
-                                echo 'fail';
-                            }
+                            $this->Wallets->saveField('balance_mine', $bal);
 
                         }
 
@@ -1261,6 +1249,26 @@ class ApiController extends Controller {
         }
 
         die;
+
+    }
+
+    public function test()
+    {
+        $price = $_GET['rate'];
+        //$balance = $wallet['balance_mine'];
+
+        $btc_usdt = str_replace(",", "", $price);
+
+        $usdt_btc = 1 / $btc_usdt;
+
+        $usdt_sat = $usdt_btc * 100000000;
+
+        $sat_usdt = 1 / $usdt_sat;
+
+
+
+        echo number_format($usdt_btc,10,".") . "<br>" . number_format($usdt_sat,2,".","");
+        echo "<br> " . (115.95 * $usdt_sat);
 
     }
 

@@ -1168,7 +1168,7 @@ class ApiController extends Controller {
             $this->loadModel('User');
             $this->loadModel('Transactions');
 
-            $user = $this->User->showDetailById($this->params['user_id']);
+            $user = $this->User->showDetailsById($this->params['user_id']);
             if($user){
 
                 if($this->Transactions->getUserPending($this->params['user_id'], $this->params['wallet_type'])){

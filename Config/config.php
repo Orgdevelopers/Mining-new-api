@@ -22,6 +22,8 @@ define('ENERGEY_REFILLED_BODY', 'Go and start mining now');
 
 define('MINING_EXPIRED', "Mining Server Expired");
 define('MINING_EXPIRED_BODY', "Your mining server has been expired. Renew or Purchase new Server to continue mining");
+define('WITHDRAW_REQUEST_REGISTERED', "Your withdraw request has been registered successfully.");
+
 //define(;)
 
 define('ENERGEY_RECHARGE_RATE', 20); //per min

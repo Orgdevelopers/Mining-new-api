@@ -1168,8 +1168,9 @@ class ApiController extends Controller {
             $this->loadModel('User');
             $this->loadModel('Transactions');
             $this->loadModel('Wallets');
-            $this->loadModel('LiveRate');
+            $this->loadModel('AppSettings');
 
+            $settings = $this->AppSettings->getAppSettings();
 
             $user = $this->User->showDetailsById($this->params['user_id']);
             $wallet = $this->Wallets->getUserWallets($user['id']);
@@ -1182,7 +1183,7 @@ class ApiController extends Controller {
                 
             }else if($this->params['wallet_type'] == 1 ){
                 $balance = $wallet['balance_task'];
-                $sats = $this->params['amount'];
+                $sats = $this->params['amount'] * $settings['point_value'];
 
             }else{
                 $balance = $wallet['balance_mine'];
@@ -1223,8 +1224,8 @@ class ApiController extends Controller {
                             $this->Wallets->saveField('balance_invest', $bal);
 
                         }else if($this->params['wallet_type'] == 1 ){
-                            //$bal = $balance - $total_sats;
-                            //$this->Wallets->saveField('balance_task', $balance);
+                            $bal = $balance - $sats;
+                            $this->Wallets->saveField('balance_task', $bal);
             
                         }else{
                             
@@ -1236,6 +1237,10 @@ class ApiController extends Controller {
                             $this->Wallets->saveField('balance_mine', $bal);
 
                         }
+
+                        //$msg = "Amount: ".$this->params['amount']." Fee: ".$this->params['fee'];
+                        $notification = PushNotifications::getNotificationBodyData($user['token'], WITHDRAW_REQUEST_REGISTERED, "", "default", $user['id'], "", $user['username']);
+                        PushNotifications::send($notification);
 
                     }else{
                         $output['code'] = 202;

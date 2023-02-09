@@ -213,7 +213,9 @@ class ApiController extends Controller {
                 // $this->Transactions->create($user_id, $t_data);
 
                 //send notificaiton
-                $notification = PushNotifications::getNotificationBodyData($user['token'], PLAN_PURCHASED_TITLE, PLAN_PURCHASED_BODY, "default");
+                $body = PLAN_PURCHASED_BODY;
+                $body = str_replace("%p_n%",$plan_details['name'],$body);
+                $notification = PushNotifications::getNotificationBodyData($user['token'], PLAN_PURCHASED_TITLE, $body, "default");
                 PushNotifications::send($notification);
 
                 $output = array(

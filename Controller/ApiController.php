@@ -742,6 +742,7 @@ class ApiController extends Controller {
 
         }
 
+        echo $template;
     }
 
     public function getBitcoinRateFromApi()

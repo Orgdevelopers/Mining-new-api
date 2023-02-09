@@ -1366,6 +1366,31 @@ class ApiController extends Controller {
     }
 
 
+    public function getCryptoModel()
+    {
+        $this->loadModel('CryptoModel');
+
+        $model = $this->CryptoModel->getModel();
+
+        if($model){
+            $output = array(
+                'code' => 200,
+                'msg' => $model
+            );
+
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => "error"
+            );
+        }
+
+        echo json_encode($output);
+        die;
+
+    }
+
+
 
     public function showChart()
     {

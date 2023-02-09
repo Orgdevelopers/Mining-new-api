@@ -11,7 +11,7 @@ define('APP_NAME', 'Test');
 define('TEAM_NAME', "App name Team");
 
 define('ADMIN_RECORDS_PER_PAGE',20);
-define('APP_RECORDS_PER_PAGE',20);
+define('APP_RECORDS_PER_PAGE',10);
 
 //output responses
 define('CONGRATULATIONS', 'Congratulations');
@@ -19,6 +19,7 @@ define('FREE_TRIAL_ACTIVATED', 'Your free trial has been activated successfully'
 
 define('ENERGEY_REFILLED', 'Your mining energey has been refilled');
 define('ENERGEY_REFILLED_BODY', 'Go and start mining now');
+
 
 define('MINING_EXPIRED', "Mining Server Expired");
 define('MINING_EXPIRED_BODY', "Your mining server has been expired. Renew or Purchase new Server to continue mining");

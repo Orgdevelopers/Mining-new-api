@@ -839,8 +839,8 @@ class ApiController extends Controller {
                         }else{
 
                             $this->Miners->id = $user['id'];
-                            //$this->Miners->saveField('cron_hit_time', $time);
                             $this->Miners->saveField('status','0');
+
 
                         }
                     }
@@ -1264,6 +1264,58 @@ class ApiController extends Controller {
         die;
 
     }
+
+
+    public function showUserTransactions()
+    {
+        if (isset($this->params['user_id'])) {
+            
+            $this->loadModel('User');
+            $this->loadModel('Transactions');
+
+            $sp = 0;
+            $limit = APP_RECORDS_PER_PAGE;
+            if(isset($this->params['starting_point'])){
+                $sp = $this->params['starting_point'];
+            }
+            if(isset($this->params['limit'])){
+                $limit = $this->params['limit'];
+            }
+
+            $transactions = $this->Transactions->getUserAll($this->params['user_id'], $sp, $limit);
+
+            if(count($transactions)>0){
+                $output = array(
+                    'code' => 200,
+                    'msg' => $transactions
+                );
+            }else{
+
+                $output = array(
+                    'code' => 201,
+                    'msg' => "no records"
+                );
+            }
+
+            echo json_encode($output);
+
+        }else{
+            Response::IncompleteParams();
+        }
+
+        die;
+    }
+
+
+
+    public function showMyInvestments()
+    {
+        # code...
+    }
+
+
+
+
 
     public function showChart()
     {

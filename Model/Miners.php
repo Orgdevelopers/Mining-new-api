@@ -16,11 +16,16 @@ class Miners extends AppModel
 
     public function create($user_id, $plan_id, $status = 0)
     {
-
-        if($this->getUserMiner($user_id)){
-            $this->Delete($user_id);
-        }
         $date = Utility::GetTimeStamp();
+        if($this->getUserMiner($user_id)){
+            $this->id = $user_id;
+            $this->saveField('status', 0);
+            $this->saveField('plan_id', $plan_id);
+            $this->saveField('activation_time', $date);
+
+            return true;
+
+        }
         $qry = "INSERT INTO miners(id, user_id, plan_id, status, activation_time, cron_hit_time, created) 
                             VALUES ('0','$user_id','$plan_id','$status','$date','$date','$date') ;";
 

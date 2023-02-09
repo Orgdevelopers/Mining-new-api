@@ -921,7 +921,8 @@ class ApiController extends Controller {
             $update_data['plan_purchased'] = null;
 
             $this->User->update($update_data);
-            $this->Miners->Delete($user['id']);
+            $this->Miners->id = $user['id'];
+            $this->Miners->saveField('plan_id',0);
             //notification
             $notification = PushNotifications::getNotificationBodyData($user['token'],MINING_EXPIRED, MINING_EXPIRED_BODY, 'default',$user['id'],"",$user['username']);
             PushNotifications::send($notification);

@@ -182,7 +182,7 @@ class ApiController extends Controller {
     }
 
 
-    public function planPurchase()
+    public function purchasePlan()
     {
         if(isset($this->params['user_id']) && $this->params['plan_id']){
 
@@ -192,6 +192,7 @@ class ApiController extends Controller {
             $plan_id = $this->params['plan_id'];
 
             $plan_details = $this->Plans->showDetailById($plan_id);
+            $user = $this->User->showDetailsById($user_id);
 
             $date = Utility::GetTimeStamp();
 
@@ -200,18 +201,20 @@ class ApiController extends Controller {
 
             if($result){
                 $this->Miners->create($user_id, $plan_id, 0);
-                $t_data = array(
-                    'type' => 0,
-                    'wallet_type' => 3,
-                    'title' => "Server " . $plan_details['name'] . " Purchased successfully",
-                    'msg' => "You have successfully purchased server now you can start mining",
-                    'status' => 1,
+                // $t_data = array(
+                //     'type' => 0,
+                //     'wallet_type' => 3,
+                //     'title' => "Server " . $plan_details['name'] . " Purchased successfully",
+                //     'msg' => "You have successfully purchased server now you can start mining",
+                //     'status' => 1,
 
-                );
+                // );
 
-                $this->Transactions->create($user_id, $t_data);
+                // $this->Transactions->create($user_id, $t_data);
 
                 //send notificaiton
+                $notification = PushNotifications::getNotificationBodyData($user['token'], PLAN_PURCHASED_TITLE, PLAN_PURCHASED_BODY, "default");
+                PushNotifications::send($notification);
 
                 $output = array(
                     'code' => 200,

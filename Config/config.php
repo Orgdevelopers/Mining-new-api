@@ -14,7 +14,8 @@ define('TEAM_NAME', "App name Team");
 define('ADMIN_RECORDS_PER_PAGE',20);
 define('APP_RECORDS_PER_PAGE',10);
 
-//output responses
+//NOTIFICATION STRINGS
+
 define('CONGRATULATIONS', 'Congratulations');
 define('FREE_TRIAL_ACTIVATED', 'Your free trial has been activated successfully');
 
@@ -25,6 +26,9 @@ define('ENERGEY_REFILLED_BODY', 'Go and start mining now');
 define('MINING_EXPIRED', "Mining Server Expired");
 define('MINING_EXPIRED_BODY', "Your mining server has been expired. Renew or Purchase new Server to continue mining");
 define('WITHDRAW_REQUEST_REGISTERED', "Your withdraw request has been registered successfully. You will receive payment in your account within 24-48 working hours");
+
+define('PLAN_PURCHASED_TITLE', CONGRATULATIONS . "");
+define('PLAN_PURCHASED_BODY', 'You have successfully purchased %p_n% Server.'); // %p_n% will be replaced by server name by api;
 
 //define(;)
 

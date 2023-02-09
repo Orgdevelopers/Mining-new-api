@@ -700,7 +700,7 @@ class ApiController extends Controller {
 
     public function verifyEmail()
     {
-        $template = file_get_contents(WELCOME_EMAIL_TEMPLATE_PATH);
+        $template = file_get_contents(EMAIL_VERIFIED_TEMPLATE);
         if(isset($this->params['token'])){
 
             $id = Utility::DecryptPassword($this->params['token']);

@@ -704,7 +704,6 @@ class ApiController extends Controller {
         if(isset($this->params['token'])){
 
             $id = Utility::DecryptPassword($this->params['token']."");
-            echo $id;
             $this->loadModel('User');
             $user = $this->User->showDetailsById($id);
 

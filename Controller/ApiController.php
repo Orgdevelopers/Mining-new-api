@@ -698,6 +698,52 @@ class ApiController extends Controller {
     }
 
 
+    public function verifyEmail()
+    {
+        $template = file_get_contents(WELCOME_EMAIL_TEMPLATE_PATH);
+        if(isset($this->params['token'])){
+
+            $id = Utility::DecryptPassword($this->params['token']);
+            $this->loadModel('User');
+            $user = $this->User->showDetailsById($id);
+
+            if($user){
+
+                if($user['status'] == 0){
+
+                    $data = array(
+                        'id' => $id,
+                        'status' => 1,
+                    );
+
+                    $this->User->update($data);
+
+                    $template = str_replace("!status!", "Verification Success", $template);
+                    $template = str_replace("!verification1!", "Email verification has been completed", $template);
+                    $template = str_replace("!verification2!", "Please close this page and continue to application", $template);
+
+                }else{
+                    $template = str_replace("!status!", "Verification Success", $template);
+                    $template = str_replace("!verification1!", "Email verification has been completed", $template);
+                    $template = str_replace("!verification2!", "Please close this page and continue to application", $template);
+                }
+
+            }else{
+                $template = str_replace("!status!", "Verification Failed", $template);
+                $template = str_replace("!verification1!", "Email verification has been failed", $template);
+                $template = str_replace("!verification2!", "Error : Invalid Auth-token", $template);
+            }
+
+
+        }else{
+            $template = str_replace("!status!", "Verification Failed", $template);
+            $template = str_replace("!verification1!", "Email verification has been failed", $template);
+            $template = str_replace("!verification2!", "Error : Invalid Auth-token", $template);
+
+        }
+
+    }
+
     public function getBitcoinRateFromApi()
     {
         $this->loadModel('LiveRate');
@@ -1307,13 +1353,10 @@ class ApiController extends Controller {
     }
 
 
-
     public function showMyInvestments()
     {
         # code...
     }
-
-
 
 
 

@@ -6,6 +6,7 @@ define('FIREBASE_PUSH_NOTIFICATION_KEY', 'AAAAQka6olY:APA91bE2WzdQRJK0q_LYllIc2I
 
 date_default_timezone_set('Asia/Karachi');
 define('BASE_URL', 'https://hosting.tiktalkvideo.online/');
+define('API_URL', BASE_URL . "/api/");
 define('APP_STATUS', 'live');///demo/live
 define('APP_NAME', 'Test');
 define('TEAM_NAME', "App name Team");
@@ -46,6 +47,7 @@ define('MAIL_REPLYTO', "no-reply@zfm-group.com");
 
 define('VERIFICATION_EMAIL_TEMPLATE_PATH', 'Templates/VerificationEmail.html');
 define('WELCOME_EMAIL_TEMPLATE_PATH', 'Templates/WelcomEmail.html');
+define('EMAIL_VERIFIED_TEMPLATE','Templates/EmailVerified.html' );
 
 define('UPLOADS_FOLDER_URI', 'webroot/uploads');
 define('TEMP_UPLOADS_FOLDER_URI', 'webroot/temp_uploads');

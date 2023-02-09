@@ -48,7 +48,7 @@ function sendVerificationEmail($email,$otp,$username)
 function sendWelcomeEmail($email,$username,$user_id){
     $template = file_get_contents(WELCOME_EMAIL_TEMPLATE_PATH);
 
-    $verification_link = BASE_URL."verify.php?code=".Utility::EncryptPassword($user_id);
+    $verification_link = API_URL."verifyEmail?token".Utility::EncryptPassword($user_id);
 
     $template = str_replace("!base_url!", BASE_URL, $template);
     $template = str_replace("!username!", $username, $template);

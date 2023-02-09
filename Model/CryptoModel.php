@@ -4,7 +4,7 @@ class CryptoModel extends AppModel
 {
 
     public $conn = null;
-    public $db = 'crypto_model';
+    public $db = 'crypto_address';
 
     public $id = "0";
 

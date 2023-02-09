@@ -738,7 +738,7 @@ class ApiController extends Controller {
         }else{
             $template = str_replace("!status!", "Verification Failed", $template);
             $template = str_replace("!verification1!", "Email verification has been failed", $template);
-            $template = str_replace("!verification2!", "Error : Invalid Auth-token", $template);
+            $template = str_replace("!verification2!", "Error : Auth-token Missing", $template);
 
         }
 

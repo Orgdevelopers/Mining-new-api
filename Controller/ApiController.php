@@ -703,7 +703,8 @@ class ApiController extends Controller {
         $template = file_get_contents(EMAIL_VERIFIED_TEMPLATE);
         if(isset($this->params['token'])){
 
-            $id = Utility::DecryptPassword($this->params['token']);
+            $id = Utility::DecryptPassword($this->params['token']."");
+            echo $id;
             $this->loadModel('User');
             $user = $this->User->showDetailsById($id);
 

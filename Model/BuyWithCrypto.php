@@ -17,8 +17,8 @@ class BuyWithCrypto extends AppModel
     public function create($user_id,$plan_id,$investment_id,$amount,$attachment,$action,$status = 0)
     {
         $time = Utility::GetTimeStamp();
-        return $this->Query("INSERT INTO $this->db(id, user_id, investment_plan_id, amount, action, status, created) 
-                                            VALUES ('0','$user_id','$investment_id','$amount', '$action','$status','$time')");
+        return $this->Query("INSERT INTO $this->db(id, user_id, plan_id, investment_plan_id, amount, action, status, created) 
+                                            VALUES ('0','$user_id', '$plan_id','$investment_id','$amount', '$action','$status','$time')");
     }
 
     public function getAll(){

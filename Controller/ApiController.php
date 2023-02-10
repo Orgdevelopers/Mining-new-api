@@ -1538,7 +1538,10 @@ class ApiController extends Controller {
                 $wallet = $this->Wallets->getUserWallets($user['id']);
                 if($wallet['balance_mine'] > $wallet['old_balance_mine']){
                     $earning = $wallet['balance_mine'] - $wallet['old_balance_mine'];
+
                     $this->Earnings->create($user['id'],$earning);
+                    $this->Wallets->id = $user['id'];
+                    $this->Wallets->saveField('old_balance_mine',$wallet['balance_mine']);
 
                 }
 

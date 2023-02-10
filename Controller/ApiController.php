@@ -1360,11 +1360,98 @@ class ApiController extends Controller {
     }
 
 
-    public function showMyInvestments()
+    public function showMyEarnings()
     {
-        # code...
+        if(isset($this->params['user_id'])){
+
+            $this->loadModel('Earnings');
+
+            $sp = 0;
+            if(isset($this->params['sp'])){
+                $sp = $this->params['sp'];
+            }
+
+            $earnings = $this->Earnings->getUserAll($this->params['user_id'],$this->params['sp']);
+
+            if($earnings){
+
+                $output = array(
+                    'code' => 200,
+                    'msg' => $earnings
+                );
+
+            }else{
+                $output = array(
+                    'code' => 201,
+                    'msg' => 'no records'
+                );
+            }
+
+            echo json_encode($output);
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+
     }
 
+
+    public function showMyInvestments()
+    {
+        if(isset($this->params['user_id'])){
+
+            $this->loadModel('Investments');
+            $this->loadModel('InvestPlans');
+
+            $sp = 0;
+            if(isset($this->params['sp'])){
+                $sp = $this->params['sp'];
+            }
+
+            $investments = $this->Investments->getUserAll($this->params['user_id'],$this->params['sp']);
+
+            if($investments){
+
+                $all = array();
+
+                foreach($investments as $investment){
+
+                    $plan = $this->InvestPlans->showDetailsById($investment['investment_plan_id']);
+                    if($plan){
+                        $all[] = array('Investment'=>$investment,'InvestPlan'=>$plan);
+
+                    }
+
+                }
+
+                if(count($all) > 0){
+                    $output = array(
+                        'code' => 200,
+                        'msg' => $all
+                    );
+                }else{
+                    $output = array(
+                        'code' => 201,
+                        'msg' => 'no records'
+                    );
+                }
+
+            }else{
+                $output = array(
+                    'code' => 201,
+                    'msg' => 'no records'
+                );
+            }
+
+            echo json_encode($output);
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+
+    }
 
     public function getCryptoModel()
     {

@@ -14,7 +14,7 @@ class Earnings extends AppModel
     }
 
 
-    public function create($user_id,$investment_id,$amount,$attachment,$ending,$status = 0)
+    public function create($user_id,$amount)
     {
         $time = Utility::GetTimeStamp();
         return $this->Query("INSERT INTO $this->db(id, user_id, amount, created) 

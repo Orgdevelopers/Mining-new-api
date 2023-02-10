@@ -1524,6 +1524,37 @@ class ApiController extends Controller {
     }
 
 
+    public function updateEarnings()
+    {
+        $this->loadModel('User');
+        $this->loadModel('Wallets');
+        $this->loadModel('Earnings');
+    
+        $users_with_plan = $this->User->showAllPlanUsers();
+
+        if($users_with_plan>0){
+            foreach($users_with_plan as $user){
+
+                $wallet = $this->Wallets->getUserWallets($user['id']);
+                if($wallet['balance_mine'] > $wallet['old_balance_mine']){
+                    $earning = $wallet['balance_mine'] - $wallet['old_balance_mine'];
+                    $this->Earnings->create($user['id'],$earning);
+
+                }
+
+            }
+
+        }
+
+
+        die;
+
+    }
+
+
+
+
+
     public function showChart()
     {
 

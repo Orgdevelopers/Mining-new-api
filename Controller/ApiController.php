@@ -1391,6 +1391,51 @@ class ApiController extends Controller {
     }
 
 
+    public function buyWithCrypto()
+    {
+        if(isset($this->params['user_id'])){
+
+            $this->loadModel('User');
+            $this->loadModel('Plans');
+            $this->loadModel('Investments');
+            $this->loadModel('BuyWithCrypto');
+
+
+            $user_id = $this->params['user_id'];
+            $action = $this->params['action'];
+            $image = $this->params['image'];
+            $plan_id = 0;
+            $invest_id = 0;
+
+            if($action == "plan"){
+                $plan_id = $this->params['plan_id'];
+
+            }else{
+                //invest
+                $invest_id = $this->params['invest_id'];
+
+            }
+
+            $pending = $this->BuyWithCrypto->getUserPending($user_id,$this->params['action']);
+
+            if($pending){
+                echo json_encode(array('code'=>201,'msg'=>'already exists'));
+                die;
+            }
+            
+            $upload_img = IMAGE_UPLOAD_FOLDER.uniqid().$user_id.".png";
+            $success = Utility::base64ToImage($upload_img,$image);
+
+            $this->BuyWithCrypto->create($user_id,$plan_id,$invest_id,$this->params['amount'],$upload_img);
+
+            echo json_encode(array('code'=>200,'msg'=>'success'));
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+    }
+
 
     public function showChart()
     {

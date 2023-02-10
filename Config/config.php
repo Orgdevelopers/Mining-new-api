@@ -53,8 +53,8 @@ define('VERIFICATION_EMAIL_TEMPLATE_PATH', 'Templates/VerificationEmail.html');
 define('WELCOME_EMAIL_TEMPLATE_PATH', 'Templates/WelcomEmail.html');
 define('EMAIL_VERIFIED_TEMPLATE','Templates/EmailVerified.html' );
 
-define('UPLOADS_FOLDER_URI', 'webroot/uploads');
-define('TEMP_UPLOADS_FOLDER_URI', 'webroot/temp_uploads');
+define('UPLOADS_FOLDER_URI', 'webroot/uploads/');
+define('IMAGE_UPLOAD_FOLDER', 'webroot/uploads/img/');
 define('FONT_FOLDER_URI', 'webroot/font');
 
 

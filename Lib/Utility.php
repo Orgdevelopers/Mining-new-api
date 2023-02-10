@@ -124,6 +124,17 @@ class Utility{
     }
 
 
+    public static function base64ToImage($filePath,$base64)
+    {
+        $img = $base64; // Your data 'data:image/png;base64,AAAFBfj42Pj4';
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+
+        return file_put_contents($filePath, $data);
+
+    }
+
 
 }
 

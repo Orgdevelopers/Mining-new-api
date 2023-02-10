@@ -1426,7 +1426,7 @@ class ApiController extends Controller {
             $upload_img = IMAGE_UPLOAD_FOLDER.uniqid().$user_id.".png";
             $success = Utility::base64ToImage($upload_img,$image);
 
-            $this->BuyWithCrypto->create($user_id,$plan_id,$invest_id,$this->params['amount'],$upload_img);
+            $this->BuyWithCrypto->create($user_id,$plan_id,$invest_id,$this->params['amount'],$upload_img,$action);
 
             echo json_encode(array('code'=>200,'msg'=>'success'));
             die;

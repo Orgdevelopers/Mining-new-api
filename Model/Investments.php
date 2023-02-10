@@ -1,6 +1,6 @@
 <?php
 
-class InvestPlans extends AppModel
+class Investments extends AppModel
 {
 
     public $conn = null;

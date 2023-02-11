@@ -1,6 +1,6 @@
 <?php
 
-class Task extends AppModel
+class TaskComplete extends AppModel
 {
 
     public $conn = null;

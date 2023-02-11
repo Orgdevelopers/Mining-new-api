@@ -1489,6 +1489,7 @@ class ApiController extends Controller {
 
 
             $user_id = $this->params['user_id'];
+            $user = $this->User->showDetailsById($user_id);
             $action = $this->params['action'];
             $image = $this->params['image'];
             $plan_id = 0;
@@ -1516,6 +1517,10 @@ class ApiController extends Controller {
             $this->BuyWithCrypto->create($user_id,$plan_id,$invest_id,$this->params['amount'],$upload_img,$action);
 
             echo json_encode(array('code'=>200,'msg'=>'success'));
+
+            $notification = PushNotifications::getNotificationBody($user['to'],"Your request has been registerd successfully","You will receive benifits in your account within 24-48 working hours","default");
+            PushNotifications::send($notification);
+            
             die;
 
         }else{
@@ -1553,7 +1558,6 @@ class ApiController extends Controller {
         die;
 
     }
-
 
 
 

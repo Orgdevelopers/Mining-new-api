@@ -1820,6 +1820,24 @@ class ApiController extends Controller {
         <?php
     }
 
+
+    public function showAllTasks()
+    {
+        $this->loadModel('Task');
+
+        $all = $this->Task->getAll();
+
+        if($all ){
+
+            echo json_encode(array('code'=>200, 'msg'=>$all));
+        }else{
+            echo json_encode(array('code'=>201,'msg'=>'no records'));
+        }
+
+        die;
+
+    }
+
     public function sendNotification($to)
     {
 

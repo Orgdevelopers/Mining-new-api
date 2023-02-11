@@ -4,7 +4,7 @@ class Task extends AppModel
 {
 
     public $conn = null;
-    public $db = 'task';
+    public $db = 'task_completed';
 
     public $id = "0";
 
@@ -14,17 +14,28 @@ class Task extends AppModel
     }
 
 
-    public function create($title,$subtitle,$img,$amount,$link)
+    public function create($user_id,$task_id)
     {
         $time = Utility::GetTimeStamp();
-        return $this->Query("INSERT INTO $this->db(id, title, subtitle, img, amount, link, created) 
-                                            VALUES ('0','$title', '$subtitle', '$img','$amount', '$link','$time')");
+        return $this->Query("INSERT INTO $this->db(id, user_id, task_id, created) 
+                                            VALUES ('0','$user_id', '$task_id','$time')");
     }
 
     public function getAll(){
         return $this->Query("SELECT * FROM $this->db ")->fetch_all(1);
     }
 
+
+    public function getAllUser($user_id)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' ;")->fetch_all(1);
+    }
+
+
+    public function checkTaskCompleted($user_id,$task_id)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' and task_id = '$task_id' ;")->fetch_array(1);
+    }
 
 
     public function getField($id, $field)

@@ -1824,10 +1824,29 @@ class ApiController extends Controller {
     public function showAllTasks()
     {
         $this->loadModel('Task');
+        $this->loadModel('TaskComplete');
 
-        $all = $this->Task->getAll();
+        $all = array();
 
-        if($all ){
+        $tasks = $this->Task->getAll();
+
+        foreach($tasks as $task){
+            if(isset($this->params['user_id'])){
+                $check = $this->TaskComplete->checkTaskCompleted($this->params['user_id'],$task['id']);
+                if($check){
+                    $task['is_complete'] = "1";
+                }else{
+                    $task['is_complete'] = "0";
+                }
+            }else{
+                $task['is_complete'] = "0";   
+            }
+
+            $all[] = $task;
+
+        }
+
+        if(count($all)>0){
 
             echo json_encode(array('code'=>200, 'msg'=>$all));
         }else{

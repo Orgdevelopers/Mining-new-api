@@ -22,8 +22,19 @@ class AppController {
                 throw $th;
             }
 
-        }else if($request == "admin"){
-            echo "admin".$controller;
+        }else if($controller == "admin"){
+            $this->initApi();
+
+            $source = new AdminController();
+
+            $database = new Database();
+            $database->getDatabase();
+
+            try {
+                $source->$request();
+            } catch (\Throwable $th) {
+                throw $th;
+            }
 
         }else{
             echo $request;

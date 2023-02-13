@@ -38,6 +38,16 @@ class Miners extends AppModel
     }
 
 
+    public function count($status = 1)
+    {
+        $result = $this->Query("SELECT COUNT(*) AS count FROM $this->db WHERE status = '$status'")->fetch_array(1);
+        if($result){
+            return $result['count'];
+        }else{
+            return 0;
+        }
+    }
+
     public function Delete($user_id)
     {
         $qry = "DELETE FROM $this->db WHERE user_id = '$user_id' ;";

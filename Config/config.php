@@ -11,7 +11,7 @@ define('APP_STATUS', 'live');///demo/live
 define('APP_NAME', 'Test');
 define('TEAM_NAME', "App name Team");
 
-define('ADMIN_RECORDS_PER_PAGE',20);
+define('ADMIN_RECORDS_PER_PAGE',15);
 define('APP_RECORDS_PER_PAGE',10);
 
 //NOTIFICATION STRINGS

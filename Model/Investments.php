@@ -36,6 +36,28 @@ class Investments extends AppModel
         return $this->Query("SELECT $field FROM $this->db WHERE id = '$id' ;")->fetch_array(1);
     }
 
+
+    public function countActive()
+    {
+        $result =  $this->Query("SELECT COUNT(*) AS count FROM $this->db WHERE status = 0 ")->fetch_array(1);
+        if($result){
+            return $result['count'];
+        }else{
+            return 0;
+        }
+    }
+
+
+    public function countUser($user_id, $status = 0)
+    {
+        $result =  $this->Query("SELECT COUNT(*) AS count FROM $this->db WHERE status = '$status' AND user_id = '$user_id'; ")->fetch_array(1);
+        if($result){
+            return $result['count'];
+        }else{
+            return 0;
+        }
+    }
+
     public function saveField($field,$value)
     {
         if($this->id != "0"){

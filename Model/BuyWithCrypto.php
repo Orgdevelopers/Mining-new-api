@@ -26,6 +26,16 @@ class BuyWithCrypto extends AppModel
     }
 
 
+    public function countPending()
+    {
+        $result = $this->Query("SELECT COUNT(*) AS count FROM $this->db WHERE status = 0")->fetch_array(1);
+        if($result){
+            return $result['count'];
+        }else{
+            return 0;
+        }
+    }
+
     public function getUserPending($user_id,$action)
     {
         return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND action = '$action' AND status = 0 ;")->fetch_all(1);

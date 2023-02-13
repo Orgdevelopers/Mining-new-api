@@ -13,7 +13,12 @@ class User extends AppModel {
 
     public function showAll($sp = 0,$limit = 999)
     {
-        $qry = mysqli_query($this->conn, "SELECT * FROM user ORDER BY user.id DESC LIMIT $sp,$limit ;");
+        return $this->Query("SELECT * FROM user ORDER BY user.id DESC LIMIT $sp,$limit ;")->fetch_all(1);
+    }
+
+    public function showAllAdmin($sp = 0,$limit = 999)
+    {
+        return $this->Query("SELECT id, username, plan, last_plan, plan_purchased, last_plan_purchased, allow_public_chat, status, created FROM user ORDER BY user.id DESC LIMIT $sp,$limit ;")->fetch_all(1);
     }
 
     public function showDetailsByEmail($var = "")
@@ -171,6 +176,16 @@ class User extends AppModel {
     {
         $date = Utility::GetTimeStamp();
         return $this->Query("SELECT * FROM user WHERE user.plan != 0 AND user.plan_ending < '$date'")->fetch_all(1);
+    }
+
+    public function countAll()
+    {
+        $count = $this->Query("SELECT COUNT(*) AS count FROM user")->fetch_array(1);
+        if($count){
+            return $count['count'];
+        }else{
+            return 0;
+        }
     }
 
     public function getAllEnrgyRechargeableUsers()

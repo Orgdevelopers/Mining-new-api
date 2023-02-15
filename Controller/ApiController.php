@@ -279,7 +279,7 @@ class ApiController extends Controller {
                 }
                 $date = Utility::GetTimeStamp();
 
-                $result = true;//$this->User->create($email, $username, $password, $date,$referral_code);
+                $result = $this->User->create($email, $username, $password, $date,$referral_code);
 
                 if ($result) {
                     //account created successfully

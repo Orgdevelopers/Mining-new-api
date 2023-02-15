@@ -292,9 +292,37 @@ class ApiController extends Controller {
                         'msg' => array('User'=>$result, 'Wallets' => $wallets)
                     );
 
+                    if(isset($this->params['referral_code'])){
+                        $referral_user = $this->User->showDetailsByUsername($referral_code);
+
+                        if($referral_user){
+                            $this->wallets->id = $referral_user['id'];
+                            $task_amount = $this->wallets->getUserWallets($referral_user['id']);
+                            $amount = $task_amount['balance_task'] + REFERRAL_SIGNUP_REWARD;
+                            $this->wallets->saveField('balance_task',($amount));
+
+                            $body = REFERRAL_BODY;
+                            $head = REFERRAL_HEAD;
+
+                            $head = str_replace('%a_m%',$amount." TP",$head);
+                            $body = str_replace("%a_m%",$amount,$body);
+                            $body = str_replace("%u_n%",$username,$body);
+
+                            $notification = PushNotifications::getNotificationBodyData(
+                                $referral_user['to'],
+                                $head,
+                                $body,
+                                'referral',
+                            );
+
+                            PushNotifications::send($notification);
+                        }
+                        
+                    }
+
                     echo json_encode($output);
-                    
                     die;
+                    
                 }else{
                     $output = array(
                         'code' => 401,
@@ -1560,6 +1588,37 @@ class ApiController extends Controller {
     }
 
 
+    public function taskCompleteRequest()
+    {
+        if(isset($this->params['user_id']) && isset($this->params['task_id'])){
+            $this->loadModel('User');
+            $this->loadModel('Task');
+
+            $upload_img = IMAGE_UPLOAD_FOLDER.uniqid().$this->params['user_id'].".png";
+            $success = Utility::base64ToImage($upload_img,$this->params['attachment']);
+
+            $result = $this->Task->createRequest($this->params['user_id'],$this->params['task_id'],$upload_img);
+
+            if($result && $success){
+
+                echo json_encode(array(
+                    'code' => 200,
+                    'msg' => "Success"
+                ));
+
+            }else{
+                echo json_encode(array(
+                    'code' => 201,
+                    'msg' => "Error"
+                ));
+            }
+
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+    }
 
 
     public function showChart()
@@ -1836,8 +1895,16 @@ class ApiController extends Controller {
                 if($check){
                     $task['is_complete'] = "1";
                 }else{
-                    $task['is_complete'] = "0";
+                    if($this->TaskComplete->ifExistsRequest($this->params['user_id'],$task['id'])){
+                        $task['is_complete'] = "2";
+                    }else{
+                        $task['is_complete'] = "0";
+                    }
+
                 }
+
+
+            
             }else{
                 $task['is_complete'] = "0";   
             }

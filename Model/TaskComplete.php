@@ -5,6 +5,7 @@ class TaskComplete extends AppModel
 
     public $conn = null;
     public $db = 'task_completed';
+    public $db2 = 'task_complete_request';
 
     public $id = "0";
 
@@ -20,6 +21,32 @@ class TaskComplete extends AppModel
         return $this->Query("INSERT INTO $this->db(id, user_id, task_id, created) 
                                             VALUES ('0','$user_id', '$task_id','$time')");
     }
+
+
+    public function createRequest($user_id,$task_id,$attachment,$status = 0)
+    {
+        $time = Utility::GetTimeStamp();
+        return $this->Query("INSERT INTO $this->db2(id, user_id, task_id, attachment, status, updated, created) 
+                                            VALUES ('0','$user_id', '$task_id', '$attachment', '$status', '$time', '$time')");
+    }
+
+
+    public function getUserRequests($user_id, $sp = 0, $limit = 20)
+    {
+        return $this->Query("SELECT * FROM $this->db2 WHERE user_id = '$user_id' ORDER BY id DESC LIMIT $sp,$limit ;")->fetch_all(1);
+    }
+
+
+    public function getUserRequestsPending($user_id, $sp = 0, $limit = 20)
+    {
+        return $this->Query("SELECT * FROM $this->db2 WHERE user_id = '$user_id' AND status = '0' ORDER BY id DESC LIMIT $sp,$limit ;")->fetch_all(1);
+    }
+
+
+    public function ifExistsRequest($user_id,$task_id){
+        return $this->Query("SELECT * FROM $this->db2 WHERE user_id = '$user_id' AND task_id = '$task_id';")->fetch_array(1);
+    }
+
 
     public function getAll(){
         return $this->Query("SELECT * FROM $this->db ")->fetch_all(1);

@@ -245,6 +245,9 @@ class ApiController extends Controller {
             $this->loadModel('User');
             $this->loadModel('Wallets');
 
+            echo json_encode($this->Wallets->getUserWallets(7));
+            die;
+
             $email_user = $this->User->showDetailsByEmail($this->params['email']);
             $username_user = $this->User->showDetailsByUsername($this->params['username']);
 
@@ -286,11 +289,14 @@ class ApiController extends Controller {
                     $result = $this->Wallets->create($result['id']);
                     
                     $wallets = $this->Wallets->getUserWallets($result['id']);
-
+                    
                     $output = array(
                         'code' => 200,
                         'msg' => array('User'=>$result, 'Wallets' => $wallets)
                     );
+
+                    echo json_encode($output);
+
 
                     if(isset($this->params['referral_code'])){
                         $referral_user = $this->User->showDetailsByUsername($referral_code);
@@ -320,7 +326,6 @@ class ApiController extends Controller {
                         
                     }
 
-                    echo json_encode($output);
                     die;
                     
                 }else{

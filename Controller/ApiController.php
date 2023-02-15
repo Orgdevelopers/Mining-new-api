@@ -279,13 +279,13 @@ class ApiController extends Controller {
                 }
                 $date = Utility::GetTimeStamp();
 
-                $result = $this->User->create($email, $username, $password, $date,$referral_code);
+                $result = true;//$this->User->create($email, $username, $password, $date,$referral_code);
 
                 if ($result) {
                     //account created successfully
-                    //$this->Wallets->create($result['id']);
+                    $this->Wallets->create($result['id']);
                     
-                    $wallets = null; $this->Wallets->getUserWallets($result['id']);
+                    $wallets = $this->Wallets->getUserWallets($result['id']);
 
                     $output = array(
                         'code' => 200,
@@ -296,20 +296,20 @@ class ApiController extends Controller {
                         $referral_user = $this->User->showDetailsByUsername($referral_code);
 
                         if($referral_user){
-                            $this->wallets->id = $referral_user['id'];
-                            $task_amount = $this->wallets->getUserWallets($referral_user['id']);
+                            $this->Wallets->id = $referral_user['id'];
+                            $task_amount = $this->Wallets->getUserWallets($referral_user['id']);
                             $amount = $task_amount['balance_task'] + REFERRAL_SIGNUP_REWARD;
-                            $this->wallets->saveField('balance_task',($amount));
+                            $this->Wallets->saveField('balance_task',($amount));
 
                             $body = REFERRAL_BODY;
                             $head = REFERRAL_HEAD;
 
-                            $head = str_replace('%a_m%',$amount." TP",$head);
-                            $body = str_replace("%a_m%",$amount,$body);
+                            $head = str_replace('%a_m%',REFERRAL_SIGNUP_REWARD." TP",$head);
+                            $body = str_replace("%a_m%",REFERRAL_SIGNUP_REWARD." TP",$body);
                             $body = str_replace("%u_n%",$username,$body);
 
                             $notification = PushNotifications::getNotificationBodyData(
-                                $referral_user['to'],
+                                $referral_user['token'],
                                 $head,
                                 $body,
                                 'referral',

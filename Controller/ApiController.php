@@ -283,9 +283,9 @@ class ApiController extends Controller {
 
                 if ($result) {
                     //account created successfully
-                    $this->Wallets->create($result['id']);
+                    //$this->Wallets->create($result['id']);
                     
-                    $wallets = $this->Wallets->getUserWallets($result['id']);
+                    $wallets = null; $this->Wallets->getUserWallets($result['id']);
 
                     $output = array(
                         'code' => 200,

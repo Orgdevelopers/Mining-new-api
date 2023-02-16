@@ -14,7 +14,8 @@ define('TEAM_NAME', "App name Team");
 define('ADMIN_RECORDS_PER_PAGE',15);
 define('APP_RECORDS_PER_PAGE',10);
 define('ENERGEY_RECHARGE_RATE', 20); //per min
-define('REFERRAL_SIGNUP_REWARD',10); //only int supported
+define('REFERRAL_SIGNUP_REWARD',10); //only int supported, 100Tp = 1$
+define('REFERRAL_PLAN_PUCHASE_REWARD',500);
 define('APP_CURRENCY_NAME','TP');
 
 //NOTIFICATION STRINGS
@@ -36,6 +37,10 @@ define('PLAN_PURCHASED_BODY', 'You have successfully purchased %p_n% Server.'); 
 //referral
 define('REFERRAL_HEAD',CONGRATULATIONS." You received referral bonus %a_m%"); // %a_m% => amount
 define('REFERRAL_BODY','%u_n% has just joined '.APP_NAME.' via your referral. you received %a_m% bouns'); //%u_n%
+
+
+define('REFERRAL_PLAN_PURCHASE_HEAD',CONGRATULATIONS." You received Referral bonus"); // %a_m% => amount
+define('REFERRAL_PLAN_PURCHASE_BODY','%u_n% has just Upgraded mining server. you received %a_m% bouns'); //%u_n% = username , %d_am% => doller amount
 
 //define(;)
 

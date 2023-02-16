@@ -186,7 +186,7 @@ class ApiController extends Controller {
     {
         if(isset($this->params['user_id']) && $this->params['plan_id']){
 
-            $this->loadModels(['User','Miners','Plans','Transactions']);
+            $this->loadModels(['User','Miners','Plans','Transactions','AppSettings']);
 
             $user_id = $this->params['user_id'];
             $plan_id = $this->params['plan_id'];
@@ -201,18 +201,7 @@ class ApiController extends Controller {
 
             if($result){
                 $this->Miners->create($user_id, $plan_id, 0);
-                // $t_data = array(
-                //     'type' => 0,
-                //     'wallet_type' => 3,
-                //     'title' => "Server " . $plan_details['name'] . " Purchased successfully",
-                //     'msg' => "You have successfully purchased server now you can start mining",
-                //     'status' => 1,
-
-                // );
-
-                // $this->Transactions->create($user_id, $t_data);
-
-                //send notificaiton
+                
                 $body = PLAN_PURCHASED_BODY;
                 $body = str_replace("%p_n%",$plan_details['name'],$body);
                 $notification = PushNotifications::getNotificationBodyData($user['token'], PLAN_PURCHASED_TITLE, $body, "default");
@@ -222,6 +211,55 @@ class ApiController extends Controller {
                     'code' => 200,
                     'msg' => "Success"
                 );
+
+
+                //referral rewards
+                if($user['referral'] != null && $user['referral'] != ""){
+                    $referral_user = $this->User->showDetailsByUsername($user['referral']);
+                    if($referral_user){
+
+                        $task_amount = $this->Wallets->getUserWallets($referral_user['id']);
+                        $amount = $task_amount['balance_task'] + REFERRAL_PLAN_PUCHASE_REWARD;
+
+                        $this->Wallets->id = $referral_user['id'];
+                        $this->Wallets->saveField('balance_task',($amount));
+
+                        $body = REFERRAL_PLAN_PURCHASE_BODY;
+                        $head = REFERRAL_PLAN_PURCHASE_HEAD;                        
+
+                        $body = str_replace("%a_m%",REFERRAL_PLAN_PUCHASE_REWARD." TP",$body);
+                        $body = str_replace("%u_n%",$user['username'],$body);
+
+                        $appSettings = $this->AppSettings->getAppSettings();
+
+                        if($appSettings){
+                            $d_am = REFERRAL_PLAN_PUCHASE_REWARD * $appSettings['points_value'];
+                            $body = $body." worth $ ".$d_am;
+
+                            $data = array(
+                                'type'=>3,
+                                'wallet_type' => 1,
+                                'amount' => $d_am,
+                                'title' => 'Referral bonus from '.$user['username'],
+                                'msg' => 'Referral reward from '.$user['username'].' for Upgrading mining server',
+                                'status' => 1,
+                            );
+
+                            $this->Transactions->create($referral_user['id'],$data);
+
+                        }
+
+                        $notification = PushNotifications::getNotificationBodyData(
+                            $referral_user['token'],
+                            $head,
+                            $body,
+                            'referral',
+                        );
+
+                        PushNotifications::send($notification);
+                    }
+                }
+
             }else{
                 $output = array(
                     'code' => 201,
@@ -235,7 +273,7 @@ class ApiController extends Controller {
         }else{
             Response::IncompleteParams();
         }
-        die;
+        
     }
 
     public function signup()
@@ -310,6 +348,25 @@ class ApiController extends Controller {
                             $head = str_replace('%a_m%',REFERRAL_SIGNUP_REWARD." TP",$head);
                             $body = str_replace("%a_m%",REFERRAL_SIGNUP_REWARD." TP",$body);
                             $body = str_replace("%u_n%",$username,$body);
+
+
+                            $appSettings = $this->AppSettings->getAppSettings();
+
+                            if($appSettings){
+                                $d_am = REFERRAL_SIGNUP_REWARD * $appSettings['points_value'];
+
+                                $data = array(
+                                    'type'=>3,
+                                    'wallet_type' => 1,
+                                    'amount' => $d_am,
+                                    'title' => 'Referral bonus from '.$result['username'],
+                                    'msg' => 'Referral reward from '.$result['username'].' for Joining '.APP_NAME,
+                                    'status' => 1,
+                                );
+
+                                $this->Transactions->create($referral_user['id'],$data);
+
+                            }
 
                             $notification = PushNotifications::getNotificationBodyData(
                                 $referral_user['token'],
@@ -1053,7 +1110,6 @@ class ApiController extends Controller {
     }
 
 
-
     public function stopMining()
     {
         
@@ -1219,6 +1275,7 @@ class ApiController extends Controller {
 
     }
 
+    
     public function showInvestPlans(){
 
         $this->loadModel('InvestPlans');

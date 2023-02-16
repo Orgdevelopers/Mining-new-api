@@ -186,7 +186,7 @@ class ApiController extends Controller {
     {
         if(isset($this->params['user_id']) && $this->params['plan_id']){
 
-            $this->loadModels(['User','Miners','Plans','Transactions','AppSettings']);
+            $this->loadModels(['User','Miners','Plans','Transactions','AppSettings','Wallets']);
 
             $user_id = $this->params['user_id'];
             $plan_id = $this->params['plan_id'];
@@ -1275,7 +1275,7 @@ class ApiController extends Controller {
 
     }
 
-    
+
     public function showInvestPlans(){
 
         $this->loadModel('InvestPlans');

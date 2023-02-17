@@ -127,7 +127,7 @@
     document.body.removeChild(textArea);
     }
     function copyTextToClipboard(text) {
-      alertAndroid();
+      Android.showToast("copied");
     if (!navigator.clipboard) {
         fallbackCopyTextToClipboard(text);
         return;

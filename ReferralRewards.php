@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Refer and Earn Program</title>
+    <title style="font-size: 30px" >Refer and Earn Program</title>
     <style>
       /* Styles for the header section */
       body{

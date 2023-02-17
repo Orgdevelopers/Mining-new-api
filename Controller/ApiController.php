@@ -1652,12 +1652,12 @@ class ApiController extends Controller {
     {
         if(isset($this->params['user_id']) && isset($this->params['task_id'])){
             $this->loadModel('User');
-            $this->loadModel('Task');
+            $this->loadModel('TaskComplete');
 
             $upload_img = IMAGE_UPLOAD_FOLDER.uniqid().$this->params['user_id'].".png";
             $success = Utility::base64ToImage($upload_img,$this->params['attachment']);
 
-            $result = $this->Task->createRequest($this->params['user_id'],$this->params['task_id'],$upload_img);
+            $result = $this->TaskComplete->createRequest($this->params['user_id'],$this->params['task_id'],$upload_img);
 
             if($result && $success){
 

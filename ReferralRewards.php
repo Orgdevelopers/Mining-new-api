@@ -127,6 +127,7 @@
     document.body.removeChild(textArea);
     }
     function copyTextToClipboard(text) {
+      alertAndroid();
     if (!navigator.clipboard) {
         fallbackCopyTextToClipboard(text);
         return;
@@ -137,4 +138,6 @@
         console.error('Async: Could not copy text: ', err);
     });
     }
+
+    
 </script>

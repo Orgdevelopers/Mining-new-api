@@ -58,6 +58,12 @@ class Investments extends AppModel
         }
     }
 
+
+    public function getExpired($date)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE status = 0 AND ending_date < '$date';")->fetch_all(1);
+    }
+
     public function saveField($field,$value)
     {
         if($this->id != "0"){

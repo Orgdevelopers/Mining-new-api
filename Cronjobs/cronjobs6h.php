@@ -2,6 +2,7 @@
 require_once("../Config/config.php");
 
 updateEarnings();
+updateInvestments();
 
 
 function updateEarnings(){
@@ -33,14 +34,14 @@ function updateEarnings(){
 }
 
 
-function doSomethingherer(){
+function updateInvestments(){
     $headers = [
         "Accept: application/json",
         "Content-Type: application/json",
         "api-key: ".API_KEY." "
     ];
     
-    $url = BASE_URL."api/aaa";
+    $url = BASE_URL."api/updateInvestments";
 
     // echo "<script>window.location='$url'</script>";
     // //exit();

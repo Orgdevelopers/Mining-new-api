@@ -1680,6 +1680,61 @@ class ApiController extends Controller {
     }
 
 
+    public function updateInvestments()
+    {
+        $this->loadModels(['Investments','InvestPlans','User','Wallets']);
+        
+
+        $array = $this->Investments->getExpired(Utility::GetTimeStamp());
+
+        foreach($array as $obj){
+            $this->Investments->id = $obj['id'];
+            $this->Investments->saveField('status','1');
+
+            $plan = $this->InvestPlans->showDetailsById($obj['investment_plan_id']);
+            $user = $this->User->showDetailById($obj['user_id']);
+            $wallets = $this->Wallets->getUserWallets($obj['user_id']);
+
+            $amount = $obj[$amount] + (($plan['profit_rate'] * $obj['amount']) / 100);
+
+            $this->Wallets->id = $user['id'];
+            $this->Wallets->saveField('balance_invest',$wallets['balance_invest']+$amount);
+
+            $data = array(
+                'type'=>3,
+                'wallet_type' => 0,
+                'amount' => $amount,
+                'title' => 'Investment Returns',
+                'msg' => 'Investment Returns of ',
+                'status' => 1,
+            );
+    
+            $this->Transactions->create($user['id'],$data);
+
+            if($user['token']!=null && $user['token'] != ""){
+                $body = INVESTMENT_RETURN_BODY;
+                $body = str_replace('%i_n%',$plan['name'],$body);
+                $body = str_replace('%a_m%','$'.$amount,$body);
+
+                $notification = PushNotifications::getNotificationBodyData(
+                    $user['token'],
+                    INVESTMENT_RETURN_HEAD,
+                    $body,
+                    'investment'
+                );
+
+                PushNotifications::send($notification);
+
+            }
+            
+
+        }
+
+
+
+    }
+
+
     public function showChart()
     {
 

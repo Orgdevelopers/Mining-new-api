@@ -42,6 +42,9 @@ define('REFERRAL_BODY','%u_n% has just joined '.APP_NAME.' via your referral. yo
 define('REFERRAL_PLAN_PURCHASE_HEAD',CONGRATULATIONS." You received Referral bonus"); // %a_m% => amount
 define('REFERRAL_PLAN_PURCHASE_BODY','%u_n% has just Upgraded mining server. you received %a_m% bouns'); //%u_n% = username , %d_am% => doller amount
 
+define('INVESTMENT_RETURN_HEAD',CONGRATULATIONS.'');
+define('INVESTMENT_RETURN_BODY','Investment id %i_n% has been completed successfully. %a_m% has been added to your Invest Wallet');
+
 //define(;)
 
 

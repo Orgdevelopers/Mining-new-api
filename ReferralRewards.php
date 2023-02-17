@@ -12,11 +12,16 @@ if(isset($_GET['referral_code'])){
     <title>Refer and Earn Program</title>
     <style>
       /* Styles for the header section */
+      body{
+        background-color: #161730;
+        color: #fff;
+      }
       header {
-        background-color: #333;
+        background-color: #212244;
         color: #fff;
         text-align: center;
         padding: 20px;
+        border-radius: 20px;
       }
       header h1 {
         margin: 0;
@@ -49,9 +54,13 @@ if(isset($_GET['referral_code'])){
         margin-bottom: 20px;
         font-size: 18px;
         border: 1px solid #ccc;
+        background-color: #212244;
+        border-radius: 10px;
+        color: #fff;
+        
       }
       main button {
-        background-color: #333;
+        background-color: #6B54EB;
         color: #fff;
         padding: 10px;
         border: none;
@@ -60,12 +69,11 @@ if(isset($_GET['referral_code'])){
         cursor: pointer;
       }
       main button:hover {
-        background-color: #555;
+        background-color: #6B54EB;
       }
 
       /* Styles for the footer section */
       footer {
-        background-color: #333;
         color: #fff;
         text-align: center;
         padding: 10px;

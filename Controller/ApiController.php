@@ -1347,6 +1347,7 @@ class ApiController extends Controller {
                         'wallet_type' => $this->params['wallet_type'],
                         'amount' => $this->params['amount'],
                         'charge' => $this->params['fee'],
+                        'title' => 'Withdraw'
 
                     );
 

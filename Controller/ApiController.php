@@ -1682,7 +1682,7 @@ class ApiController extends Controller {
 
     public function updateInvestments()
     {
-        $this->loadModels(['Investments','InvestPlans','User','Wallets']);
+        $this->loadModels(['Investments','InvestPlans','User','Wallets','Transactions']);
         
 
         $array = $this->Investments->getExpired(Utility::GetTimeStamp());
@@ -1695,7 +1695,7 @@ class ApiController extends Controller {
             $user = $this->User->showDetailsById($obj['user_id']);
             $wallets = $this->Wallets->getUserWallets($obj['user_id']);
 
-            $amount = $obj[$amount] + (($plan['profit_rate'] * $obj['amount']) / 100);
+            $amount = $obj['amount'] + (($plan['profit_rate'] * $obj['amount']) / 100);
 
             $this->Wallets->id = $user['id'];
             $this->Wallets->saveField('balance_invest',$wallets['balance_invest']+$amount);
@@ -1731,7 +1731,7 @@ class ApiController extends Controller {
         }
 
 
-
+        die;
     }
 
 

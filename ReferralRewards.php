@@ -22,6 +22,7 @@ if(isset($_GET['referral_code'])){
         text-align: center;
         padding: 20px;
         border-radius: 20px;
+        margin-top: 20px;
       }
       header h1 {
         margin: 0;
@@ -86,22 +87,29 @@ if(isset($_GET['referral_code'])){
   </head>
   <body>
     <header>
-      <h1>Refer and Earn Program</h1>
+      <h1>Refer and Earn</h1>
     </header>
     <main>
-      <p>Refer your friends to our service and earn rewards! Here's how it works:</p>
+      <p>Refer To your friends and earn rewards! Here's how it works:</p>
       <ul>
-        <li>Share your unique referral link with your friends.</li>
-        <li>Your friend signs up for our service using your link.</li>
+        <li>Share your referral code with your friends.</li>
+        <li>Your friend signs up using your code.</li>
         <li>You both receive rewards!</li>
       </ul>
-      <p>Your unique referral link is:</p>
-      <input type="text" value="https://www.example.com/refer/your-unique-id" readonly>
-      <p>Copy and share this link with your friends to start earning rewards!</p>
-      <button>Copy Link</button>
+      <p>Your referral code is:</p>
+      <input type="text" value="<?php echo $_GET['referral_code']; ?>" readonly>
+      <p>Copy and share this code with your friends to start earning rewards!</p>
+      <button id="copy" onclick="copy()">Copy</button>
     </main>
     <footer>
       <p>&copy; 2023 Example Company. All rights reserved.</p>
     </footer>
   </body>
 </html>
+
+<script>
+    function copy(){
+        navigator.clipboard.writeText(<?php echo $_GET['referral_code']; ?>);
+        alert("Copied");
+    }
+</script>

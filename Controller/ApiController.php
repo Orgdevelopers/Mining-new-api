@@ -1692,7 +1692,7 @@ class ApiController extends Controller {
             $this->Investments->saveField('status','1');
 
             $plan = $this->InvestPlans->showDetailsById($obj['investment_plan_id']);
-            $user = $this->User->showDetailById($obj['user_id']);
+            $user = $this->User->showDetailsById($obj['user_id']);
             $wallets = $this->Wallets->getUserWallets($obj['user_id']);
 
             $amount = $obj[$amount] + (($plan['profit_rate'] * $obj['amount']) / 100);

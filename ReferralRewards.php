@@ -1,9 +1,4 @@
 <?php
-
-if(isset($_GET['referral_code'])){
-    echo $_GET['referral_code'];
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -99,7 +94,7 @@ if(isset($_GET['referral_code'])){
       <p>Your referral code is:</p>
       <input type="text" value="<?php echo $_GET['referral_code']; ?>" readonly>
       <p>Copy and share this code with your friends to start earning rewards!</p>
-      <button id="copy" onclick="copy()">Copy</button>
+      <button id="copy" onclick="copyTextToClipboard('<?php echo $_GET['referral_code'] ?>')">Copy</button>
     </main>
     <footer>
       <p>&copy; 2023 Example Company. All rights reserved.</p>
@@ -108,8 +103,38 @@ if(isset($_GET['referral_code'])){
 </html>
 
 <script>
-    function copy(){
-        navigator.clipboard.writeText(<?php echo $_GET['referral_code']; ?>);
-        alert("Copied");
+    function fallbackCopyTextToClipboard(text) {
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    
+    // Avoid scrolling to bottom
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Fallback: Copying text command was ' + msg);
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+    }
+
+    document.body.removeChild(textArea);
+    }
+    function copyTextToClipboard(text) {
+    if (!navigator.clipboard) {
+        fallbackCopyTextToClipboard(text);
+        return;
+    }
+    navigator.clipboard.writeText(text).then(function() {
+        console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+        console.error('Async: Could not copy text: ', err);
+    });
     }
 </script>

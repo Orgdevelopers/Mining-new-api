@@ -88,8 +88,8 @@
       <p>Refer To your friends and earn rewards! Here's how it works:</p>
       <ul>
         <li>Share your referral code with your friends.</li>
-        <li>Your friend signs up using your code.</li>
-        <li>You both receive rewards!</li>
+        <!-- <li>Your friend signs up using your code.</li> -->
+        <li>Rewards<br> • $ 0.10 Signup bonus <br> • $ 5.0 Server Upgrade bonu <br> • $ 5.5 First investment bonus</li>
       </ul>
       <p>Your referral code is:</p>
       <input type="text" value="<?php echo $_GET['referral_code']; ?>" readonly>

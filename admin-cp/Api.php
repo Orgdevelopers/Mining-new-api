@@ -320,7 +320,7 @@ function getallWithdrawalRequests(){
         "token" => PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']),
     ];
     
-    $url = API_URL."getalltransections";
+    $url = API_URL."showAllWithdrawRequests";
 
     //echo encrypt_password($password);
 

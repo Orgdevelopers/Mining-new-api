@@ -188,6 +188,11 @@ class User extends AppModel {
         }
     }
 
+    public function getField($id, $field)
+    {
+        return $this->Query("SELECT $field FROM user WHERE id = '$id' ;")->fetch_array(1);
+    }
+
     public function getAllEnrgyRechargeableUsers()
     {
         $date = Utility::GetTimeStamp();

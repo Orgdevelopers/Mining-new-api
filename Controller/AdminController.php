@@ -243,6 +243,40 @@ class AdminController extends Controller {
         die;
     }
 
+    public function showAllWithdrawRequests()
+    {
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('Transactions');
+        $this->loadModel('User');
+
+        $transactions = $this->Transactions->getAllPending(0,999);
+
+        $all = [];
+
+        foreach ($transactions as  $transaction) {
+
+            $username = $this->User->getField($transaction['user_id'],"username");
+            $transaction['username'] = $username['username'];
+
+            $all[] = $transaction;
+            
+        }
+
+        if(count($all)>0){
+            $output['code'] = 200;
+            $output['msg'] = $all;
+        }else{
+            $output['code'] = 201;
+            $output['msg'] = "no records";
+        }
+
+        echo json_encode($output);
+        die;
+    }
+
+
 
     /*
      * encrypted functions;

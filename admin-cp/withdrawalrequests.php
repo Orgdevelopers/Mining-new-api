@@ -19,21 +19,16 @@ $allcategories = getallWithdrawalRequests();
                             </div>
                         </div>
 
-                        <!-- <div class="right" style="padding: 10px 0;">
-                            <button onclick="addCategory()" class="com-button com-submit-button com-button--large com-button--default">
-                                <div class="com-submit-button__content"><span>Add Category</span></div>
-                            </button>
-                        </div> -->
                         <!--start of datatable here-->
 
                         <table id="table_view" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>User ID</th>
+                                    <th>#</th>
+                                    <th>User</th>
                                     <th>Amount</th>
-                                    <th>Wallet Address</th>
-                                    <th>Status</th>
+                                    <th>Wallet Type</th>
+                                    <th>Method</th>
                                     <th>Created</th>
                                     <th>Action</th>
 
@@ -49,23 +44,17 @@ $allcategories = getallWithdrawalRequests();
                                         <tr>
                                             <td><?php echo $singleRow['id']; ?></td>
                                             <td>
-                                                <?php echo $singleRow['user_id']; ?>
+                                                <?php echo $singleRow['username']; ?>
                                             </td>
 
-                                            <td><?php echo $singleRow['amount']; ?></td>
+                                            <td><?php echo '$'.$singleRow['amount']; ?></td>
                                             <td>
-                                                <?php echo $singleRow['wallet_address']; ?>
+                                                <?php if($singleRow['wallet_type'] == '0'){echo "Invest";}else if($singleRow['wallet_type'] == '1'){echo "Task";}else{ echo "Mine";} ?>
                                             </td>
 
                                             <td>
-                                                <?php if ($singleRow['status']=="0") {
-                                                    echo "Pending";
-                                                }else if($singleRow['status']=="1"){
-                                                    echo "Accepted";
-                                                }else{
-                                                    echo "Rejected";
-                                                }
-                                                
+                                                <?php
+                                                    echo $singleRow['method'];
                                                 ?>
                                             </td>
 
@@ -126,11 +115,11 @@ $allcategories = getallWithdrawalRequests();
                             <tfoot>
                                 <tr>
 
-                                    <th>ID</th>
-                                    <th>User ID</th>
+                                    <th>#</th>
+                                    <th>User</th>
                                     <th>Amount</th>
-                                    <th>Wallet Address</th>
-                                    <th>Status</th>
+                                    <th>Wallet Type</th>
+                                    <th>Method</th>
                                     <th>Created</th>
                                     <th>Action</th>
 

@@ -1,5 +1,12 @@
 <?php
 
+echo json_encode(array(
+  'name' => 'PayPal',
+  'type' => 'email',
+  'status' => '1'
+));
+
+die;
 if(isset($_GET['count'])){
     for ($i=0; $i < $_GET['count']; $i++) { 
         $id = uniqid();

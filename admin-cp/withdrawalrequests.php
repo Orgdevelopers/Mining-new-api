@@ -54,7 +54,7 @@ $allcategories = getallWithdrawalRequests();
 
                                             <td>
                                                 <?php
-                                                    echo $singleRow['method'];
+                                                    echo $singleRow['message'];
                                                 ?>
                                             </td>
 

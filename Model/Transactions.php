@@ -59,7 +59,7 @@ class Transactions extends AppModel
 
     public function getAllPending($starting_point = 0, $limit = 10)
     {
-        return $this->Query("SELECT * FROM $this->db ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db WHERE status = 0 ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
 

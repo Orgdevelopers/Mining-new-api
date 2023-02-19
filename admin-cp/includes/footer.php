@@ -1,42 +1,50 @@
-<?php
-
-?>
-
-
-<footer class="main-footer">
-        <div class="footer-left">
-          Copyright &copy; 2023 <div class="bullet"></div> Design By <a href="mailto:kinddusingh1k2k3@gmail.com">Kulvinder singh</a>
+<footer><p>© 2019 All rights reserved. <a href="#">System License Agreement</a>
+    </p></footer>
+<div class="PopupParent" id="PopupParent"
+     style="background: rgba(0, 0, 0, 0.3); display: none;  position:  fixed; top: 0;width:  100%;height:  100%;z-index:  99999;">
+    <div class="wdth" style="">
+        <button type="button" onclick="ClosePopup();" class="buttonColor closebnt">×</button>
+        <div class="modal-content" style="">
+            <div class="modal-body" id="contentReceived"> Loading...</div>
         </div>
-        <div class="footer-right">
-          
-        </div>
-      </footer>
-  </div>
-  </div>
+    </div>
+</div>
+<style>
 
-  <!-- General JS Scripts -->
-  <script src="assets/modules/jquery.min.js"></script>
-  <script src="assets/modules/popper.js"></script>
-  <script src="assets/modules/tooltip.js"></script>
-  <script src="assets/modules/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-  <script src="assets/modules/moment.min.js"></script>
-  <script src="assets/js/stisla.js"></script>
-  
-  <!-- JS Libraies -->
-  <script src="assets/modules/simple-weather/jquery.simpleWeather.min.js"></script>
-  <script src="assets/modules/chart.min.js"></script>
-  <script src="assets/modules/jqvmap/dist/jquery.vmap.min.js"></script>
-  <script src="assets/modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-  <script src="assets/modules/summernote/summernote-bs4.js"></script>
-  <script src="assets/modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
-  <script src="assets/modules/izitoast/js/iziToast.min.js"></script>
+</style>
+<style>    table.dataTable thead th, table.dataTable thead td {
+        padding: 10px 9px;
+        border-bottom: 1px solid #111;
+    }
 
-  <!-- Page Specific JS File -->
-  <script src="assets/js/page/index-0.js"></script>
+    table.dataTable tfoot th, table.dataTable tfoot td {
+        padding: 10px 11px;
+        border-top: 1px solid #111;
+    }</style>
 
-  <!-- Template JS File -->
-  <script src="assets/js/scripts.js"></script>
-  <script src="assets/js/custom.js"></script>
-</body>
-</html>
+<script src="frontend_public/assets-minified/js/not_landing.min.js"></script>
+<script src="frontend_public/assets-minified/js/map.min.js"></script>
+
+<script src="frontend_public/assets-minified/js/login.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.alert-dialog').click(function () {
+            var modalTitle = $(this).attr('data-modal-title');
+            if (!modalTitle || typeof modalTitle === 'undefined') {
+                modalTitle = "Delete Confirmation";
+            }
+            $("#global-alert-modal #globalAlertFrm .modal-title").html(modalTitle);
+            var message = "<i class='fa fa-info-circle'></i> " + $(this).attr('data-message');
+            $("#global-alert-modal #globalAlertFrm").attr('action', $(this).attr('data-action'));
+            $("#global-alert-modal #globalAlertFrm .modal-body").html(message);
+            $("input[name=hdnResource]").val($(this).attr('data-id'));
+            $("#global-alert-modal").modal('show');
+        });
+    });
+
+
+
+
+
+   </script>
+<script src="frontend_public/assets-minified/js/custom.js"></script>

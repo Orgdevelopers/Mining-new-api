@@ -18,7 +18,7 @@ class User extends AppModel {
 
     public function showAllAdmin($sp = 0,$limit = 999)
     {
-        return $this->Query("SELECT id, username, plan, last_plan, plan_purchased, last_plan_purchased, allow_public_chat, status, created FROM user ORDER BY user.id DESC LIMIT $sp,$limit ;")->fetch_all(1);
+        return $this->Query("SELECT id, username, email, plan, last_plan, plan_purchased, last_plan_purchased, allow_public_chat, status, created FROM user ORDER BY user.id DESC LIMIT $sp,$limit ;")->fetch_all(1);
     }
 
     public function showDetailsByEmail($var = "")

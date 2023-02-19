@@ -1,576 +1,273 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  
-  <link
-    href="https://cdn.jsdelivr.net/gh/mortezaom/google-sans-cdn@master/fonts.css"
-    rel="stylesheet"
-  />
-  <title>Checkbox</title>
-
-  <style>
-    body {
-      font-family: "Google Sans";
-    }
-
-    .containerSwitch {
-      display: flex;
-      align-items: center;
-      position: relative;
-      height: 44px;
-      gap: 10px;
-      overflow: hidden;
-    }
-    .containerSwitch::before, .containerSwitch::after {
-      content: "";
-      position: absolute;
-      width: auto;
-      height: 10px;
-    }
-
-    .containerSwitch.loading .switch {
-      pointer-events: none;
-    }
-    .containerSwitch.loading .switch .slider {
-      width: 25px;
-      background-color: #9b999b;
-    }
-    .containerSwitch.loading .switch .slider::before {
-      border: 3px solid #9b999b;
-      border-top: 3px solid #6174f0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-    }
-    .containerSwitch.active .switch .slider::before {
-      right: 3px;
-      left: unset;
-    }
-    .containerSwitch.active.loading .switch .slider::before {
-      right: 0px;
-      left: unset;
-    }
-    
-    .switch {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      height: 25px;
-      width: 40px;
-    }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .switch .slider {
-      position: absolute;
-      z-index: 10;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-      background-color: #e1413e;
-      transition: all .3s ease-in-out
-    }
-    .switch .slider::before {
-      content: "";
-      position: absolute;
-      height: 19px;
-      width: 19px;
-      left: 3px;
-      bottom: 3px;
-      background-color: rgb(241, 241, 241);
-      transition: .3s ease;
-      transition-property: background-color;
-      animation: spin 1s ease infinite;
-    }
-    .containerSwitch.active .switch  .slider.round {
-      background-color: #1bc665;
-    }
-    .switch .slider.round {
-      border-radius: 19px;
-      box-shadow: 2px 2px 5px rgb(0, 0, 0, .1);
-    }
-    .switch .slider.round::before {
-      border-radius: 50%;
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      } to {
-        transform: rotate(360deg);
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="containerSwitch" id="switch1">
-    <label class="switch">
-      <input type="checkbox">
-      <span class="slider round"></span>
-    </label>
-    
-  </div>
-
-  <div class="containerSwitch" id="fullSwitch"><label class="switch"><input type="checkbox"><span class="slider round"></span></label></div>
-
-  <script>
-    document.querySelector("#switch1 input").addEventListener("change", function() {
-      let containerSwitch = document.querySelector("#switch1");
-      let checked = this.checked;
-      let loading = true;
-
-      containerSwitch.classList.add("loading");
-      //document.body.style.backgroundColor = "#D8DDFF";
-      
-      var obj = {user_id: id};
-      data = jQueryRequest("togglePublicChat",obj,function callback(data){
-        console.log(data);
-      });
-
-
-      setTimeout(() => {
-        loading = false;
-        containerSwitch.classList.remove("loading");
-        if(checked) {
-          containerSwitch.classList.add("active");
-          //document.body.style.backgroundColor = "#FFDEDE";
-        } else {
-          containerSwitch.classList.remove("active");
-          //document.body.style.backgroundColor = "#DEFCEB";
-        }
-      }, 1000)
-    });
-
-    document.querySelector("#fullSwitch input").addEventListener("change", function() {
-      let containerSwitch = document.querySelector("#fullSwitch");
-      let checked = this.checked;
-      let loading = true;
-
-      containerSwitch.classList.add("loading");
-      //document.body.style.backgroundColor = "#D8DDFF";
-      
-      setTimeout(() => {
-        loading = false;
-        containerSwitch.classList.remove("loading");
-        if(checked) {
-          containerSwitch.classList.add("active");
-          //document.body.style.backgroundColor = "#FFDEDE";
-        } else {
-          containerSwitch.classList.remove("active");
-          //document.body.style.backgroundColor = "#DEFCEB";
-        }
-      }, 1000)
-    })
-
-  </script>
-</body>
-</html>
-
 <?php
-die;
-?>
 
-<!-- GRADIENT SPINNER -->
-<div class="spinner-box">
-  <div class="circle-border">
-    <div class="circle-core"></div>
-  </div>  
-</div>
+require_once("Api.php");
 
-<!-- SPINNER ORBITS -->
-<div class="spinner-box">
-  <div class="blue-orbit leo">
-  </div>
+function Format_nubbbmbers($num) {
 
-  <div class="green-orbit leo">
-  </div>
+    if($num>1000) {
   
-  <div class="red-orbit leo">
-  </div>
+          $x = round($num);
+          $x_number_format = number_format($x);
+          $x_array = explode(',', $x_number_format);
+          $x_parts = array('k', 'm', 'b', 't');
+          $x_count_parts = count($x_array) - 1;
+          $x_display = $x;
+          $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
+          $x_display .= $x_parts[$x_count_parts - 1];
   
-  <div class="white-orbit w1 leo">
-  </div><div class="white-orbit w2 leo">
-  </div><div class="white-orbit w3 leo">
-  </div>
-</div>
+          return $x_display;
+  
+    }else{
+        return $num;
+    }
+  
+  }
 
-<!-- GRADIENT CIRCLE PLANES -->
-<div class="spinner-box">
-  <div class="leo-border-1">
-    <div class="leo-core-1"></div>
-  </div> 
-  <div class="leo-border-2">
-    <div class="leo-core-2"></div>
-  </div> 
-</div>
 
-<!-- SPINNING SQUARES -->
-<div class="spinner-box">
-  <div class="configure-border-1">  
-    <div class="configure-core"></div>
-  </div>  
-  <div class="configure-border-2">
-    <div class="configure-core"></div>
-  </div> 
-</div>
+  if($_GET['text']!=null){
+  
+    echo html_entity_decode(htmlspecialchars_decode($_GET['text'] ));//json_encode(htmlentities(htmlspecialchars($_GET['text'])));
+  }
 
-<!-- LOADING DOTS... -->
-<div class="spinner-box">
-  <div class="pulse-containerSwitch">  
-    <div class="pulse-bubble pulse-bubble-1"></div>
-    <div class="pulse-bubble pulse-bubble-2"></div>
-    <div class="pulse-bubble pulse-bubble-3"></div>
-  </div>
-</div>
+  //echo Format_numbers(getallapps()[0]['downloads'])."             ".getallapps()[0]['downloads'];
+/*
+  $conn=create_conn();
 
-<!-- SOLAR SYSTEM -->
-<div class="spinner-box">
-  <div class="solar-system">
-    <div class="earth-orbit orbit">
-      <div class="planet earth"></div>
-      <div class="venus-orbit orbit">
-        <div class="planet venus"></div>
-        <div class="mercury-orbit orbit">
-          <div class="planet mercury"></div>
-          <div class="sun"></div>
+  $qry=mysqli_query($conn,"select * from home_banners");
+
+  
+  $row=mysqli_fetch_all($qry,1);
+
+  echo json_encode($row);
+
+
+  $conn=create_conn();
+  $qry="delete from apps where id='37'";
+
+  if($conn->query($qry)){
+      echo "done";
+  }else{
+
+    echo "failed";
+  }
+*/
+
+
+
+  ?>
+
+
+
+<script type="text/javascript">
+  const all_images=new Array();
+  function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      var div= document.createElement('div');
+      var img = document.createElement('img');
+      img.src=e.target.result;
+      img.style.width='auto';
+      img.style.height=100;
+
+      div.append(img);
+      document.getElementById('all_images').append(div);
+      all_images[all_images.length]=input;
+      for(i=0;i<all_images.length;i++){
+        document.getElementById('all_images').value.append(all_images[i]);
+      }
+      //document.getElementById('pickedimage').src=(e.target.result);//attr('src', e.target.result).width(150).height(200);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function countimages(){
+  document.getElementById('form').append(all_images);
+  document.getElementById('form').submit();
+  //const fd = new FormData(document.getElementById('form'));
+  //return all_images.length+fd.values.bind();
+
+}
+</script>
+<form id="form" action="test.php" method="GET">
+<textarea type="text" name="text"></textarea>
+<div id="all_images" style="display: flex; overflow: scroll;"></div>
+<input value="click me" type="submit">
+
+</form>
+
+
+<select name="test" id="test">
+    <option value="">
+        <option value="1">test</option>
+        <option value="2" selected>test2</option>
+    </option>
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="qr-content">
+    <div class="qr-page-content">
+        <div class="qr-page zeropadding">
+            <div class="qr-content-area">
+
+                <div class="qr-row">
+                    <div class="qr-el">
+
+                        <div class="page-title">
+                            <h2>All Sliders</h2>
+                            <div class="head-area">
+                            </div>
+                        </div>
+
+                        <div class="qr-row1">
+
+                            <?php
+                            foreach ($all_uploads as $single_slider) :
+                            ?>
+                                <div class="qr-el qr-el-1" style="float: left;">
+                                    <div style="height: 160px;">
+                                        <a href="process.php?action=deleteSlider&id=<?php echo $single_slider['id']; ?>" class="hover_image">
+                                            <div class="deleteIcon">
+                                                <i class="fa fa-trash" style="margin-top: 5px;"></i>
+                                            </div>
+                                        </a>
+                                        <img src="<?php if(strpos($single_slider['url'],"http")){
+                                            echo $single_slider['url'];
+                                        }else{
+                                            echo $imagebaseurl . $single_slider['url']; 
+                                        } ?>" alt="slider image" style="width: 100%; height: 100%">
+                                    </div>
+
+                                    
+
+                                </div>
+                            <?php
+                            endforeach;
+                            ?>
+
+                            <form id="sliderImageform" action="process.php?action=addAppSliderImage" method="POST" enctype="multipart/form-data">
+                                <div class="qr-el qr-el-1" style="float: left;">
+                                    <label for="uploadFile" class="hoviringdell uploadBox" id="uploadTrigger" style="height: 160px;">
+                                        <img src="frontend_public/uploads/attachment/upload.png">
+                                        <div class="uploadText">
+                                            <span style="color:#F69518;">Browse</span><br>
+                                            Size 610x350px
+                                        </div>
+                                    </label>
+                                </div>
+                                <input name="image" class="hidden" id="uploadFile" type="file" accept=".jpg,.png,.jpeg" required="required">
+                                <input value="Submit" class="buttoncolor full_width" style="border: 0px;" type="hidden">
+                            </form>
+                            <div style="clear:both;"></div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
     </div>
-  </div>
-</div>
 
-<!-- Three Quarter Spinner -->
+    <script>
+        $(document).ready(function() {
+            $('#table_view').DataTable({
+                "pageLength": 100
+            });
+            $('#table_view2').DataTable({
+                "pageLength": 35
+            });
+        });
 
-<div class="spinner-box"><div class="three-quarter-spinner"></div></div>
 
-<style>
-    /* KEYFRAMES */
 
-@keyframes spin {
-  from {
-    transform: rotate(0);
-  }
-  to{
-    transform: rotate(359deg);
-  }
-}
+        document.getElementById("uploadFile").onchange = function() {
+            appSlider();
+        };
 
-@keyframes spin3D {
-  from {
-    transform: rotate3d(.5,.5,.5, 360deg);
-  }
-  to{
-    transform: rotate3d(0deg);
-  }
-}
 
-@keyframes configure-clockwise {
-  0% {
-    transform: rotate(0);
-  }
-  25% {
-    transform: rotate(90deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  75% {
-    transform: rotate(270deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+        function appSlider() {
 
-@keyframes configure-xclockwise {
-  0% {
-    transform: rotate(45deg);
-  }
-  25% {
-    transform: rotate(-45deg);
-  }
-  50% {
-    transform: rotate(-135deg);
-  }
-  75% {
-    transform: rotate(-225deg);
-  }
-  100% {
-    transform: rotate(-315deg);
-  }
-}
+            var fileUpload = document.getElementById("uploadFile");
 
-@keyframes pulse {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: .25;
-    transform: scale(.75);
-  }
-}
 
-/* GRID STYLING */
+            var regex = new RegExp("(.jpg|.png|.jpeg)$");
+            if (regex.test(fileUpload.value.toLowerCase())) {
 
-* {
-  box-sizing: border-box;
-}
 
-body {
-  min-height: 100vh;
-  background-color: #1d2630;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
+                if (typeof(fileUpload.files) != "undefined") {
 
-.spinner-box {
-  width: 300px;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
-}
+                    var reader = new FileReader();
 
-/* SPINNING CIRCLE */
+                    reader.readAsDataURL(fileUpload.files[0]);
+                    reader.onload = function(e) {
 
-.leo-border-1 {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  padding: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: rgb(63,249,220);
-  background: linear-gradient(0deg, rgba(63,249,220,0.1) 33%, rgba(63,249,220,1) 100%);
-  animation: spin3D 1.8s linear 0s infinite;
-}
+                        var image = new Image();
 
-.leo-core-1 {
-  width: 100%;
-  height: 100%;
-  background-color: #37474faa;
-  border-radius: 50%;
-}
 
-.leo-border-2 {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  padding: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: rgb(251, 91, 83);
-  background: linear-gradient(0deg, rgba(251, 91, 83, 0.1) 33%, rgba(251, 91, 83, 1) 100%);
-  animation: spin3D 2.2s linear 0s infinite;
-}
+                        image.src = e.target.result;
 
-.leo-core-2 {
-  width: 100%;
-  height: 100%;
-  background-color: #1d2630aa;
-  border-radius: 50%;
-}
 
-/* ALTERNATING ORBITS */
+                        image.onload = function() {
+                            var height = this.height;
+                            var width = this.width;
 
-.circle-border {
-  width: 150px;
-  height: 150px;
-  padding: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: rgb(63,249,220);
-  background: linear-gradient(0deg, rgba(63,249,220,0.1) 33%, rgba(63,249,220,1) 100%);
-  animation: spin .8s linear 0s infinite;
-}
 
-.circle-core {
-  width: 100%;
-  height: 100%;
-  background-color: #1d2630;
-  border-radius: 50%;
-}
+                            if (height == 350 && width == 610) {
 
-/* X-ROTATING BOXES */
+                                document.getElementById("sliderImageform").submit();
 
-.configure-border-1 {
-  width: 115px;
-  height: 115px;
-  padding: 3px;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fb5b53;
-  animation: configure-clockwise 3s ease-in-out 0s infinite alternate;
-}
+                            } else {
 
-.configure-border-2 {
-  width: 115px;
-  height: 115px;
-  padding: 3px;
-  left: -115px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgb(63,249,220);
-  transform: rotate(45deg);
-  animation: configure-xclockwise 3s ease-in-out 0s infinite alternate;
-}
+                                alert("Size 610x350");
+                                return false;
+                            }
+                        };
 
-.configure-core {
-  width: 100%;
-  height: 100%;
-  background-color: #1d2630;
-}
-
-/* PULSE BUBBLES */
-
-.pulse-containerSwitch {
-  width: 120px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.pulse-bubble {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #3ff9dc;
-}
-
-.pulse-bubble-1 {
-    animation: pulse .4s ease 0s infinite alternate;
-}
-.pulse-bubble-2 {
-    animation: pulse .4s ease .2s infinite alternate;
-}
-.pulse-bubble-3 {
-    animation: pulse .4s ease .4s infinite alternate;
-}
-
-/* SOLAR SYSTEM */
-
-.solar-system {
-  width: 250px;
-  height: 250px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.orbit {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #fafbfC;
-  border-radius: 50%;
-} 
-
-.earth-orbit {
-  width: 165px;
-  height: 165px;
-  -webkit-animation: spin 12s linear 0s infinite;
-}
-
-.venus-orbit {
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 7.4s linear 0s infinite;
-}
-
-.mercury-orbit {
-  width: 90px;
-  height: 90px;
-  -webkit-animation: spin 3s linear 0s infinite;
-}
-
-.planet {
-  position: absolute;
-  top: -5px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #3ff9dc;
-}
-
-.sun {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background-color: #ffab91;
-}
-
-.leo {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-}
-
-.blue-orbit {
-  width: 165px;
-  height: 165px;
-  border: 1px solid #91daffa5;
-  -webkit-animation: spin3D 3s linear .2s infinite;
-}
-
-.green-orbit {
-  width: 120px;
-  height: 120px;
-  border: 1px solid #91ffbfa5;
-  -webkit-animation: spin3D 2s linear 0s infinite;
-}
-
-.red-orbit {
-  width: 90px;
-  height: 90px;
-  border: 1px solid #ffca91a5;
-  -webkit-animation: spin3D 1s linear 0s infinite;
-}
-
-.white-orbit {
-  width: 60px;
-  height: 60px;
-  border: 2px solid #ffffff;
-  -webkit-animation: spin3D 10s linear 0s infinite;
-}
-
-.w1 {
-  transform: rotate3D(1, 1, 1, 90deg);
-}
-
-.w2 {
-  transform: rotate3D(1, 2, .5, 90deg);
-}
-
-.w3 {
-  transform: rotate3D(.5, 1, 2, 90deg);
-}
-
-.three-quarter-spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid #fb5b53;
-  border-top: 3px solid transparent;
-  border-radius: 50%;
-  animation: spin .5s linear 0s infinite;
-}
-</style>
+                    }
+                } else {
+                    alert("This browser does not support HTML5.");
+                    return false;
+                }
+            } else {
+                alert("Please select a valid Image file.");
+                return false;
+            }
+        }
+    </script>

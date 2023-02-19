@@ -24,11 +24,10 @@ class AppController {
 
         }else if($controller == "admin"){
             $this->initApi();
-
-            $source = new AdminController();
-
             $database = new Database();
             $database->getDatabase();
+
+            $source = new AdminController();
 
             try {
                 $source->$request();

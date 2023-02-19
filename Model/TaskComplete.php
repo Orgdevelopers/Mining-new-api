@@ -36,6 +36,10 @@ class TaskComplete extends AppModel
         return $this->Query("SELECT * FROM $this->db2 WHERE user_id = '$user_id' ORDER BY id DESC LIMIT $sp,$limit ;")->fetch_all(1);
     }
 
+    public function getAllRequests($sp = 0, $limit = 20)
+    {
+        return $this->Query("SELECT * FROM $this->db2 ORDER BY id DESC LIMIT $sp,$limit ;")->fetch_all(1);
+    }
 
     public function getUserRequestsPending($user_id, $sp = 0, $limit = 20)
     {

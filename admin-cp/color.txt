@@ -1,0 +1,2 @@
+yellow theme = #F79C0F
+blue theme = #2961EC

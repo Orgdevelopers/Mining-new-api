@@ -17,6 +17,7 @@ class AdminController extends Controller {
         $get = $_GET;
         $this->params = array_merge($json_data, $post, $get);
 
+        $this->loadModel('Admins');
     }
 
 
@@ -47,27 +48,32 @@ class AdminController extends Controller {
     public function showallUsers()
     {
         //sleep(1);
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
+
+
         $sp = 0;
         if(isset($this->params['page'])){
             $sp = $this->params['page'];
         }
         $this->loadModel('User');
-        $this->loadModel('Investments');
+        //$this->loadModel('Investments');
 
 
-        $users = $this->User->showAllAdmin(($sp*ADMIN_RECORDS_PER_PAGE),ADMIN_RECORDS_PER_PAGE);
+        //$users = $this->User->showAllAdmin(($sp*ADMIN_RECORDS_PER_PAGE),ADMIN_RECORDS_PER_PAGE);
+        $users = $this->User->showAllAdmin(($sp*ADMIN_RECORDS_PER_PAGE),999);
 
         $all = array();
 
-        foreach ($users as $user) {
-            $user['investments'] = $this->Investments->countUser($user['id']);
-            $all[] = $user;
-        }
+        // foreach ($users as $user) {
+        //     $user['investments'] = $this->Investments->countUser($user['id']);
+        //     $all[] = $user;
+        // }
 
         if($users){
             echo json_encode(array(
                 'code' => 200,
-                'msg' => $all
+                'msg' => $users
             ));
         }else{
             echo json_encode(array(
@@ -82,12 +88,214 @@ class AdminController extends Controller {
     }
 
 
+    public function showServerPurchaseRequests()
+    {
+        
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('BuyWithCrypto');
+
+        $array = array();
+        $array = $this->BuyWithCrypto->getAllPending("plan",0,999);
+
+        if(count($array) > 0){
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => $array
+            ));
+        }else{
+            echo json_encode(array(
+                'code' => 202,
+                'msg' => 'no records'
+            )); 
+        }
+
+        die;
+
+    }
+
+
+    public function showInvestmentRequests()
+    {
+        
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('BuyWithCrypto');
+
+        $array = array();
+        $array = $this->BuyWithCrypto->getAllPending("investment",0,999);
+
+        if(count($array) > 0){
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => $array
+            ));
+        }else{
+            echo json_encode(array(
+                'code' => 202,
+                'msg' => 'no records'
+            )); 
+        }
+
+        die;
+
+    }
+
+
     public function checkParams($names = array())
     {
         foreach($names as $name){
             if(!isset($this->params[$name])){
                 Response::IncompleteParams();
             }
+        }
+    }
+
+
+    public function showAllPlans()
+    {
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('Plans');
+
+        $all = $this->Plans->showAll();
+
+        if(count($all)>0){
+            $output['code'] = 200;
+            $output['msg'] = $all;
+        }else{
+            $output['code'] = 201;
+            $output['msg'] = "no records";
+        }
+
+        echo json_encode($output);
+        die;
+
+    }
+
+
+    public function showAllInvestPlans()
+    {
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('InvestPlans');
+
+        $all = $this->InvestPlans->getAll();
+
+        if(count($all)>0){
+            $output['code'] = 200;
+            $output['msg'] = $all;
+        }else{
+            $output['code'] = 201;
+            $output['msg'] = "no records";
+        }
+
+        echo json_encode($output);
+        die;
+
+    }
+
+
+    public function showAllTasks()
+    {
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('Task');
+
+        $all = $this->Task->getAll();
+
+        if(count($all)>0){
+            $output['code'] = 200;
+            $output['msg'] = $all;
+        }else{
+            $output['code'] = 201;
+            $output['msg'] = "no records";
+        }
+
+        echo json_encode($output);
+        die;
+    }
+
+    
+    public function showAllTaskRequests()
+    {
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('TaskComplete');
+
+        $all = $this->TaskComplete->getAllRequests();
+
+        if(count($all)>0){
+            $output['code'] = 200;
+            $output['msg'] = $all;
+        }else{
+            $output['code'] = 201;
+            $output['msg'] = "no records";
+        }
+
+        echo json_encode($output);
+        die;
+    }
+
+
+    /*
+     * encrypted functions;
+     */
+    public function adminlogin()
+    {
+        //echo Utility::EncryptPassword("123456");
+        $this->checkParams(['token']);
+        $params = json_decode(Utility::DecryptPassword($this->params['token']),true);
+
+        $admin = $this->Admins->getDetailsByEmail($params['email']);
+        if($admin){
+            if($admin['password'] == Utility::EncryptPassword($params['password'])){
+
+                echo json_encode(array(
+                    'code' => 200,
+                    'msg' => $admin
+                ));
+
+            }else{
+                echo json_encode(array(
+                    'code' => 202,
+                    'msg' => 'incorrect password'
+                )); 
+            }
+
+        }else{
+            echo json_encode(array(
+                'code' => 201,
+                'msg' => 'email or username not registered'
+            ));
+        }
+
+        die;
+
+    }
+
+
+
+     /*
+     * encrypted functions;
+     */
+
+
+    public function validateToken($token)
+    {
+        $t = Utility::DecryptPassword($token);
+        if(!$this->Admins->validateToken($t)){
+            echo json_encode(array(
+                'code' => 401,
+                'msg' => 'invali token : $'
+            ));
+            die;
         }
     }
 

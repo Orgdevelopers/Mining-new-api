@@ -26,6 +26,12 @@ class BuyWithCrypto extends AppModel
     }
 
 
+    public function getAllPending($type = "plan",$sp = 0,$limit = 999)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE action = '$type' AND status = 0 ORDER BY id ASC LIMIT $sp,$limit ;")->fetch_all(1);
+    }
+
+
     public function countPending()
     {
         $result = $this->Query("SELECT COUNT(*) AS count FROM $this->db WHERE status = 0")->fetch_array(1);

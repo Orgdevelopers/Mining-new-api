@@ -27,12 +27,8 @@ function http_request($id)
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
   $return = curl_exec($ch);
 
-  $json_data = json_decode($return, true);
-
-
-  $curl_error = curl_error($ch);
-  $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-  return $json_data;
+  curl_close($ch);
+  //return $json_data;
 }
 
 ?>

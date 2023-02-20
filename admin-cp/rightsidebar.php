@@ -71,8 +71,14 @@
                         <i class="fa-solid fa-landmark"></i> Withdrawal requests
                     </a>
                 </li>
-
+                
             
+                <li>
+                    <a href="dashboard.php?p=appSettings" class="<?php if (strpos($_SERVER['REQUEST_URI'], "appSettings") !== false) { echo "router-link-active ";} ?>"> 
+                        <i class="fa-solid fa-gear"></i> Settings
+                    </a>
+                </li>
+                
                 
                 <li>
                     <a href="dashboard.php?p=logout" class="<?php if (strpos($_SERVER['REQUEST_URI'], "logout") !== false) { echo "router-link-active ";} ?>"> 

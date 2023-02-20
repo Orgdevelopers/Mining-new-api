@@ -1347,7 +1347,8 @@ class ApiController extends Controller {
                         'wallet_type' => $this->params['wallet_type'],
                         'amount' => $this->params['amount'],
                         'charge' => $this->params['fee'],
-                        'title' => 'Withdrawal'
+                        'title' => 'Withdrawal',
+                        'message' => $this->params['method']
 
                     );
 
@@ -1733,6 +1734,67 @@ class ApiController extends Controller {
 
 
         die;
+    }
+
+
+
+    public function showPayoutMethods()
+    {
+        $this->loadModel('PayoutMethods');
+        $this->loadModel('AppSettings');
+
+        $methods = $this->AppSettings->getAppSettings();
+        $msg = array();
+
+        if($methods){
+            //echo $methods['withdraw_methods'];
+            $methods = json_decode($methods['withdraw_methods'],true);
+
+            foreach($methods as $method){
+                if($method['status'] == 1){
+                    if(isset($this->params['user_id'])){
+
+                        $detail = $this->PayoutMethods->getByName($this->params['user_id'],$method['name']);
+                        if($detail){
+                            $method['user_method'] = $detail['method'];
+
+                        }
+                    }
+
+                    $msg[] = $method;
+
+
+                }
+            }
+
+            if(count($msg) > 0){
+                $output = array(
+                    'code' => 200,
+                    'msg' => $msg
+                );
+            }else{
+                $output = array(
+                    'code' => 201,
+                    'msg' => "No mehtods found"
+                );
+            }
+
+        }else{
+            $output = array(
+                'code' => 101,
+                'msg' => 'server error'
+            );
+        }
+
+        echo json_encode($output);
+        die;
+
+    }
+
+
+    public function showUsersPayoutMethods(Type $var = null)
+    {
+        # code...
     }
 
 

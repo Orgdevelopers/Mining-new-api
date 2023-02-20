@@ -52,6 +52,11 @@ if(isset($_SESSION[PRE_FIX.'id']))
     			include("taskRequests.php");
     		}
 
+			if( $_GET['p'] == "appSettings" ) 
+           	{ 
+    			include("appSettings.php");
+    		}
+
     		
     		// if( $_GET['p'] == "review_aps" ) 
            	// { 

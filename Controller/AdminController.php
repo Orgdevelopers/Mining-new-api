@@ -276,7 +276,32 @@ class AdminController extends Controller {
         die;
     }
 
+    
+    public function getAppSettingsAdmin()
+    {
+        $this->checkParams(['token']);
+        $this->validateToken($this->params['token']);
 
+        $this->loadModel('AppSettings');
+        $this->loadModel('CryptoModel');
+
+        $appSettings = $this->AppSettings->getAppSettings();
+        $crypto_settings = $this->CryptoModel->getModel();
+
+        $msg['AppSettings'] = $appSettings;
+        $msg['CryptoModel'] = $crypto_settings;
+
+        if(count($msg)>0){
+            $output['code'] = 200;
+            $output['msg'] = $msg;
+        }else{
+            $output['code'] = 201;
+            $output['msg'] = "no records";
+        }
+
+        echo json_encode($output);
+        die;
+    }
 
 
     /*

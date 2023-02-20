@@ -337,6 +337,35 @@ function getallWithdrawalRequests(){
 
 }
 
+
+function getAppSettings(){
+    $headers = [
+        "Accept: application/json",
+        "Content-Type: application/json",
+        
+    ];
+    
+    $data = [
+        "token" => PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']),
+    ];
+    
+    $url = API_URL."getAppSettingsAdmin";
+    
+    //echo encrypt_password($password);
+
+    $json_data = ApiRequest($data,$headers,$url);
+
+    if($json_data != null && $json_data['code']=="200"){
+        $output=$json_data['msg'];
+
+    }else{
+        $output=[];
+
+    }
+    return $output;
+
+}
+
 function getPlanInfo($id){
     $headers = [
         "Accept: application/json",

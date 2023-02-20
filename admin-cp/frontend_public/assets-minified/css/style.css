@@ -2129,11 +2129,11 @@ table.dataTable.display tbody td {
 
 .btn {
     border: none;
-    background: #A64C41;
-    color: #C8BDA0;
-    font-size: 20px;
+    /* background: #A64C41; */
+    /* color: #C8BDA0; */
+    font-size: 14px;
     border-radius: 3px;
-    padding: 12px 50px;
+    padding: 8px 20px;
     cursor: pointer;
 }
 

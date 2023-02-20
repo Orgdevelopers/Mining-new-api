@@ -1,10 +1,29 @@
 <?php
 
-echo json_encode(array(
+$all = array();
+
+$all[] = array(
   'name' => 'PayPal',
   'type' => 'email',
   'status' => '1'
-));
+);
+
+$all[] = 
+array(
+  'name' => 'Crypto (USDT-TRC)',
+  'type' => 'text',
+  'status' => '1'
+);
+
+$all[] = 
+array(
+  'name' => 'Binance',
+  'type' => 'email',
+  'status' => '1'
+);
+
+echo json_encode($all);
+
 
 die;
 if(isset($_GET['count'])){

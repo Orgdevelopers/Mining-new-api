@@ -24,7 +24,7 @@ class PayoutMethods extends AppModel
 
     public function getByName($user_id,$name)
     {
-        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND name = '$name'");
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND name = '$name'")->fetch_array(1);
     }
 
 

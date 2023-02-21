@@ -7,6 +7,7 @@
 error_reporting(E_ALL);
 
 define('PRE_FIX' , "prohash_");
+define('APP_NAME',"TEST");
 
 try {
   require '../Lib/PasswordUtil.php';

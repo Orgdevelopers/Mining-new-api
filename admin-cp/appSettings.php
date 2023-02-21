@@ -94,16 +94,17 @@ h6.card-title {
 
                         
                         <div class="row">
+                            
         <div class="col-lg-6 col-md-6 pull-left">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Wallet Address Settings</h6>
                     <div class="site-settings-alert"></div>
-                    <form class="site-settings" method="POST">
+                    <form class="site-settings" method="POST" action="process.php?action=updateCryptoModel">
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Title</label>
-                                <input type="text" name="title" class="form-control" value="<?php echo $appSettings['CryptoModel']['title'] ;?>">
+                                <input required type="text" name="title" class="form-control" value="<?php echo $appSettings['CryptoModel']['title'] ;?>">
                                 <small class="admin-info">This will be the title of purchase dialog in app. ex- Buy with Crypto.</small>
                             </div>
                         </div>
@@ -112,7 +113,7 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Subtitle</label>
-                                <textarea name="subtitle" id="subtitle" class="form-control" cols="30" rows="3"></textarea>
+                                <textarea required name="subtitle" id="subtitle" class="form-control" cols="30" rows="3"><?php echo $appSettings['CryptoModel']['subtitle'] ;?></textarea>
                                 <small class="admin-info">text/instruction for user to complete transaction</small>
                             </div>
                         </div>
@@ -121,8 +122,8 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Wallet Address</label>
-                                <input type="text" name="wallet_address" class="form-control" value="">
-                                <small class="admin-info">Syset wallet address to show users</small>
+                                <input required type="text" name="wallet_address" class="form-control" value="<?php echo $appSettings['CryptoModel']['wallet_address'] ;?>">
+                                <small class="admin-info">Sysetm wallet address to show users</small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -130,13 +131,15 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Crypto Network</label>
-                                <input type="text" name="network" class="form-control" value="">
+                                <input required type="text" name="network" class="form-control" value="<?php echo $appSettings['CryptoModel']['network'] ;?>">
                                 <small class="admin-info">Crypto network ex- USDT-TRC, USDT-ETH</small>
                                 
                             </div>
                         </div>
+                        <div class="clearfix"></div>
+                        <hr>
 
-                        <div style="margin-top: 20px; text-align: center;">
+                        <div style="text-align: center;">
                             <div class="form-line">
                                 <!-- <label class="form-label">Crypto Network</label> -->
                                 <input type="submit" class="btn btn-success m-t-15 waves-effect" value="Update">
@@ -149,110 +152,104 @@ h6.card-title {
             </div>
 
             
-            <div class="card">
+            <!-- <div class="card">
                 <div class="card-body">
-                <button type="submit" class="btn btn-success m-t-15 waves-effect" onclick="GetSupportedCoins()">Get Supported Coins</button>
+                <h6 class="card-title">Wallet Address Settings</h6>
+                    <div class="site-settings-alert"></div>
+                    <form class="site-settings" method="POST" action="process.php?p=updateCryptoModel">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Title</label>
+                                <input type="text" name="title" class="form-control" value="<?php echo $appSettings['CryptoModel']['title'] ;?>">
+                                <small class="admin-info">This will be the title of purchase dialog in app. ex- Buy with Crypto.</small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                    </form>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
-        <div class="col-lg-6 col-md-6 pull-right">
+        <div class="col-lg-6 col-md-6 pull-left">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Point System Settings</h6>
+                    <h6 class="card-title">App Settings</h6>
                     <div class="point-settings-alert"></div>
                     <form class="point-settings" method="POST">
-                        <div class="float-left">
-                            <label for="point_level_system" class="main-label">Point System</label>
-                            <br><small class="admin-info">Gives the ability for users to earn points from liking, sharing, commenting and posting.</small>
-                        </div>
-                        <div class="form-group float-right switcher">
-                            <input type="hidden" name="point_level_system" value="0">
-                            <input type="checkbox" name="point_level_system" id="chck-point_level_system" value="1">
-                            <label for="chck-point_level_system" class="check-trail"><span class="check-handler"></span></label>
-                        </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                        <div class="float-left">
-                            <label for="point_allow_withdrawal" class="main-label">Allow user to withdrawal earned points as currency?</label>
-                            <br><small class="admin-info">Allow users to transfer earned points into money and withdrawal.</small>
-                        </div>
-                        <div class="form-group float-right switcher">
-                            <input type="hidden" name="point_allow_withdrawal" value="0">
-                            <input type="checkbox" name="point_allow_withdrawal" id="chck-point_allow_withdrawal" value="1">
-                            <label for="chck-point_allow_withdrawal" class="check-trail"><span class="check-handler"></span></label>
-                        </div>
-                        <div class="clearfix"></div>
-                        <hr>
+                        
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="form-label">$1.00 = ? Point</label>
-                                <input type="text" name="dollar_to_point_cost" class="form-control" value="100">
-                                <small class="admin-info">How much does 1 dollar equal in points?</small>
+                                <label class="form-label">Active Miners</label>
+                                <input type="number" name="active_miners" class="form-control" value="<?php echo $appSettings['AppSettings']['active_miners']; ?>">
+                                <small class="admin-info"></small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <hr>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="form-label">Commenting on Videos</label>
-                                <input type="text" name="comments_point" class="form-control" value="10">
-                                <small class="admin-info">How many points does a user earn by creating comments?</small>
+                                <label class="form-label">Quantity</label>
+                                <input type="number" name="quantity" class="form-control" value="<?php echo $appSettings['AppSettings']['quantity']; ?>">
+                                <small class="admin-info"></small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <hr>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="form-label">Liking Videos</label>
-                                <input type="text" name="likes_point" class="form-control" value="5">
-                                <small class="admin-info">How many points does a user earn by liking videos?</small>
+                                <label class="form-label">Task View Mode</label>
+                                <select name="task_mode" id="task_mode" class="form-control">
+                                    <option value="0" <?php if($appSettings['AppSettings']['task_mode'] == 0 ){echo "selected";} ?>>API</option>
+                                    <option value="1" <?php if($appSettings['AppSettings']['task_mode'] == 1 ){echo "selected";} ?>>HTML</option>
+                                </select>
+                                <small class="admin-info">Task(CPA) mode</small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <hr>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="form-label">Disliking Videos</label>
-                                <input type="text" name="dislikes_point" class="form-control" value="2">
-                                <small class="admin-info">How many points does a user earn by disliking videos?</small>
+                                <label class="form-label">Investment Withdraw Fees %</label>
+                                <input type="number" name="fee_invest" class="form-control" value="<?php echo $appSettings['AppSettings']['fee_invest']; ?>">
+                                <small class="admin-info"></small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <hr>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="form-label">Watching Videos</label>
-                                <input type="text" name="watching_point" class="form-control" value="2">
-                                <small class="admin-info">How many points does a user earn by wondering videos?</small>
+                                <label class="form-label">Mining Withdraw Fees %</label>
+                                <input type="number" name="fee_mine" class="form-control" value="<?php echo $appSettings['AppSettings']['fee_mine']; ?>">
+                                <small class="admin-info"></small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <hr>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="form-label">Uploading Videos</label>
-                                <input type="text" name="upload_point" class="form-control" value="20">
-                                <small class="admin-info">How many points does a user earn by uploading videos?</small>
+                                <label class="form-label">TP Value $</label>
+                                <input type="number" name="point_value" class="form-control" value="<?php echo $appSettings['AppSettings']['points_value']; ?>">
+                                <small class="admin-info">1TP = --$. example:- 1TP = 0.01 (this way 1$ / 100TP)</small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <hr>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="form-label">Free Users Daily Limit</label>
-                                <input type="text" name="free_day_limit" class="form-control" value="1000">
-                                <small class="admin-info">How many points can a free user earn in a day?</small>
+                                <label class="form-label">Withdraw Limit ($)</label>
+                                <input type="number" name="withdraw_limit" class="form-control" value="<?php echo $appSettings['AppSettings']['withdraw_limit']; ?>">
+                                <small class="admin-info"></small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <hr>
-                        <div class="form-group form-float">
+                        <div style="text-align: center;">
                             <div class="form-line">
-                                <label class="form-label">Pro Members Daily Limit</label>
-                                <input type="text" name="pro_day_limit" class="form-control" value="2000">
-                                <small class="admin-info">How many points can a pro user earn in a day?</small>
+                                <!-- <label class="form-label">Crypto Network</label> -->
+                                <input type="submit" class="btn btn-success m-t-15 waves-effect" value="Update">
+                                <!-- <small class="admin-info">Crypto network ex- USDT-TRC, USDT-ETH</small> -->
                             </div>
                         </div>
                     </form>

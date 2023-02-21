@@ -25,7 +25,7 @@ if (isset($_GET['action'])) {
     if ($json_data['code'] == '200') {
       $_SESSION[PRE_FIX . 'id'] = $json_data['msg']['id'];
       $_SESSION[PRE_FIX . 'role'] = 'admin';
-      echo "<script>window.location='dashboard.php?p=plans'</script>";
+      echo "<script>window.location='dashboard.php?p=servers'</script>";
     } else {
       $error_msg = $json_data['msg'];
       echo "<script>window.location='index.php?action=error&msg=" . $error_msg . "'</script>";
@@ -33,23 +33,17 @@ if (isset($_GET['action'])) {
 
 
   } else
-  if ($_GET['action'] == "creatPlan") {
+  if ($_GET['action'] == "updateCryptoModel") {
 
     $data = $_POST;
-    $headers = [
-      "Accept: application/json",
-      "Content-Type: application/json",
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
 
-    ];
+    $url = API_URL . "updateCryptoModel";
 
-    $url = API_URL . "createplan";
-
-    //echo encrypt_password($password);
-
-    $json_data = http_request($data, $headers, $url);
+    $json_data = http_request($data, null, $url);
 
     if ($json_data['code'] == "200") {
-      return_to_plans(true);      
+      returnToSettings(true);      
     } else {
       if (isset($json_data['msg'])) {
         $error = $json_data['msg'];
@@ -57,10 +51,11 @@ if (isset($_GET['action'])) {
         $error = json_encode($json_data);
       }
       $_SESSION[PRE_FIX . 'error'] = $error;
-      return_to_plans(false);
-
+      returnToSettings(false);
 
     }
+
+    /*  */
 
   }else 
   if($_GET['action'] == "deletePlan"){
@@ -569,11 +564,11 @@ if (isset($_GET['action'])) {
   
 }
 
-function return_to_withdrawalrequests($success){
+function returnToSettings($success){
   if($success){
-    echo "<script>window.location = 'dashboard.php?p=withdrawalrequests&action=success'</script>";
+    echo "<script>window.location = 'dashboard.php?p=appSettings&action=success'</script>";
   }else{
-    echo "<script>window.location = 'dashboard.php?p=withdrawalrequests&action=error'</script>";
+    echo "<script>window.location = 'dashboard.php?p=appSettings&action=error'</script>";
   }
 }
 

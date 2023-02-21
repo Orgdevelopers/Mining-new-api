@@ -1,4 +1,4 @@
-<footer><p>© 2022 All rights reserved @Socilize platforms. <a href="#">System License Agreement</a></p></footer>
+<footer><p>© 2023 All rights reserved <?php echo APP_NAME; ?>. <a href="#">System License Agreement</a></p></footer>
 
 <div class="PopupParent" id="PopupParent" style="background: rgba(0, 0, 0, 0.3); display: none;  position:  fixed; top: 0;width:  100%;height:  100%;z-index:  99999;">
     <div class="wdth" style="">

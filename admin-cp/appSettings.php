@@ -177,13 +177,13 @@ h6.card-title {
                 <div class="card-body">
                     <h6 class="card-title">App Settings</h6>
                     <div class="point-settings-alert"></div>
-                    <form class="point-settings" method="POST" action="process.php?action='updateAppSettings'">
+                    <form class="point-settings" method="POST" action="process.php?action=updateAppSettings">
                         
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Active Miners</label>
                                 <input type="number" name="active_miners" class="form-control" value="<?php echo $appSettings['AppSettings']['active_miners']; ?>">
-                                <small class="admin-info"></small>
+                                <small class="admin-info"><?php if($appSettings['AppSettings']['active_miners']<999){echo "Inside app a random value from ".($appSettings['AppSettings']['active_miners']-20)." to ".($appSettings['AppSettings']['active_miners']+20)." will be shown";} ?></small>
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -230,7 +230,7 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">TP Value $</label>
-                                <input type="number" name="point_value" class="form-control" value="<?php echo $appSettings['AppSettings']['points_value']; ?>">
+                                <input type="number" name="points_value" class="form-control" value="<?php echo $appSettings['AppSettings']['points_value']; ?>">
                                 <small class="admin-info">1TP = --$. example:- 1TP = 0.01 (this way 1$ / 100TP)</small>
                             </div>
                         </div>

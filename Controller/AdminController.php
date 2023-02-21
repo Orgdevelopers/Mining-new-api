@@ -353,6 +353,43 @@ class AdminController extends Controller {
     }
 
 
+    public function acceptWithdrawRequest()
+    {
+        $this->checkParams(['token','id']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('User');
+        $this->loadModel('Transactions');
+
+        $transaction = $this->Transactions->getDetailsById($this->params['id']);
+
+        if($transaction && $transaction['status'] == 0){
+
+            $user = $this->User->showDetailsById($transaction['user_id']);
+            
+            $this->Transactions->id = $transaction['id'];
+            //$this->Transactions->saveField('status','1');
+
+            $notification = PushNotifications::getNotificationBodyData($user['to'],WITHDRAW_SUCCESS_HEAD,WITHDRAW_SUCCESS_BODY,"default");
+            PushNotifications::send($notification);
+
+            $output = array(
+                'code' => 200,
+                'msg' => 'success'
+            );
+
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => 'error'
+            );
+        }
+
+        echo json_encode($output);
+
+    }
+
+
     /*
      * encrypted functions;
      */

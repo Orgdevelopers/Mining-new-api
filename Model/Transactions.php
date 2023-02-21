@@ -51,6 +51,11 @@ class Transactions extends AppModel
         return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);
     }
 
+    public function getDetailsById($id)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE id = '$id' ;")->fetch_array(1);
+    }
+
     public function getAll($starting_point = 0, $limit = 10)
     {
         return $this->Query("SELECT * FROM $this->db ORDER BY id DESC LIMIT $starting_point,$limit ;")->fetch_all(1);

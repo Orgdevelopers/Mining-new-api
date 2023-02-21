@@ -45,6 +45,9 @@ define('REFERRAL_PLAN_PURCHASE_BODY','%u_n% has just Upgraded mining server. you
 define('INVESTMENT_RETURN_HEAD',CONGRATULATIONS.'');
 define('INVESTMENT_RETURN_BODY','Investment id %i_n% has been completed successfully. %a_m% has been added to your Invest Wallet');
 
+define('WITHDRAW_SUCCESS_HEAD',CONGRATULATIONS.'');
+define('WITHDRAW_SUCCESS_BODY','Your withdraw request for %a_m% has been accepted. The amount has been sent to your connected payout method');
+
 //define(;)
 
 

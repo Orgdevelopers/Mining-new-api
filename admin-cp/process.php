@@ -36,7 +36,6 @@ if (isset($_GET['action'])) {
   if ($_GET['action'] == "updateCryptoModel") {
 
     $data = $_POST;
-    //$data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
 
     $url = API_URL . "updateCryptoModel";
 
@@ -60,13 +59,9 @@ if (isset($_GET['action'])) {
   }else 
   if($_GET['action'] == "updateAppSettings"){
 
-    if(isset($_GET['id'])){
 
       $data = $_POST;
-  
       $url = API_URL . "updateAppSettings";
-
-      
       $json_data = http_request($data, null, $url);
 
       if($json_data['code']=="200"){
@@ -83,27 +78,18 @@ if (isset($_GET['action'])) {
         returnToSettings(false);
 
       }
-  
-
-    }else{
-      return_to_plans(false);
-    }
 
   }else 
-  if($_GET['action']=="updatePlan"){
+  if($_GET['action']=="acceptWithdrawRequest"){
     
     if(isset($_GET['id'])){
 
-      $data = $_POST;
+      $data = array();
       $data['id'] = $_GET['id'];
+      $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
 
-      $headers = [
-        "Accept: application/json",
-        "Content-Type: application/json",
-      ];
   
-      $url = API_URL . "updateplan";
-      //echo encrypt_password($password);
+      $url = API_URL . "acceptWithdrawRequest";
   
       $json_data = http_request($data, $headers, $url);
 

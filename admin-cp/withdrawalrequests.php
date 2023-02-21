@@ -76,26 +76,21 @@ $allcategories = getallWithdrawalRequests();
                                                         <?php
                                                             if($singleRow['status']=="0"){
                                                                 echo '<li class="more-menu-item" role="presentation" >
-                                                                        <a  href="process.php?action=reject_withdrawal_request&id='.$singleRow['id'].'">
-                                                                            <button type="button" class="more-menu-btn" role="menuitem">Reject</button>
+                                                                        <a  href="process.php?action=acceptWithdrawRequest&id='.$singleRow['id'].'">
+                                                                            <button type="button" class="more-menu-btn" role="menuitem">Accept</button>
                                                                         </a>
                                                                     </li>';
                                                             }
 
                                                             if( $singleRow['status']=="0"){
                                                                 echo '<li class="more-menu-item" role="presentation" >
-                                                                        <a  href="process.php?action=accept_withdrawal_request&id='.$singleRow['id'].'">
-                                                                            <button type="button" class="more-menu-btn" role="menuitem">Accept</button>
-                                                                        </a>
+                                                                            <button type="button" class="more-menu-btn" onClick="alert(\''.$singleRow['id'].'\')" role="menuitem">Reject</button>
+                                                                        
                                                                     </li>';
                                                             }
 
                                                             ?>
-                                                            <li class="more-menu-item" role="presentation">
-                                                                <a href="process.php?action=delete_withdrawal_request&id=<?php echo $singleRow['id'];?>">
-                                                                    <button type="button" class="more-menu-btn" role="menuitem">Delete</button>
-                                                                </a>
-                                                            </li>
+                                                            
                                                         </ul>
                                                     </div>
                                                 </div>

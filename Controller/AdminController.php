@@ -370,13 +370,82 @@ class AdminController extends Controller {
             $this->Transactions->id = $transaction['id'];
             $this->Transactions->saveField('status','1');
 
-            $notification = PushNotifications::getNotificationBodyData($user['token'],WITHDRAW_SUCCESS_HEAD,WITHDRAW_SUCCESS_BODY,"default");
+            $body = str_replace("%a_m%","$ ".$transaction['amount'],WITHDRAW_SUCCESS_BODY);
+            $notification = PushNotifications::getNotificationBodyData($user['token'],WITHDRAW_SUCCESS_HEAD,$body,"default");
             PushNotifications::send($notification);
 
             $output = array(
                 'code' => 200,
                 'msg' => 'success'
             );
+
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => 'error'
+            );
+        }
+
+        echo json_encode($output);
+
+    }
+
+
+    public function RejectWithdrawRequest()
+    {
+        $this->checkParams(['token','id']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('User');
+        $this->loadModel('Wallets');
+        $this->loadModel('AppSettings');
+        $this->loadModel('Transactions');
+
+        $transaction = $this->Transactions->getDetailsById($this->params['id']);
+        $settings = $this->AppSettings->getAppSettings();
+
+        if($transaction && $transaction['status'] == 0){
+
+            $user = $this->User->showDetailsById($transaction['user_id']);
+            
+            $this->Transactions->id = $transaction['id'];
+            $this->Transactions->saveField('status','2');
+
+            
+            $balance = $this->Wallets->getUserWallets($user['id']);
+
+            if($balance){
+                $this->Wallets->id = $user['id'];
+                if($transaction['wallet_type'] == 0){
+                    $this->Wallets->saveField('balance_invest',($balance['balance_invest']+$transaction['amount']));
+                    
+                }else if($transaction['wallet_type']==1){
+                    $tp = $transaction['amount'] / $settings['points_value'];
+                    $tp = (int) $tp;
+                    $this->Wallets->saveField('balance_task',($balance['balance_task']+$tp));
+
+                }else{
+                    
+
+                }
+
+                $body = str_replace("%a_m%","$ ".$transaction['amount'],WITHDRAW_FAIL_BODY);
+                $notification = PushNotifications::getNotificationBodyData($user['token'],WITHDRAW_FAIL_HEAD,$body,"default");
+                PushNotifications::send($notification);
+
+                $output = array(
+                    'code' => 200,
+                    'msg' => 'success'
+                );
+
+            }else{
+                $output = array(
+                'code' => 202,
+                'msg' => 'error'
+                );
+            }
+
+            
 
         }else{
             $output = array(

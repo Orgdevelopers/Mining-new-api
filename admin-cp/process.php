@@ -94,7 +94,7 @@ if (isset($_GET['action'])) {
       $json_data = http_request($data, $headers, $url);
 
       if($json_data['code']=="200"){
-        return_to_plans(true);
+        returnToWithdrawReqeust(true);
 
       }else{
 
@@ -104,14 +104,14 @@ if (isset($_GET['action'])) {
           $error = json_encode($json_data);
         }
         $_SESSION[PRE_FIX . 'error'] = $error;
-        return_to_plans(false);
+        returnToWithdrawReqeust(false);
 
       }
   
 
     }else{
       $_SESSION[PRE_FIX.'error'] = "missing id";
-      return_to_plans(false);
+      returnToWithdrawReqeust(false);
     }
 
   }else
@@ -553,11 +553,11 @@ function returnToSettings($success){
   }
 }
 
-function return_to_purchase_req($success){
+function returnToWithdrawReqeust($success){
   if($success){
-    echo "<script>window.location = 'dashboard.php?p=purchaserequests&action=success'</script>";
+    echo "<script>window.location = 'dashboard.php?p=withdrawalrequests&action=success'</script>";
   }else{
-    echo "<script>window.location = 'dashboard.php?p=purchaserequests&action=error'</script>";
+    echo "<script>window.location = 'dashboard.php?p=withdrawalrequests&action=error'</script>";
   }
 }
 

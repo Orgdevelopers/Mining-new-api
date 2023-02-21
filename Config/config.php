@@ -48,6 +48,10 @@ define('INVESTMENT_RETURN_BODY','Investment id %i_n% has been completed successf
 define('WITHDRAW_SUCCESS_HEAD',CONGRATULATIONS.'');
 define('WITHDRAW_SUCCESS_BODY','Your withdraw request for %a_m% has been accepted. The amount has been sent to your connected payout method');
 
+
+define('WITHDRAW_FAIL_HEAD','Cancellation of Withdrawal notice');
+define('WITHDRAW_FAIL_BODY','Your withdraw request for %a_m% has been cancelled. The amount has been returned to your wallet');
+
 //define(;)
 
 

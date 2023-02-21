@@ -355,8 +355,8 @@ class AdminController extends Controller {
 
     public function acceptWithdrawRequest()
     {
-        //$this->checkParams(['token','id']);
-        //$this->validateToken($this->params['token']);
+        $this->checkParams(['token','id']);
+        $this->validateToken($this->params['token']);
 
         $this->loadModel('User');
         $this->loadModel('Transactions');
@@ -368,7 +368,7 @@ class AdminController extends Controller {
             $user = $this->User->showDetailsById($transaction['user_id']);
             
             $this->Transactions->id = $transaction['id'];
-            //$this->Transactions->saveField('status','1');
+            $this->Transactions->saveField('status','1');
 
             $notification = PushNotifications::getNotificationBodyData($user['token'],WITHDRAW_SUCCESS_HEAD,WITHDRAW_SUCCESS_BODY,"default");
             PushNotifications::send($notification);

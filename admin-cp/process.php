@@ -36,12 +36,13 @@ if (isset($_GET['action'])) {
   if ($_GET['action'] == "updateCryptoModel") {
 
     $data = $_POST;
-    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+    //$data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
 
     $url = API_URL . "updateCryptoModel";
 
     $json_data = http_request($data, null, $url);
-
+    echo json_encode($json_data);
+    die;
     if ($json_data['code'] == "200") {
       returnToSettings(true);      
     } else {

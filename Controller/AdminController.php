@@ -306,8 +306,8 @@ class AdminController extends Controller {
 
     public function updateCryptoModel()
     {
-        $this->checkParams(['token']);
-        $this->validateToken($this->params['token']);
+        //$this->checkParams(['token']);
+        //$this->validateToken($this->params['token']);
 
         //$this->loadModel('AppSettings');
         $this->loadModel('CryptoModel');

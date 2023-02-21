@@ -53,7 +53,7 @@ class AppSettings extends AppModel
                     $value = $data[$key];
                     $qry .= $key . " = '$value' ";
 
-                    if(count($keys) != ($i+1)){
+                    if(count($keys) != ($i+2)){
                         $qry .= ", ";
                     }
                 }

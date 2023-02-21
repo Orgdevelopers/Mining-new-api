@@ -41,8 +41,7 @@ if (isset($_GET['action'])) {
     $url = API_URL . "updateCryptoModel";
 
     $json_data = http_request($data, null, $url);
-    echo json_encode($json_data);
-    die;
+    
     if ($json_data['code'] == "200") {
       returnToSettings(true);      
     } else {
@@ -59,24 +58,19 @@ if (isset($_GET['action'])) {
     /*  */
 
   }else 
-  if($_GET['action'] == "deletePlan"){
+  if($_GET['action'] == "updateAppSettings"){
 
     if(isset($_GET['id'])){
 
-      $data['id'] = $_GET['id'];
+      $data = $_POST;
+  
+      $url = API_URL . "updateAppSettings";
+
       
-      $headers = [
-        "Accept: application/json",
-        "Content-Type: application/json",
-      ];
-  
-      $url = API_URL . "deleteplan";
-      //echo encrypt_password($password);
-  
-      $json_data = http_request($data, $headers, $url);
+      $json_data = http_request($data, null, $url);
 
       if($json_data['code']=="200"){
-        return_to_plans(true);
+        returnToSettings(true);
 
       }else{
 
@@ -86,7 +80,7 @@ if (isset($_GET['action'])) {
           $error = json_encode($json_data);
         }
         $_SESSION[PRE_FIX . 'error'] = $error;
-        return_to_plans(false);
+        returnToSettings(false);
 
       }
   

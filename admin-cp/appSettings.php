@@ -160,7 +160,7 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Title</label>
-                                <input type="text" name="title" class="form-control" value="<?php echo $appSettings['CryptoModel']['title'] ;?>">
+                                <input type="text" name="title" class="form-control" value="">
                                 <small class="admin-info">This will be the title of purchase dialog in app. ex- Buy with Crypto.</small>
                             </div>
                         </div>
@@ -177,7 +177,7 @@ h6.card-title {
                 <div class="card-body">
                     <h6 class="card-title">App Settings</h6>
                     <div class="point-settings-alert"></div>
-                    <form class="point-settings" method="POST">
+                    <form class="point-settings" method="POST" action="process.php?action='updateAppSettings'">
                         
                         <div class="form-group form-float">
                             <div class="form-line">

@@ -306,10 +306,7 @@ class AdminController extends Controller {
 
     public function updateCryptoModel()
     {
-        //$this->checkParams(['token']);
-        //$this->validateToken($this->params['token']);
-
-        //$this->loadModel('AppSettings');
+        
         $this->loadModel('CryptoModel');
 
         $data = $this->params;
@@ -329,6 +326,30 @@ class AdminController extends Controller {
         echo json_encode($output);
         die;
         
+    }
+
+
+    public function updateAppSettings()
+    {
+        $this->loadModel('AppSettings');
+
+        $data = $this->params;
+        $data['id'] = 1;
+        unset($data['token']);
+
+        $a = $this->AppSettings->Save($data);
+
+        if($a){
+            $output['code'] = 200;
+            $output['msg'] = "success";
+        }else{
+            $output['code'] = 201;
+            $output['msg'] = "error";
+        }
+
+        echo json_encode($output);
+        die;
+
     }
 
 

@@ -26,6 +26,11 @@ class Task extends AppModel
     }
 
 
+    public function getDetailsById($id)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE id='$id' ;")->fetch_array(1);
+    }
+
 
     public function getField($id, $field)
     {
@@ -77,6 +82,11 @@ class Task extends AppModel
         }
 
         return $result;
+    }
+
+    public function delete($id)
+    {
+        return $this->Query("DELETE FROM $this->db WHERE id = '$id';");
     }
 
 }

@@ -195,8 +195,9 @@ class ApiController extends Controller {
             $user = $this->User->showDetailsById($user_id);
 
             $date = Utility::GetTimeStamp();
+            $expiry = Utility::GetPlanExpiry($date,$plan_details['duration']);
 
-            $user_update = array('id'=>$user_id, 'plan'=>$plan_id, 'plan_purchased'=> $date );
+            $user_update = array('id'=>$user_id, 'plan'=>$plan_id, 'plan_purchased'=> $date,'plan_ending' => $expiry );
             $result = $this->User->update($user_update);
 
             if($result){

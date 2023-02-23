@@ -32,6 +32,12 @@ class BuyWithCrypto extends AppModel
     }
 
 
+    public function getDetailsById($id)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE id = '$id' ;")->fetch_array(1);
+    }
+
+
     public function countPending()
     {
         $result = $this->Query("SELECT COUNT(*) AS count FROM $this->db WHERE status = 0")->fetch_array(1);

@@ -461,7 +461,7 @@ tfoot th {
 .closebnt {
     position: absolute;
     margin-top: -35px;
-    margin-left: 615px;
+    margin-left: 515px;
     border: 0;
     border-radius: 50%;
     font-size: 21px;
@@ -510,7 +510,8 @@ tfoot th {
     height: auto;
     border-radius: 5px;
     margin: 38px auto;
-    max-width: 650px;
+    max-width: 550px;
+    animation: unfoldIn 1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
 }
 
 .full_width input,
@@ -2137,5 +2138,67 @@ table.dataTable.display tbody td {
     cursor: pointer;
 }
 
+@keyframes scaleUp {
+    0% {
+      transform:scale(.8) translateY(1000px);
+      opacity:0;
+    }
+    100% {
+      transform:scale(1) translateY(0px);
+      opacity:1;
+    }
+  }
+  
+  @keyframes scaleDown {
+    0% {
+      transform:scale(1) translateY(0px);
+      opacity:1;
+    }
+    100% {
+      transform:scale(.8) translateY(1000px);
+      opacity:0;
+    }
+  }
+
+@keyframes unfoldIn {
+    0% {
+      transform:scaleY(.005) scaleX(0);
+    }
+    50% {
+      transform:scaleY(.005) scaleX(1);
+    }
+    100% {
+      transform:scaleY(1) scaleX(1);
+    }
+  }
+  
+  @keyframes unfoldOut {
+    0% {
+      transform:scaleY(1) scaleX(1);
+    }
+    50% {
+      transform:scaleY(.005) scaleX(1);
+    }
+    100% {
+      transform:scaleY(.005) scaleX(0);
+    }
+  }
+  @keyframes zoomIn {
+    0% {
+      transform:scale(0);
+    }
+    100% {
+      transform:scale(1);
+    }
+  }
+  
+  @keyframes zoomOut {
+    0% {
+      transform:scale(1);
+    }
+    100% {
+      transform:scale(0);
+    }
+  }
 
 /*end of dashboard css*/

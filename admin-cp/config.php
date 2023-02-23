@@ -17,7 +17,7 @@ try {
 
 //Access Your API URL in browser and you will get a code to put over here that will be something like this https://prnt.sc/w309sg
 
-$baseurl = "https://hosting.tiktalkvideo.online/";
+$baseurl = "http://localhost/new_api/";
 $baseurl = str_replace("admin-cp","",$baseurl);
 // $api_url =  
 
@@ -56,6 +56,28 @@ function http_request($data, $h, $url)
   $json_data = json_decode($return, true);
 
 
+  $curl_error = curl_error($ch);
+  $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  return $json_data;
+}
+
+
+function http_request_file($url,$data)
+{
+  $headers = [
+    "Accept: application/json",
+    "Content-Type: application/json",
+    "Api-Key: ".API_KEY,
+  ];
+
+  $ch = curl_init($url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS,($data));
+  //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+  $return = curl_exec($ch);
+
+  $json_data = json_decode($return, true);
   $curl_error = curl_error($ch);
   $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
   return $json_data;

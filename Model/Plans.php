@@ -57,6 +57,44 @@ class Plans extends AppModel {
     }
 
 
+    public function Save($data)
+    {
+        if($this->id != "0" || isset($data['user_id'])){
+
+            if(isset($data['user_id'])){
+                $this->id = $data['user_id'];
+            }
+
+            $keys = array_keys($data);
+
+            $qry = "UPDATE plans SET ";
+
+            for ($i=0; $i < count($keys); $i++) { 
+
+                $key = $keys[$i];
+
+                if($key != "user_id"){
+                    $value = $data[$key];
+                    $qry .= $key . " = '$value' ";
+
+                    if(count($keys) != ($i+2)){
+                        $qry .= ", ";
+                    }
+                }
+            }
+
+            $qry .= "WHERE user_id = '$this->id' ;";
+
+            $result = $this->Query($qry);
+
+        }else{
+            $result = false;
+        }
+
+        return $result;
+    }
+
+
 }
 
 ?>

@@ -17,7 +17,28 @@ $(document).ready(function() {
 
 
 
-function edituser(id) {
+function rejectWithdrawRequest(id) {
+    var popup_parent  = document.getElementById("PopupParent");
+    popup_parent.style.display = "block";
+    document.getElementById("contentReceived").innerHTML = '';
+
+    var xmlhttp;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            // alert(xmlhttp.responseText);
+            document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET", "ajex-events.php?q=rejectWithdrawRequest&id=" + id);
+    xmlhttp.send();
+}
+
+function rejectTaskRequest(id) {
     document.getElementById("PopupParent").style.display = "block";
     document.getElementById("contentReceived").innerHTML = "loading...";
 
@@ -33,11 +54,12 @@ function edituser(id) {
             document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
         }
     }
-    xmlhttp.open("GET", "ajex-events.php?q=edituser&id=" + id);
+    xmlhttp.open("GET", "ajex-events.php?q=rejectTaskRequest&id=" + id);
     xmlhttp.send();
 }
 
-function editWalletAddress(id) {
+
+function rejectServerPurchaseRequest(id) {
     document.getElementById("PopupParent").style.display = "block";
     document.getElementById("contentReceived").innerHTML = "loading...";
 
@@ -53,11 +75,12 @@ function editWalletAddress(id) {
             document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
         }
     }
-    xmlhttp.open("GET", "ajex-events.php?q=editWalletAddress&id=" + id);
+    xmlhttp.open("GET", "ajex-events.php?q=rejectServerPurchaseRequest&id=" + id);
     xmlhttp.send();
 }
 
-function editplan(id) {
+
+function editInvestmentPlan(id) {
     document.getElementById("PopupParent").style.display = "block";
     document.getElementById("contentReceived").innerHTML = "loading...";
 
@@ -73,10 +96,30 @@ function editplan(id) {
             document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
         }
     }
-    xmlhttp.open("GET", "ajex-events.php?q=editplan&id=" + id);
+    xmlhttp.open("GET", "ajex-events.php?q=editInvestmentPlan&id=" + id);
     xmlhttp.send();
 }
 
+
+function editServer(id) {
+    document.getElementById("PopupParent").style.display = "block";
+    document.getElementById("contentReceived").innerHTML = "loading...";
+
+    var xmlhttp;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            // alert(xmlhttp.responseText);
+            document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET", "ajex-events.php?q=editServer&id=" + id);
+    xmlhttp.send();
+}
 
 function createPlan() {
     document.getElementById("PopupParent").style.display = "block";

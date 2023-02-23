@@ -60,7 +60,7 @@ class InvestPlans extends AppModel
                     $value = $data[$key];
                     $qry .= $key . " = '$value' ";
 
-                    if(count($keys) != ($i+1)){
+                    if(count($keys) != ($i+2)){
                         $qry .= ", ";
                     }
                 }
@@ -75,6 +75,11 @@ class InvestPlans extends AppModel
         }
 
         return $result;
+    }
+
+    public function delete($id)
+    {
+        return $this->Query("DELETE FROM $this->db WHERE id = '$id'");
     }
 
 }

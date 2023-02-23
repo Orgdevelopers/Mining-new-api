@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="frontend_public/assets-minified/css/style.css?time=<?php echo time(); ?>">
     <script src="https://kit.fontawesome.com/ac9b11d13d.js"></script>
     
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="frontend_public/assets-minified/css/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
     
     <script type="text/javascript" language="javascript" src="frontend_public/assets-minified/js/jquery-3.3.1.js"></script>

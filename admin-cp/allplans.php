@@ -90,7 +90,7 @@ $allplans = getAllPlans();
 
                                                             <li class="more-menu-item" role="presentation">
                                                                 <a>
-                                                                    <button type="button" onclick="editplan(<?php echo $singleRow['id'] ?>,'plans')" class="more-menu-btn" role="menuitem">Edit</button>
+                                                                    <button type="button" onclick="editServer('<?php echo $singleRow['id'] ?>')" class="more-menu-btn" role="menuitem">Edit</button>
                                                                 </a>
                                                             </li>
                                                             <li class="more-menu-item" role="presentation">

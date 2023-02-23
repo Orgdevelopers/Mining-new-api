@@ -43,7 +43,7 @@ if(isset($_SESSION[PRE_FIX.'id']))
                                                 </div>
                                                 
                                                 <div style="margin-top: 10px;">
-                                			        <form action="process.php?action=editTask" method="post" enctype="multipart/form-data">
+                                			        <form action="process.php?action=updateTask" method="POST" enctype="multipart/form-data">
                                                         <label class="field_title">ID</label>
                                     			        <input readonly name="id" value="<?php echo $single_user['id']; ?>" style="width: 100%;border: solid 1px #d9d4d4;font-size: 14px;padding:2px 8px; border-radius: 3px;height: 30px;">
                                                         <label class="field_title">Link</label>
@@ -59,7 +59,7 @@ if(isset($_SESSION[PRE_FIX.'id']))
                                         endforeach; 
                                     ?>
                                     
-                                    <form id="sliderImageform" action="process.php?action=addTaskImage" method="POST" enctype="multipart/form-data">
+                                    <form id="sliderImageform" action="process.php?action=addTask" method="POST" enctype="multipart/form-data">
                                         <div class="qr-el qr-el-1" style="float: left;">
                                             <label for="uploadFile" class="hoviringdell uploadBox" id="uploadTrigger" style="height: 160px;">
                                                 <img src="frontend_public/uploads/attachment/upload.png">
@@ -129,14 +129,18 @@ if(isset($_SESSION[PRE_FIX.'id']))
                             var width = this.width;
                             
                             
-                            if (height == 350 && width == 610) 
+                            if (height >= 360 && height <= 1080) 
                             {
-    
-                                document.getElementById("sliderImageform").submit();
+                                //if((width/height) <= (16/8) && (width/height) >= (16/10)){
+                                    document.getElementById("sliderImageform").submit();
+                                //}else{
+                                  //  alert("height 360-1080  Ratio 16:8 - 16:10");
+                                 //   return false;
+                                //}
     
                             } else {
     
-                                alert("Size 610x350");
+                                alert("height 360-1080");
                                 return false;
                             }
                         };

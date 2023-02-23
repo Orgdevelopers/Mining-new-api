@@ -251,6 +251,60 @@ function getAllAdminWallets(){
 
 }
 
+function getInvestPlanDetails($id){
+    $headers = [
+        "Accept: application/json",
+        "Content-Type: application/json",
+        
+    ];
+    
+    $data = [
+        'id' => $id,
+        "token" => PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']),
+    ];
+    
+    $url = API_URL."getInvestPlanDetails";
+
+    //echo encrypt_password($password);
+
+    $json_data = http_request($data,null,$url);
+
+    if($json_data != null && $json_data['code']=="200"){
+        $output=$json_data['msg'];
+
+    }else{
+        $output=[];
+
+    }
+    return $output;
+
+}
+
+function getPlanDetails($id){
+
+    $data = [
+        'id' => $id,
+        "token" => PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']),
+    ];
+    
+    $url = API_URL."getPlanDetails";
+
+    //echo encrypt_password($password);
+
+    $json_data = http_request($data,null,$url);
+
+    if($json_data != null && $json_data['code']=="200"){
+        $output=$json_data['msg'];
+
+    }else{
+        $output=[];
+
+    }
+    return $output;
+
+}
+
+
 function getAllPurchaseRequests()
 {
     $headers = [

@@ -26,7 +26,8 @@ $allcategories = getallWithdrawalRequests();
                                 <tr>
                                     <th>#</th>
                                     <th>User</th>
-                                    <th>Amount</th>
+                                    <th>Amount (Total)</th>
+                                    <th>Fees</th>
                                     <th>Wallet Type</th>
                                     <th>Method</th>
                                     <th>Created</th>
@@ -48,6 +49,7 @@ $allcategories = getallWithdrawalRequests();
                                             </td>
 
                                             <td><?php echo '$'.$singleRow['amount']; ?></td>
+                                            <td><?php echo '$'.$singleRow['charge']; ?></td>
                                             <td>
                                                 <?php if($singleRow['wallet_type'] == '0'){echo "Invest";}else if($singleRow['wallet_type'] == '1'){echo "Task";}else{ echo "Mine";} ?>
                                             </td>
@@ -84,7 +86,7 @@ $allcategories = getallWithdrawalRequests();
 
                                                             if( $singleRow['status']=="0"){
                                                                 echo '<li class="more-menu-item" role="presentation" >
-                                                                            <button type="button" class="more-menu-btn" onClick="alert(\''.$singleRow['id'].'\')" role="menuitem">Reject</button>
+                                                                            <button type="button" class="more-menu-btn" onClick="rejectWithdrawRequest(\''.$singleRow['id'].'\')" role="menuitem">Reject</button>
                                                                         
                                                                     </li>';
                                                             }
@@ -112,7 +114,8 @@ $allcategories = getallWithdrawalRequests();
 
                                     <th>#</th>
                                     <th>User</th>
-                                    <th>Amount</th>
+                                    <th>Amount (Total)</th>
+                                    <th>Fees</th>
                                     <th>Wallet Type</th>
                                     <th>Method</th>
                                     <th>Created</th>

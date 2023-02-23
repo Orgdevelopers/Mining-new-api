@@ -115,27 +115,23 @@ if (isset($_GET['action'])) {
     }
 
   }else
-  if($_GET['action']=="updateUser"){
+  if($_GET['action']=="rejectWithdrawRequest"){
     if(isset($_GET['id'])){
 
-      $data = $_POST;
+      $data = array();
+      if(isset($_POST['reason']) && $_POST['reason'] != ""){
+        $data['reason'] = $_POST['reason'];
+      }
       $data['id'] = $_GET['id'];
-      // echo json_encode($data);
-      // return;
+      $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
 
-      $headers = [
-        "Accept: application/json",
-        "Content-Type: application/json",
-      ];
+
+      $url = API_URL . "rejectWithdrawRequest";
   
-      $url = API_URL . "updateuser";
-      //echo encrypt_password($password);
-  
-      $json_data = http_request($data, $headers, $url);
+      $json_data = http_request($data, null, $url);
 
       if($json_data['code']=="200"){
-        return_to_users(true);
-        //echo json_encode($json_data);
+        returnToWithdrawReqeust(true);
 
       }else{
 
@@ -145,40 +141,31 @@ if (isset($_GET['action'])) {
           $error = json_encode($json_data);
         }
         $_SESSION[PRE_FIX . 'error'] = $error;
-        return_to_users(false);
+        returnToWithdrawReqeust(false);
 
       }
-
+  
 
     }else{
-      $_SESSION[PRE_FIX.'error'] = "id missing";
-      return_to_users(false);
+      $_SESSION[PRE_FIX.'error'] = "missing id";
+      returnToWithdrawReqeust(false);
     }
 
 
-
-
   }else
-  if($_GET['action']=="delete_refund_request"){
+  if($_GET['action']=="acceptTaskRequest"){
     if(isset($_GET['id'])){
 
-      //$data = $_POST;
+      $data = array();
       $data['id'] = $_GET['id'];
-      // echo json_encode($data);
-      // return;
-
-      $headers = [
-        "Accept: application/json",
-        "Content-Type: application/json",
-      ];
+      $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
   
-      $url = API_URL . "deleterefundrequest";
-      //echo encrypt_password($password);
+      $url = API_URL . "acceptTaskRequest";
   
-      $json_data = http_request($data, $headers, $url);
+      $json_data = http_request($data, null, $url);
 
       if($json_data['code']=="200"){
-        return_to_refund(true);
+        returnToTaskRequests(true);
         //echo json_encode($json_data);
 
       }else{
@@ -189,37 +176,106 @@ if (isset($_GET['action'])) {
           $error = json_encode($json_data);
         }
         $_SESSION[PRE_FIX . 'error'] = $error;
-        return_to_refund(false);
+        returnToTaskRequests(false);
 
       }
 
 
     }else{
       $_SESSION[PRE_FIX.'error'] = "id missing";
-      return_to_refund(false);
+      returnToTaskRequests(false);
     }
     
   }else
-  if($_GET['action']=="reject_refund_request"){
+  if($_GET['action']=="rejectTaskRequest"){
     if(isset($_GET['id'])){
 
-      $data = $_POST;
+      $data = array();
+      if(isset($_POST['reason']) && $_POST['reason'] != ""){
+        $data['reason'] = $_POST['reason'];
+      }
       $data['id'] = $_GET['id'];
-      // echo json_encode($data);
-      // return;
+      $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
 
-      $headers = [
-        "Accept: application/json",
-        "Content-Type: application/json",
-      ];
+
+      $url = API_URL . "rejectTaskRequest";
   
-      $url = API_URL . "reject_refund_request";
-      //echo encrypt_password($password);
-  
-      $json_data = http_request($data, $headers, $url);
+      $json_data = http_request($data, null, $url);
 
       if($json_data['code']=="200"){
-        return_to_refund(true);
+        returnToTaskRequests(true);
+
+      }else{
+
+        if (isset($json_data['msg'])) {
+          $error = $json_data['msg'];
+        } else {
+          $error = json_encode($json_data);
+        }
+        $_SESSION[PRE_FIX . 'error'] = $error;
+        returnToTaskRequests(false);
+
+      }
+  
+
+    }else{
+      $_SESSION[PRE_FIX.'error'] = "missing id";
+      returnToTaskRequests(false);
+    }
+
+
+  }else
+  if($_GET['action']=="rejectServerPurchaseRequest"){
+    if(isset($_GET['id'])){
+
+      $data = array();
+      if(isset($_POST['reason']) && $_POST['reason'] != ""){
+        $data['reason'] = $_POST['reason'];
+      }
+      $data['id'] = $_GET['id'];
+      $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+
+
+      $url = API_URL . "rejectServerPurchaseRequest";
+  
+      $json_data = http_request($data, null, $url);
+
+      if($json_data['code']=="200"){
+        returnToServerPurchaseRequests(true);
+
+      }else{
+
+        if (isset($json_data['msg'])) {
+          $error = $json_data['msg'];
+        } else {
+          $error = json_encode($json_data);
+        }
+        $_SESSION[PRE_FIX . 'error'] = $error;
+        returnToServerPurchaseRequests(false);
+
+      }
+  
+
+    }else{
+      $_SESSION[PRE_FIX.'error'] = "missing id";
+      returnToServerPurchaseRequests(false);
+    }
+
+  }else
+  if($_GET['action']=="acceptServerPurchaseRequest"){
+
+    if(isset($_GET['id'])){
+
+      $data = array();
+      $data['id'] = $_GET['id'];
+      $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+  
+      $url = API_URL . "acceptServerPurchaseRequest";
+  
+      $json_data = http_request($data, null, $url);
+
+      if($json_data['code']=="200"){
+        returnToServerPurchaseRequests(true);
         //echo json_encode($json_data);
 
       }else{
@@ -230,102 +286,21 @@ if (isset($_GET['action'])) {
           $error = json_encode($json_data);
         }
         $_SESSION[PRE_FIX . 'error'] = $error;
-        return_to_refund(false);
+        returnToServerPurchaseRequests(false);
 
       }
 
 
     }else{
       $_SESSION[PRE_FIX.'error'] = "id missing";
-      return_to_refund(false);
+      returnToServerPurchaseRequests(false);
     }
 
   }else
-  if($_GET['action']=="accept_refund_requet"){
-    if(isset($_GET['id'])){
-
-      $data = $_POST;
-      $data['id'] = $_GET['id'];
-      // echo json_encode($data);
-      // return;
-
-      $headers = [
-        "Accept: application/json",
-        "Content-Type: application/json",
-      ];
-  
-      $url = API_URL . "accept_refund_requet";
-      //echo encrypt_password($password);
-  
-      $json_data = http_request($data, $headers, $url);
-
-      if($json_data['code']=="200"){
-        return_to_refund(true);
-        //echo json_encode($json_data);
-
-      }else{
-
-        if (isset($json_data['msg'])) {
-          $error = $json_data['msg'];
-        } else {
-          $error = json_encode($json_data);
-        }
-        $_SESSION[PRE_FIX . 'error'] = $error;
-        return_to_refund(false);
-
-      }
-
-
-    }else{
-      $_SESSION[PRE_FIX.'error'] = "id missing";
-      return_to_refund(false);
-    }
-
-  }else
-  if($_GET['action']=="delete_wallet_address"){
-
-    if(isset($_GET['id'])){
-
-      $data['id'] = $_GET['id'];
-      // echo json_encode($data);
-      // return;
-
-      $headers = [
-        "Accept: application/json",
-        "Content-Type: application/json",
-      ];
-  
-      $url = API_URL . "delete_wallet_address";
-      //echo encrypt_password($password);
-  
-      $json_data = http_request($data, $headers, $url);
-
-      if($json_data['code']=="200"){
-        return_to_wallets(true);
-        //echo json_encode($json_data);
-
-      }else{
-
-        if (isset($json_data['msg'])) {
-          $error = $json_data['msg'];
-        } else {
-          $error = json_encode($json_data);
-        }
-        $_SESSION[PRE_FIX . 'error'] = $error;
-        return_to_wallets(false);
-
-      }
-
-
-    }else{
-      $_SESSION[PRE_FIX.'error'] = "id missing";
-      return_to_wallets(false);
-    }
-
-  }else
-  if($_GET['action'] =="editwalletaddress"){
+  if($_GET['action'] =="acceptInvestmentPurchaseRequest"){
       $data=$_POST;
       $data['id'] = $_GET['id'];
+      $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
       // echo json_encode($data);
       // return;
 
@@ -334,13 +309,13 @@ if (isset($_GET['action'])) {
         "Content-Type: application/json",
       ];
 
-      $url = API_URL . "editwalletaddress";
+      $url = API_URL . "acceptInvestmentPurchaseRequest";
       //echo encrypt_password($password);
 
       $json_data = http_request($data, $headers, $url);
 
       if($json_data['code']=="200"){
-        return_to_wallets(true);
+        returnToInvestmentRequests(true);
         //echo json_encode($json_data);
 
       }else{
@@ -351,28 +326,31 @@ if (isset($_GET['action'])) {
           $error = json_encode($json_data);
         }
         $_SESSION[PRE_FIX . 'error'] = $error;
-        return_to_wallets(false);
+        returnToInvestmentRequests(false);
 
       }
 
   }else 
-  if($_GET['action']=="createwalletaddress"){
-    $data=$_POST;
-    // echo json_encode($data);
-    // return;
+  if($_GET['action']=="rejectInvestmentPurchaseRequest"){
+    
+    $data['id'] = $_GET['id'];
+    if(isset($_POST['reason'])){
+      $data['reason'] = $_POST['reason'];
+    }
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
 
     $headers = [
       "Accept: application/json",
       "Content-Type: application/json",
     ];
 
-    $url = API_URL . "createwalletaddress";
+    $url = API_URL . "rejectInvestmentPurchaseRequest";
     //echo encrypt_password($password);
 
     $json_data = http_request($data, $headers, $url);
 
     if($json_data['code']=="200"){
-      return_to_wallets(true);
+      returnToInvestmentRequests(true);
       //echo json_encode($json_data);
 
     }else{
@@ -383,28 +361,27 @@ if (isset($_GET['action'])) {
         $error = json_encode($json_data);
       }
       $_SESSION[PRE_FIX . 'error'] = $error;
-      return_to_wallets(false);
+      returnToInvestmentRequests(false);
 
     }
 
   }else
-  if($_GET['action']=="acceptpurchaserequest"){
-    $data['id'] = $_GET['id'];
-    // echo json_encode($data);
-    // return;
+  if($_GET['action']=="updateTask"){
 
+    $data = $_POST;
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
     $headers = [
       "Accept: application/json",
       "Content-Type: application/json",
     ];
 
-    $url = API_URL . "acceptpurchaserequest";
+    $url = API_URL . "updateTask";
     //echo encrypt_password($password);
 
     $json_data = http_request($data, $headers, $url);
 
     if($json_data['code']=="200"){
-      return_to_purchase_req(true);
+      returnToTasks(true);
       //echo json_encode($json_data);
 
     }else{
@@ -415,14 +392,15 @@ if (isset($_GET['action'])) {
         $error = json_encode($json_data);
       }
       $_SESSION[PRE_FIX . 'error'] = $error;
-      return_to_purchase_req(false);
+      returnToTasks(false);
 
     }
 
   }else
-  if($_GET['action']=="deletepurchaserequest"){
+  if($_GET['action']=="deleteTask"){
 
     $data['id'] = $_GET['id'];
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
     // echo json_encode($data);
     // return;
 
@@ -431,43 +409,13 @@ if (isset($_GET['action'])) {
       "Content-Type: application/json",
     ];
 
-    $url = API_URL . "deletepurchaserequest";
-    //echo encrypt_password($password);
-
-    $json_data = http_request($data, $headers, $url);
-
-    // if($json_data['code']=="200"){
-       return_to_purchase_req(true);
-    //   //echo json_encode($json_data);
-
-    // }else{
-
-    //   if (isset($json_data['msg'])) {
-    //     $error = $json_data['msg'];
-    //   } else {
-    //     $error = json_encode($json_data);
-    //   }
-    //   $_SESSION[PRE_FIX . 'error'] = $error;
-    //   return_to_purchase_req(false);
-
-    //}
-
-  }else
-  if($_GET['action']=="accept_withdrawal_request"){
-
-    $data["id"] = $_GET['id']; 
-    $headers = [
-      "Accept: application/json",
-      "Content-Type: application/json",
-    ];
-
-    $url = API_URL . "accept_withdrawal_request";
+    $url = API_URL . "deleteTask";
     //echo encrypt_password($password);
 
     $json_data = http_request($data, $headers, $url);
 
     if($json_data['code']=="200"){
-      return_to_withdrawalrequests(true);
+      returnToTasks(true);
       //echo json_encode($json_data);
 
     }else{
@@ -478,25 +426,53 @@ if (isset($_GET['action'])) {
         $error = json_encode($json_data);
       }
       $_SESSION[PRE_FIX . 'error'] = $error;
-      return_to_withdrawalrequests(false);
+      returnToTasks(false);
+
+    }
+
+  }else
+  if($_GET['action']=="addTask"){
+
+    $data = array();
+    
+    $data['file'] = curl_file_create($_FILES['image']['tmp_name']);
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+
+    $url = API_URL . "addTask";
+    //echo encrypt_password($password);
+
+    $json_data = http_request_file($url,$data);
+
+    if($json_data['code'] == 200){
+      returnToTasks(true);
+      //echo json_encode($json_data);
+
+    }else{
+
+      if (isset($json_data['msg'])) {
+        $error = $json_data['msg'];
+      } else {
+        $error = json_encode($json_data);
+      }
+      $_SESSION[PRE_FIX . 'error'] = $error;
+      returnToTasks(false);
 
     }
 
   }else 
-  if($_GET['action']=="reject_withdrawal_request"){
-    $data["id"] = $_GET['id']; 
-    $headers = [
-      "Accept: application/json",
-      "Content-Type: application/json",
-    ];
+  if($_GET['action']=="editInvestmentPlan"){
+    $data = $_POST;
+    $data['id'] = $_GET['id'];
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
 
-    $url = API_URL . "reject_withdrawal_request";
+
+    $url = API_URL . "editInvestmentPlan";
     //echo encrypt_password($password);
 
-    $json_data = http_request($data, $headers, $url);
+    $json_data = http_request($data, null, $url);
 
     if($json_data['code']=="200"){
-      return_to_withdrawalrequests(true);
+      returnToInvestPlans(true);
       //echo json_encode($json_data);
 
     }else{
@@ -507,25 +483,24 @@ if (isset($_GET['action'])) {
         $error = json_encode($json_data);
       }
       $_SESSION[PRE_FIX . 'error'] = $error;
-      return_to_withdrawalrequests(false);
+      returnToInvestPlans(false);
 
     }
 
   }else
-  if($_GET['action']=="delete_withdrawal_request"){
-    $data["id"] = $_GET['id']; 
-    $headers = [
-      "Accept: application/json",
-      "Content-Type: application/json",
-    ];
+  if($_GET['action']=="deleteInvestmentPlan"){
 
-    $url = API_URL . "delete_withdrawal_request";
+    $data["id"] = $_GET['id']; 
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+  
+
+    $url = API_URL . "deleteInvestmentPlan";
     //echo encrypt_password($password);
 
-    $json_data = http_request($data, $headers, $url);
+    $json_data = http_request($data, null, $url);
 
     if($json_data['code']=="200"){
-      return_to_withdrawalrequests(true);
+      returnToInvestPlans(true);
       //echo json_encode($json_data);
 
     }else{
@@ -536,7 +511,36 @@ if (isset($_GET['action'])) {
         $error = json_encode($json_data);
       }
       $_SESSION[PRE_FIX . 'error'] = $error;
-      return_to_withdrawalrequests(false);
+      returnToInvestPlans(false);
+
+    }
+
+  }else
+  if($_GET['action']=="editServer"){
+
+    $data = $_POST;
+    $data["id"] = $_GET['id']; 
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+  
+
+    $url = API_URL . "editServer";
+    //echo encrypt_password($password);
+
+    $json_data = http_request($data, null, $url);
+
+    if($json_data['code']=="200"){
+      returnToInvestPlans(true);
+      //echo json_encode($json_data);
+
+    }else{
+
+      if (isset($json_data['msg'])) {
+        $error = $json_data['msg'];
+      } else {
+        $error = json_encode($json_data);
+      }
+      $_SESSION[PRE_FIX . 'error'] = $error;
+      returnToInvestPlans(false);
 
     }
 
@@ -561,41 +565,50 @@ function returnToWithdrawReqeust($success){
   }
 }
 
-function return_to_wallets($success){
+function returnToTaskRequests($success){
   if($success){
-    echo "<script>window.location = 'dashboard.php?p=walletaddress&action=success'</script>";
+    echo "<script>window.location = 'dashboard.php?p=taskRequests&action=success'</script>";
   }else{
-    echo "<script>window.location = 'dashboard.php?p=walletaddress&action=error'</script>";
+    echo "<script>window.location = 'dashboard.php?p=taskRequests&action=error'</script>";
   }
 }
 
-function return_to_refund($success){
+function returnToServerPurchaseRequests($success){
   if($success){
-    echo "<script>window.location = 'dashboard.php?p=refundcontroller&action=success'</script>";
+    echo "<script>window.location = 'dashboard.php?p=purchaserequests&action=success'</script>";
   }else{
-    echo "<script>window.location = 'dashboard.php?p=refundcontroller&action=error'</script>";
+    echo "<script>window.location = 'dashboard.php?p=purchaserequests&action=error'</script>";
   }
 }
 
-function return_to_users($success){
+function returnToInvestmentRequests($success){
   if($success){
-    echo "<script>window.location = 'dashboard.php?p=users&action=success'</script>";
+    echo "<script>window.location = 'dashboard.php?p=investmentRequests&action=success'</script>";
   }else{
-    echo "<script>window.location = 'dashboard.php?p=users&action=error'</script>";
-  }
-
-}
-
-function return_to_plans($success){
-
-  if($success){
-    echo "<script>window.location = 'dashboard.php?p=plans&action=success'</script>";
-  }else{
-    echo "<script>window.location = 'dashboard.php?p=plans&action=error'</script>";
+    echo "<script>window.location = 'dashboard.php?p=investmentRequests&action=error'</script>";
   }
 
 }
 
+function returnToTasks($success){
+
+  if($success){
+    echo "<script>window.location = 'dashboard.php?p=tasks&action=success'</script>";
+  }else{
+    echo "<script>window.location = 'dashboard.php?p=tasks&action=error'</script>";
+  }
+
+}
+
+function returnToInvestPlans($success){
+
+  if($success){
+    echo "<script>window.location = 'dashboard.php?p=investmentPlans&action=success'</script>";
+  }else{
+    echo "<script>window.location = 'dashboard.php?p=investmentPlans&action=error'</script>";
+  }
+
+}
 
 function encrypt_password($pass)
 {

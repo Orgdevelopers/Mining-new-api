@@ -18,7 +18,12 @@ define('REFERRAL_SIGNUP_REWARD',10); //only int supported, 100Tp = 1$
 define('REFERRAL_PLAN_PUCHASE_REWARD',500);
 define('APP_CURRENCY_NAME','TP');
 
+
 //NOTIFICATION STRINGS
+/*
+ * You can change notification messages/languages etc from here
+ * note :- don't change %% values like %u_n%, %p_n% these will be replaced by real values in runtime
+ *  */
 
 define('CONGRATULATIONS', 'Congratulations');
 define('FREE_TRIAL_ACTIVATED', 'Your free trial has been activated successfully');
@@ -33,6 +38,17 @@ define('WITHDRAW_REQUEST_REGISTERED', "Your withdraw request has been registered
 
 define('PLAN_PURCHASED_TITLE', CONGRATULATIONS . "");
 define('PLAN_PURCHASED_BODY', 'You have successfully purchased %p_n% Server.'); // %p_n% will be replaced by server name by api;
+
+
+//on plan purchase request accepted
+define('PLAN_PURCHASE_REQUEST_ACCEPTED_HEAD', CONGRATULATIONS . " Purchase verified successfully");
+define('PLAN_PURCHASE_REQUEST_ACCEPTED_BODY', 'You have successfully purchased %p_n% Server.'); // %p_n% will be replaced by server name by api;
+
+
+//on plan purchase request rejected
+define('PLAN_PURCHASE_REQUEST_REJECTED_HEAD', "Server Purchase verification failed");
+define('PLAN_PURCHASE_REQUEST_REJECTED_BODY', 'Your purchase request for %p_n% has been rejected'); // %p_n% will be replaced by server name by api;
+
 
 //referral
 define('REFERRAL_HEAD',CONGRATULATIONS." You received referral bonus %a_m%"); // %a_m% => amount
@@ -51,6 +67,22 @@ define('WITHDRAW_SUCCESS_BODY','Your withdraw request for %a_m% has been accepte
 
 define('WITHDRAW_FAIL_HEAD','Cancellation of Withdrawal notice');
 define('WITHDRAW_FAIL_BODY','Your withdraw request for %a_m% has been cancelled. The amount has been returned to your wallet');
+
+
+define('TASK_REQUEST_ACCEPT_HEAD',CONGRATULATIONS.', Task completed successfully');
+define('TASK_REQUEST_ACCEPT_BODY','You have earned %t_p% worth %a_m%');
+
+
+define('TASK_REQUEST_REJECT_HEAD','Task Request Cancellation notice');
+define('TASK_REQUEST_REJECT_BODY','Your task request has been rejected');
+
+//investment purchase request rejected
+define('INV_PURCHASE_REQUEST_REJECTED_HEAD','Investment Puchase Cancellation notice');
+define('INV_PURCHASE_REQUEST_REJECTED_BODY','Your Puchase request for investment plan %p_n% has been rejected');
+
+
+define('INV_PURCHASE_REQUEST_ACCEPTED_HEAD', CONGRATULATIONS.'');
+define('INV_PURCHASE_REQUEST_ACCEPTED_BODY','Your investment request for amount %a_m% for Investment plan %p_n% has been accepted');
 
 //define(;)
 

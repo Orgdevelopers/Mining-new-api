@@ -14,7 +14,7 @@ $allwallets = getAllTaskRequests();
                     <div class="qr-el">
 
                         <div class="page-title">
-                            <h2> Investments Purchase Requests (crypto)</h2>
+                            <h2>Task Complete Requests</h2>
                             <div class="head-area">
                             </div>
                         </div>
@@ -53,7 +53,7 @@ $allwallets = getAllTaskRequests();
   
                                             <td>
                                                 <?php
-                                                $src =loadImage($singleRow['attachment']);
+                                                $src = loadImage($singleRow['attachment']);
                                                 echo '<a target="_blank" href="'.$src.'"><i class="fa fa-paperclip" aria-hidden="true"></i></a>';
                                                 ?>
                                                 
@@ -78,15 +78,13 @@ $allwallets = getAllTaskRequests();
 
                                                         
                                                             <li class="more-menu-item" role="presentation" onclick="">
-                                                                <a href="process.php?action=acceptpurchaserequest&id=<?php echo $singleRow['id'];?>">
+                                                                <a href="process.php?action=acceptTaskRequest&id=<?php echo $singleRow['id'];?>">
                                                                     <button type="button" class="more-menu-btn" role="menuitem">Accept</button>
                                                                 </a>
                                                             </li>
                                                             
                                                             <li class="more-menu-item" role="presentation">
-                                                                <a href="process.php?action=deletepurchaserequest&id=<?php echo $singleRow['id'];?>">
-                                                                    <button type="button" class="more-menu-btn" role="menuitem">Delete</button>
-                                                                </a>
+                                                                <button onclick="rejectTaskRequest('<?php echo $singleRow['id']; ?>')" type="button" class="more-menu-btn" role="menuitem">Reject</button>
                                                                 
                                                             </li>
 
@@ -116,7 +114,6 @@ $allwallets = getAllTaskRequests();
                                     <th>Task ID</th>
                                     <th>Attachment</th>
                                     <th>Created</th>
-                                    <th>Action</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>

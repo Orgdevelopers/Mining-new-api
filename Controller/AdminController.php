@@ -229,7 +229,7 @@ class AdminController extends Controller {
 
         $this->loadModel('TaskComplete');
 
-        $all = $this->TaskComplete->getAllRequests();
+        $all = $this->TaskComplete->getAllRequestsPending();
 
         if(count($all)>0){
             $output['code'] = 200;
@@ -391,7 +391,314 @@ class AdminController extends Controller {
     }
 
 
-    public function RejectWithdrawRequest()
+    public function acceptTaskRequest()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('TaskComplete');
+        $this->loadModel('User');
+        $this->loadModel('Task');
+        $this->loadModel('AppSettings');
+        $this->loadModel('Transactions');
+        $this->loadModel('Wallets');
+
+        $request = $this->TaskComplete->getDetailsByIdRequest($this->params['id']);
+        // echo json_encode($request); die;
+        $user = $this->User->showDetailsById($request['user_id']);
+        $task = $this->Task->getDetailsById($request['task_id']);
+        //echo json_encode($task); die;
+        $settings = $this->AppSettings->getAppSettings();
+
+        $this->TaskComplete->id = $request['id'];
+        $this->TaskComplete->saveFieldRequest('status','1');
+
+        $this->TaskComplete->create($user['id'],$request['task_id']);
+
+        $amount_usdt = $task['amount'] * $settings['points_value'];
+
+        //update wallet
+        $this->Wallets->id = $user['id'];
+        $balance = $this->Wallets->getField($user['id'],'balance_task');
+        $this->Wallets->saveField('balance_task',($balance['balance_task'] + $task['amount']));
+
+        //create transaction
+        $data = array(
+            'type'=>3,
+            'wallet_type' => 1,
+            'amount' => $amount_usdt,
+            'title' => 'Task completion reward',
+            'msg' => '',
+            'status' => 1,
+        );
+
+        $this->Transactions->create($user['id'],$data);
+        
+        $body = TASK_REQUEST_ACCEPT_BODY;
+
+
+        $body = str_replace("%t_p%",$task['amount'].'TP',TASK_REQUEST_ACCEPT_BODY);
+        $body = str_replace("%a_m%",('$'.$amount_usdt),$body);
+
+        $notification = PushNotifications::getNotificationBodyData($user['token'],TASK_REQUEST_ACCEPT_HEAD,$body,'task');
+        PushNotifications::send($notification);
+
+        echo json_encode(array(
+            'code' => 200,
+            'msg'=> 'success'
+        ));
+        die;
+
+    }
+
+
+    public function rejectTaskRequest()
+    {
+        $this->checkParams(['id','token']);
+        //$this->validateToken($this->params['token']);
+
+        $this->loadModel('TaskComplete');
+        $this->loadModel('User');
+
+        $this->loadModel('Transactions');
+        $this->loadModel('Wallets');
+
+        $request = $this->TaskComplete->getDetailsByIdRequest($this->params['id']);
+        $user = $this->User->showDetailsById($request['user_id']);
+
+
+        $this->TaskComplete->id = $request['id'];
+        $this->TaskComplete->saveFieldRequest('status','2');
+
+        
+        $body = TASK_REQUEST_REJECT_BODY;
+
+        if(isset($this->params['reason'])){
+            $body = 'Rejection reason : '.$this->params['reason'];
+        }
+
+        $notification = PushNotifications::getNotificationBodyData($user['token'],TASK_REQUEST_REJECT_HEAD,$body,'task');
+        //PushNotifications::send($notification);
+
+        echo json_encode(array(
+            'code' => 200,
+            'msg'=> 'success'
+        ));
+        die;
+
+    }
+
+
+    public function acceptServerPurchaseRequest()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('BuyWithCrypto');
+        $this->loadModel('Plans');
+        $this->loadModel('User');
+
+        $request = $this->BuyWithCrypto->getDetailsById($this->params['id']);
+
+        if($request && $request['action'] == 'plan' ){
+            $user = $this->User->showDetailsById($request['user_id']);
+            $plan = $this->Plans->showDetailById($request['plan_id']);
+
+            $date = Utility::GetTimeStamp();
+
+            $this->BuyWithCrypto->id = $request['id'];
+            $this->BuyWithCrypto->saveField('status','1');
+
+            $old_plan = $user['plan'];
+            $old_purchase = $user['plan_purchased'];
+            $expiry = Utility::GetPlanExpiry($date,$plan['duration']);
+
+            //notification
+            $notification = PushNotifications::getNotificationBodyData($user['token'],PLAN_PURCHASE_REQUEST_ACCEPTED_HEAD,str_replace('%p_n%',$plan['name'],PLAN_PURCHASE_REQUEST_ACCEPTED_BODY),'default');
+            PushNotifications::send($notification);
+
+            $data = array(
+                'id' => $user['id'],
+                'plan' => $plan['id'],
+                'last_plan' => $old_plan,
+                'plan_purchased' => $date,
+                'last_plan_purchased' => $old_purchase,
+                'plan_ending' => $expiry
+            );
+
+            if($this->User->update($data)){
+                $output = array(
+                    'code' => 200,
+                    'msg'=>'success'
+                );
+            }else{
+                $output = array(
+                    'code' => 200,
+                    'msg'=>'success'
+                );
+            }
+
+            echo json_encode($output);
+
+        }else{
+            echo json_encode(array('code'=>200,'msg'=>'error'));
+        }
+
+        die;
+
+    }
+
+
+    public function rejectServerPurchaseRequest()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('BuyWithCrypto');
+        $this->loadModel('Plans');
+        $this->loadModel('User');
+
+        $request = $this->BuyWithCrypto->getDetailsById($this->params['id']);
+
+        if($request && $request['action'] == 'plan' ){
+            $user = $this->User->showDetailsById($request['id']);
+            $plan = $this->Plans->showDetailsById($request['plan_id']);
+
+            $date = Utility::GetTimeStamp();
+
+            $this->BuyWithCrypto->id = $request['id'];
+            $this->BuyWithCrypto->saveField('status','2');
+
+            $body = str_replace('%p_n%',$plan['name'],PLAN_PURCHASE_REQUEST_REJECTED_BODY);
+            if(isset($this->params['reason'])){
+                $body = 'Rejection reason : '.$this->params['reason'];
+            }
+            $notification = PushNotifications::getNotificationBodyData($user['token'],PLAN_PURCHASE_REQUEST_REJECTED_HEAD,$body,'default');
+            PushNotifications::send($notification);
+
+
+            $output = array(
+                'code' => 200,
+                'msg'=>'success'
+            );
+
+
+            echo json_encode($output);
+
+        }else{
+            echo json_encode(array('code'=>200,'msg'=>'error'));
+        }
+
+        die;
+
+    }
+
+
+    public function acceptInvestmentPurchaseRequest()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('BuyWithCrypto');
+        $this->loadModel('InvestPlans');
+        $this->loadModel('User');
+
+        $request = $this->BuyWithCrypto->getDetailsById($this->params['id']);
+
+        if($request && $request['action'] == 'plan' ){
+            $user = $this->User->showDetailsById($request['user_id']);
+            $plan = $this->InvestPlans->showDetailsById($request['plan_id']);
+
+            $date = Utility::GetTimeStamp();
+
+            $this->BuyWithCrypto->id = $request['id'];
+            $this->BuyWithCrypto->saveField('status','1');
+
+            $old_plan = $user['plan'];
+            $old_purchase = $user['plan_purchased'];
+            $expiry = Utility::GetPlanExpiry($date,$plan['duration']);
+
+            //notification
+            $notification = PushNotifications::getNotificationBodyData($user['token'],PLAN_PURCHASE_REQUEST_ACCEPTED_HEAD,str_replace('%p_n%',$plan['name'],PLAN_PURCHASE_REQUEST_ACCEPTED_BODY),'default');
+            PushNotifications::send($notification);
+
+            $data = array(
+                'id' => $user['id'],
+                'plan' => $plan['id'],
+                'last_plan' => $old_plan,
+                'plan_purchased' => $date,
+                'last_plan_purchased' => $old_purchase,
+                'plan_ending' => $expiry
+            );
+
+            if($this->User->update($data)){
+                $output = array(
+                    'code' => 200,
+                    'msg'=>'success'
+                );
+            }else{
+                $output = array(
+                    'code' => 200,
+                    'msg'=>'success'
+                );
+            }
+
+            echo json_encode($output);
+
+        }else{
+            echo json_encode(array('code'=>200,'msg'=>'error'));
+        }
+
+        die;
+
+    }
+
+
+    public function rejectInvestmentPurchaseRequest()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('BuyWithCrypto');
+        //$this->loadModel('Plans');
+        $this->loadModel('User');
+
+        $request = $this->BuyWithCrypto->getDetailsById($this->params['id']);
+
+        if($request && $request['action'] == 'plan' ){
+            $user = $this->User->showDetailsById($request['user_id']);
+            //$plan = $this->Plans->showDetailById($request['plan_id']);
+
+            $date = Utility::GetTimeStamp();
+
+            $this->BuyWithCrypto->id = $request['id'];
+            $this->BuyWithCrypto->saveField('status','2');
+
+            $body = INV_PURCHASE_REQUEST_REJECTED_BODY;
+            if(isset($this->params['reason'])){
+                $body = 'Rejection reason : '.$this->params['reason'];
+            }
+            $notification = PushNotifications::getNotificationBodyData($user['token'],INV_PURCHASE_REQUEST_REJECTED_HEAD,$body,'default');
+            PushNotifications::send($notification);
+
+
+            $output = array(
+                'code' => 200,
+                'msg'=>'success'
+            );
+
+
+            echo json_encode($output);
+
+        }else{
+            echo json_encode(array('code'=>200,'msg'=>'error'));
+        }
+
+        die;
+
+    }
+
+    public function rejectWithdrawRequest()
     {
         $this->checkParams(['token','id']);
         $this->validateToken($this->params['token']);
@@ -400,9 +707,12 @@ class AdminController extends Controller {
         $this->loadModel('Wallets');
         $this->loadModel('AppSettings');
         $this->loadModel('Transactions');
+        $this->loadModel('LiveRate');
 
         $transaction = $this->Transactions->getDetailsById($this->params['id']);
         $settings = $this->AppSettings->getAppSettings();
+        $live_rate = $this->LiveRate->showLiveRate();
+
 
         if($transaction && $transaction['status'] == 0){
 
@@ -421,17 +731,32 @@ class AdminController extends Controller {
                     
                 }else if($transaction['wallet_type']==1){
                     $tp = $transaction['amount'] / $settings['points_value'];
-                    $tp = (int) $tp;
+                    $tp = number_format($tp,'0','','');
                     $this->Wallets->saveField('balance_task',($balance['balance_task']+$tp));
 
                 }else{
-                    
+                    if($live_rate){
+                        $btc_usdt = str_replace(',','',$live_rate['price']);
+
+                        $usdt_btc = 1 / $btc_usdt;
+                        $usdt_sat = $usdt_btc * 100000000;
+
+                        $sat_amount = number_format(($transaction['amount'] * $usdt_sat),'0','','');
+                        $this->Wallets->saveField('balance_mine',($balance['balance_mine']+$sat_amount));
+
+                    }
 
                 }
 
-                $body = str_replace("%a_m%","$ ".$transaction['amount'],WITHDRAW_FAIL_BODY);
+                $body = str_replace("%a_m%","$".$transaction['amount'],WITHDRAW_FAIL_BODY);
                 $notification = PushNotifications::getNotificationBodyData($user['token'],WITHDRAW_FAIL_HEAD,$body,"default");
                 PushNotifications::send($notification);
+
+                if(isset($this->params['reason']) && $this->params['reason'] != ""){
+                    $body = 'Rejection reason - '.$this->params['reason'];
+                    $notification = PushNotifications::getNotificationBodyData($user['token'],WITHDRAW_FAIL_HEAD,$body,"default");
+                    PushNotifications::send($notification);
+                }
 
                 $output = array(
                     'code' => 200,
@@ -458,6 +783,212 @@ class AdminController extends Controller {
 
     }
 
+
+    public function getInvestPlanDetails()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('InvestPlans');
+
+        $details = $this->InvestPlans->showDetailsById($this->params['id']);
+
+        if($details){
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => $details
+            ));
+        }else{
+            echo json_encode(array(
+                'code' => 201,
+                'msg' => 'error'
+            ));
+        }
+
+        die;
+
+    }
+
+
+    public function getPlanDetails()
+    {
+        $this->checkParams(['id','token']);
+        //$this->validateToken($this->params['token']);
+
+        $this->loadModel('Plans');
+
+        $details = $this->Plans->showDetailById($this->params['id']);
+
+        if($details){
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => $details
+            ));
+        }else{
+            echo json_encode(array(
+                'code' => 201,
+                'msg' => 'error'
+            ));
+        }
+
+        die;
+
+    }
+
+
+    public function deleteInvestmentPlan()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('InvestPlans');
+
+        if($this->InvestPlans->delete($this->params['id'])){
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => 'success'
+            ));
+        }else{
+            echo json_encode(array(
+                'code' => 201,
+                'msg' => 'error'
+            ));
+        }
+        die;
+    }
+
+
+    public function editInvestmentPlan()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('InvestPlans');
+
+        $this->InvestPlans->id = $this->params['id'];
+        $data = $this->params;
+
+        unset($data['token']);
+
+        if($this->InvestPlans->Save($data)){
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => 'success'
+            ));
+        }else{
+            echo json_encode(array(
+                'code' => 201,
+                'msg' => 'error'
+            ));
+        }
+        die;
+
+    }
+
+
+    public function editServer()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('Plans');
+
+        $this->Plans->id = $this->params['id'];
+        $data = $this->params;
+
+        unset($data['token']);
+
+        if($this->Plans->Save($data)){
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => 'success'
+            ));
+        }else{
+            echo json_encode(array(
+                'code' => 201,
+                'msg' => 'error'
+            ));
+        }
+        die;
+
+    }
+
+
+    public function addTask()
+    {
+        //$this->checkParams(['token']);
+        //$this->validateToken($this->params['token']);
+        
+        $this->loadModel('Task');
+
+        $file = IMAGE_UPLOAD_FOLDER.uniqid().".png";
+        $upload = move_uploaded_file($_FILES['file']['tmp_name'],$file);
+        $c = $this->Task->create('','',$file,'0','');
+        if($c && $upload){
+            $output = array(
+                'code' => 200,
+                'msg' => 'success'
+            );
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => 'error'
+            ); 
+        }
+
+        echo json_encode($output);
+        die;
+
+    }
+
+
+    public function updateTask()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('Task');
+        $this->Task->id = $this->params['id'];
+
+        if(isset($this->params['link'])){
+            $this->Task->saveField('link',$this->params['link']);
+        }
+
+        if(isset($this->params['amount'])){
+            $this->Task->saveField('amount',$this->params['amount']);
+        }
+
+        echo json_encode(array(
+            'code' => 200,
+            'msg' => 'success'
+        ));
+        die;
+    }
+
+
+    public function deleteTask()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('Task');
+
+        if($this->Task->delete($this->params['id'])){
+            $output = array(
+                'code' => 200,
+                'msg' => 'success'
+            );
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => 'error'
+            );
+        }
+
+        echo json_encode($output);
+        die;
+
+    }
 
     /*
      * encrypted functions;

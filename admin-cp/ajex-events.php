@@ -157,49 +157,27 @@ if (isset($_GET['q'])) {
 
 
     }
-}if($_GET['q']=="edituser"){
+}if($_GET['q']=="rejectWithdrawRequest"){
 
-    $user_details = getuserDetails($_GET['id']);
-    $all_plans = getAllPlans();
+    // $user_details = getuserDetails($_GET['id']);
+    // $all_plans = getAllPlans();
 
     ?>
 
 <div class="main-container dataTables_wrapper" id="table_view_wrapper">
-    <h2 style="font-weight: 300;" align="center">Edit User</h2>
+    <h2 style="font-weight: 300;" align="center">Reject Withdraw Request</h2>
 
-    <div style="height:350px; overflow:scroll;">
+    <div style="height:auto; overflow:hidden;">
 
-        <form action="process.php?action=updateUser&id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
+        <form action="process.php?action=rejectWithdrawRequest&id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
 
             <div class="full_width">
-                <label class="field_title">Plan</label>
-                <select name="plan" id="plan">
-
-                <option value="0" <?php if($user_details['plan']=='0'){echo 'selected';} ?> >NONE</option>
-                    <?php 
-                    for($i=0;$i<count($all_plans);$i++){
-
-                        if($user_details['plan']==$all_plans[$i]['id']){
-                            echo '<option value="'.$all_plans[$i]['id'].'" selected>'.$all_plans[$i]['name'].'</option>';
-                        }else{
-                            echo '<option value="'.$all_plans[$i]['id'].'">'.$all_plans[$i]['name'].'</option>';
-                        }
-
-                    }
-
-                    ?>
-                      
-                </select>
-
+                <label class="field_title">Reject reason</label>
+                <input name="reason" type="text" maxlength="80">
+                <input name="id" type="hidden" value="<?php echo $_GET['id'] ;?>">
             </div>
 
-            
-            <div class="full_width">
-                <label class="field_title">Wallet Balance</label>
-                <input name="balance" step="1" type="number" onkeypress="if(event.keyCode==101||event.keyCode==46){return false;}else {return true;}" required="" value="<?php echo $user_details['balance'] ?>">
-            </div>
-
-            <div class="full_width">
+            <div class="full_width" style="margin-top: 20px;">
                 <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
                     align="center">
                     Submit
@@ -214,32 +192,24 @@ if (isset($_GET['q'])) {
 
 <?php
 }else 
-if($_GET['q']=="editWalletAddress"){
-
-    $details = getWalletAddressDetails($_GET['id']);
+if($_GET['q']=="rejectTaskRequest"){
 
     ?>
 
 <div class="main-container dataTables_wrapper" id="table_view_wrapper">
-    <h2 style="font-weight: 300;" align="center">Edit Wallet Address</h2>
+    <h2 style="font-weight: 300;" align="center">Reject Task Request</h2>
 
-    <div style="height:350px; overflow:scroll;">
+    <div style="height:auto; overflow:hidden;">
 
-        <form action="process.php?action=editwalletaddress&id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
+        <form action="process.php?action=rejectTaskRequest&id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
 
             <div class="full_width">
-                <label class="field_title">Name</label>
-                <input name="name" step="1" type="text" required="" value="<?php echo $details['name'] ?>">
-
+                <label class="field_title">Reject reason</label>
+                <input name="reason" type="text" maxlength="80">
+                <input name="id" type="hidden" value="<?php echo $_GET['id'] ;?>">
             </div>
 
-            
-            <div class="full_width">
-                <label class="field_title">Wallet Address</label>
-                <input name="address" step="1" type="text" required="" value="<?php echo $details['address'] ?>">
-            </div>
-
-            <div class="full_width">
+            <div class="full_width" style="margin-top: 20px;">
                 <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
                     align="center">
                     Submit
@@ -254,30 +224,24 @@ if($_GET['q']=="editWalletAddress"){
 
 <?php
 }else 
-if($_GET['q']=="createwalletaddress"){
+if($_GET['q']=="rejectServerPurchaseRequest"){
 
     ?>
 
 <div class="main-container dataTables_wrapper" id="table_view_wrapper">
-    <h2 style="font-weight: 300;" align="center">Create Wallet Address</h2>
+    <h2 style="font-weight: 300;" align="center">Reject Server Purchase Request</h2>
 
-    <div style="height:350px; overflow:scroll;">
+    <div style="height:auto; overflow:hidden;">
 
-        <form action="process.php?action=createwalletaddress" method="post" enctype="multipart/form-data">
+        <form action="process.php?action=rejectServerPurchaseRequest&id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
 
             <div class="full_width">
-                <label class="field_title">Name</label>
-                <input name="name" step="1" type="text" required="">
-
+                <label class="field_title">Reject reason</label>
+                <input name="reason" type="text" maxlength="80">
+                <input name="id" type="hidden" value="<?php echo $_GET['id'] ;?>">
             </div>
 
-            
-            <div class="full_width">
-                <label class="field_title">Wallet Address</label>
-                <input name="address" step="1" type="text" required="">
-            </div>
-
-            <div class="full_width">
+            <div class="full_width" style="margin-top: 20px;">
                 <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
                     align="center">
                     Submit
@@ -291,8 +255,155 @@ if($_GET['q']=="createwalletaddress"){
 </div>
 
 <?php
-    }else{
-        echo "<script> alert('category not found in database'); window.location='dashboard.php?p=categories&action=error');</script>";
+    }else 
+if($_GET['q']=="rejectInvestmentPurchaseRequest"){
+
+    ?>
+
+<div class="main-container dataTables_wrapper" id="table_view_wrapper">
+    <h2 style="font-weight: 300;" align="center">Reject Investment Purchase Request</h2>
+
+    <div style="height:auto; overflow:hidden;">
+
+        <form action="process.php?action=rejectInvestmentPurchaseRequest&id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
+
+            <div class="full_width">
+                <label class="field_title">Reject reason</label>
+                <input name="reason" type="text" maxlength="80">
+                <input name="id" type="hidden" value="<?php echo $_GET['id'] ;?>">
+            </div>
+
+            <div class="full_width" style="margin-top: 20px;">
+                <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
+                    align="center">
+                    Submit
+                </button>
+            </div>
+        </form>
+
+
+
+    </div>
+</div>
+
+<?php
+    }else 
+    if($_GET['q']=="editInvestmentPlan"){
+    
+        $plan = getInvestPlanDetails($_GET['id']);
+        ?>
+    
+    <div class="main-container dataTables_wrapper" id="table_view_wrapper">
+        <h2 style="font-weight: 300;" align="center">Edit Investment Plan</h2>
+    
+        <div style="height:auto; overflow:hidden;">
+    
+            <form action="process.php?action=editInvestmentPlan&id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
+    
+                <div class="full_width">
+                    <label class="field_title">Name</label>
+                    <input name="name" type="text" maxlength="40" value="<?php echo $plan['name']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Profit %</label>
+                    <input name="profit_rate" type="number" step="any" value="<?php echo $plan['profit_rate']; ?>">
+                    
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Duration (days)</label>
+                    <input name="duration" type="number" oninput="this.value=this.value.slice(0,3)" value="<?php echo $plan['duration']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Minimum amount ($)</label>
+                    <input name="minimum_amount" type="number" oninput="this.value=this.value.slice(0,7)" value="<?php echo $plan['minimum_amount']; ?>">
+                </div>
+    
+                <div class="full_width" style="margin-top: 20px;">
+                    <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
+                        align="center">
+                        Submit
+                    </button>
+                </div>
+            </form>
+    
+    
+    
+        </div>
+    </div>
+    
+    <?php
+        }else 
+    if($_GET['q']=="editServer"){
+    
+        $plan = getPlanDetails($_GET['id']);
+        ?>
+    
+    <div class="main-container dataTables_wrapper" id="table_view_wrapper">
+        <h2 style="font-weight: 300;" align="center">Edit Server</h2>
+    
+        <div style="height:400px; overflow-y:scroll;">
+    
+            <form action="process.php?action=editServer&id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
+    
+                <div class="full_width">
+                    <label class="field_title">Name</label>
+                    <input name="name" type="text" maxlength="40" value="<?php echo $plan['name']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Algorithm</label>
+                    <input name="name" type="text" maxlength="40" value="<?php echo $plan['algo']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Speed (fake)</label>
+                    <input name="name" type="text" maxlength="40" value="<?php echo $plan['speed']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Duration (days)</label>
+                    <input name="duration" type="number" oninput="this.value=this.value.slice(0,3)" value="<?php echo $plan['duration']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Earning</label>
+                    <input name="earning" type="text" value="<?php echo $plan['earning']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Price</label>
+                    <input name="price" type="text" value="<?php echo $plan['price']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Sats per minute</label>
+                    <input name="price" type="number" oninput="this.value=this.value.slice(0,7)" value="<?php echo $plan['true_speed']; ?>">
+                </div>
+
+                <div class="full_width">
+                    <label class="field_title">Google package id</label>
+                    <input name="package" type="text" value="<?php echo $plan['package']; ?>">
+                </div>
+    
+                <div class="full_width" style="margin-top: 20px; margin-bottom: 10px">
+                    <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
+                        align="center">
+                        Submit
+                    </button>
+                </div>
+            </form>
+    
+    
+    
+        </div>
+    </div>
+    
+    <?php
+        }else{
+        echo "<script> alert('Something went wrong'); window.location='dashboard.php?p=servers&action=error');</script>";
     }
 
 ?>

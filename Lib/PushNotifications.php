@@ -68,6 +68,12 @@ class PushNotifications
 
     public static function send($data,$debug = false)
     {
+        if($data['to'] != "" && strlen($data['to']) < 5){
+            return array(
+                'code' => 201,
+                'msg' => "error"
+            );
+        }
         $key = FIREBASE_PUSH_NOTIFICATION_KEY;
 
         $headers = [
@@ -112,7 +118,7 @@ class PushNotifications
         } catch (\Throwable $th) {
             $output = array(
                 'code' => 201,
-                'msg' => "success"
+                'msg' => "error"
             );
         }
 

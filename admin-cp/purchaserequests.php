@@ -87,16 +87,14 @@ $allplans = getAllPlans();
 
                                                         
                                                             <li class="more-menu-item" role="presentation" onclick="">
-                                                                <a href="process.php?action=acceptpurchaserequest&id=<?php echo $singleRow['id'];?>">
+                                                                <a href="process.php?action=acceptServerPurchaseRequest&id=<?php echo $singleRow['id'];?>">
                                                                     <button type="button" class="more-menu-btn" role="menuitem">Accept</button>
                                                                 </a>
                                                             </li>
                                                             
                                                             <li class="more-menu-item" role="presentation">
-                                                                <a href="process.php?action=deletepurchaserequest&id=<?php echo $singleRow['id'];?>">
-                                                                    <button type="button" class="more-menu-btn" role="menuitem">Delete</button>
-                                                                </a>
                                                                 
+                                                                    <button onclick="rejectServerPurchaseRequest('<?php echo $singleRow['id']; ?>')" type="button" class="more-menu-btn" role="menuitem">Reject</button>                                                                
                                                             </li>
 
                                                         

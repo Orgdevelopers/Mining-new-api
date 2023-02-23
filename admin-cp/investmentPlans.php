@@ -74,11 +74,11 @@ $allrequests = getAllInvestPlans();
                                                         <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
 
                                                         <li class="more-menu-item" role="presentation">
-                                                            <button type="button" class="more-menu-btn" role="menuitem">Edit</button>
+                                                            <button onclick="editInvestmentPlan('<?php echo $singleRow['id']; ?>')" type="button" class="more-menu-btn" role="menuitem">Edit</button>
                                                         </li>
 
                                                             <li class="more-menu-item" role="presentation">
-                                                                <a href="process.php?action=delete_refund_request&id=<?php echo $singleRow['id'];?>&from=plans">
+                                                                <a href="process.php?action=deleteInvestmentPlan&id=<?php echo $singleRow['id'];?>">
                                                                     <button type="button" class="more-menu-btn" role="menuitem">Delete</button>
                                                                 </a>
                                                                 
@@ -111,7 +111,6 @@ $allrequests = getAllInvestPlans();
                                     <th>Duration</th>
                                     <th>Min amount</th>
                                     <th>Created</th>
-                                    <th>Action</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>

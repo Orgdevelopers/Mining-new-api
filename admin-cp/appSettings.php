@@ -212,7 +212,7 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Investment Withdraw Fees %</label>
-                                <input type="number" name="fee_invest" class="form-control" value="<?php echo $appSettings['AppSettings']['fee_invest']; ?>">
+                                <input type="number" step="any" name="fee_invest" class="form-control" value="<?php echo $appSettings['AppSettings']['fee_invest']; ?>">
                                 <small class="admin-info"></small>
                             </div>
                         </div>
@@ -221,7 +221,7 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Mining Withdraw Fees %</label>
-                                <input type="number" name="fee_mine" class="form-control" value="<?php echo $appSettings['AppSettings']['fee_mine']; ?>">
+                                <input type="number" step="any" name="fee_mine" class="form-control" value="<?php echo $appSettings['AppSettings']['fee_mine']; ?>">
                                 <small class="admin-info"></small>
                             </div>
                         </div>
@@ -230,7 +230,7 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">TP Value $</label>
-                                <input type="number" name="points_value" class="form-control" value="<?php echo $appSettings['AppSettings']['points_value']; ?>">
+                                <input type="number" step="any" name="points_value" class="form-control" value="<?php echo $appSettings['AppSettings']['points_value']; ?>">
                                 <small class="admin-info">1TP = --$. example:- 1TP = 0.01 (this way 1$ / 100TP)</small>
                             </div>
                         </div>
@@ -239,7 +239,7 @@ h6.card-title {
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="form-label">Withdraw Limit ($)</label>
-                                <input type="number" name="withdraw_limit" class="form-control" value="<?php echo $appSettings['AppSettings']['withdraw_limit']; ?>">
+                                <input type="number" step="0.5" name="withdraw_limit" class="form-control" value="<?php echo $appSettings['AppSettings']['withdraw_limit']; ?>">
                                 <small class="admin-info"></small>
                             </div>
                         </div>

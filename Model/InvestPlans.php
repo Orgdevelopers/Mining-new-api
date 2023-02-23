@@ -20,6 +20,18 @@ class InvestPlans extends AppModel
     }
 
 
+    public function create($data)
+    {
+        $name = $data['name'];
+        $profit_rate= $data['profit_rate'];
+        $duration = $data['duration'];
+        $minimum_amt = $data['minimum_amount'];
+        $time = Utility::GetTimeStamp();
+
+        return $this->Query("INSERT INTO `investment_plans`(`id`, `name`, `profit_rate`, `duration`, `minimum_amount`, `created`) 
+                                                    VALUES ('0','$name','$profit_rate','$duration','$minimum_amt','$time')");
+    }
+
     public function showDetailsById($id)
     {
         return $this->Query("SELECT * FROM $this->db WHERE id='$id' ;")->fetch_array(1);

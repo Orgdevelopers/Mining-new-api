@@ -22,6 +22,11 @@ $allrequests = getAllInvestPlans();
                             </div>
                         </div>
 
+                        <div class="right" style="padding: 10px 0;">
+                            <button onclick="createInvestmentPlan()" class="com-button com-submit-button com-button--large com-button--default">
+                                <div class="com-submit-button__content"><span>Create Server</span></div>
+                            </button>
+                        </div>
 
                         <table id="table_view" class="display" style="width:100%">
                             <thead>

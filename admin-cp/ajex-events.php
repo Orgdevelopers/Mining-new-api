@@ -80,7 +80,7 @@ if (isset($_GET['q'])) {
 
 <?php
 
-    }else
+    }
     if($_GET['q']=="editplan"){
         $plan_info = getPlanInfo($_GET['id']);
 ?>
@@ -157,7 +157,7 @@ if (isset($_GET['q'])) {
 
 
     }
-}if($_GET['q']=="rejectWithdrawRequest"){
+if($_GET['q']=="rejectWithdrawRequest"){
 
     // $user_details = getuserDetails($_GET['id']);
     // $all_plans = getAllPlans();
@@ -191,7 +191,7 @@ if (isset($_GET['q'])) {
 </div>
 
 <?php
-}else 
+} 
 if($_GET['q']=="rejectTaskRequest"){
 
     ?>
@@ -223,7 +223,7 @@ if($_GET['q']=="rejectTaskRequest"){
 </div>
 
 <?php
-}else 
+} 
 if($_GET['q']=="rejectServerPurchaseRequest"){
 
     ?>
@@ -255,7 +255,7 @@ if($_GET['q']=="rejectServerPurchaseRequest"){
 </div>
 
 <?php
-    }else 
+} 
 if($_GET['q']=="rejectInvestmentPurchaseRequest"){
 
     ?>
@@ -287,7 +287,7 @@ if($_GET['q']=="rejectInvestmentPurchaseRequest"){
 </div>
 
 <?php
-    }else 
+} 
     if($_GET['q']=="editInvestmentPlan"){
     
         $plan = getInvestPlanDetails($_GET['id']);
@@ -335,7 +335,7 @@ if($_GET['q']=="rejectInvestmentPurchaseRequest"){
     </div>
     
     <?php
-        }else 
+} 
     if($_GET['q']=="editServer"){
     
         $plan = getPlanDetails($_GET['id']);
@@ -355,12 +355,12 @@ if($_GET['q']=="rejectInvestmentPurchaseRequest"){
 
                 <div class="full_width">
                     <label class="field_title">Algorithm</label>
-                    <input name="name" type="text" maxlength="40" value="<?php echo $plan['algo']; ?>">
+                    <input name="algo" type="text" maxlength="40" value="<?php echo $plan['algo']; ?>">
                 </div>
 
                 <div class="full_width">
                     <label class="field_title">Speed (fake)</label>
-                    <input name="name" type="text" maxlength="40" value="<?php echo $plan['speed']; ?>">
+                    <input name="speed" type="text" maxlength="40" value="<?php echo $plan['speed']; ?>">
                 </div>
 
                 <div class="full_width">
@@ -380,7 +380,7 @@ if($_GET['q']=="rejectInvestmentPurchaseRequest"){
 
                 <div class="full_width">
                     <label class="field_title">Sats per minute</label>
-                    <input name="price" type="number" oninput="this.value=this.value.slice(0,7)" value="<?php echo $plan['true_speed']; ?>">
+                    <input name="true_speed" type="number" oninput="this.value=this.value.slice(0,7)" value="<?php echo $plan['true_speed']; ?>">
                 </div>
 
                 <div class="full_width">
@@ -402,8 +402,122 @@ if($_GET['q']=="rejectInvestmentPurchaseRequest"){
     </div>
     
     <?php
-        }else{
-        echo "<script> alert('Something went wrong'); window.location='dashboard.php?p=servers&action=error');</script>";
-    }
+}
+
+if($_GET['q']=="createServer"){
+
+?>
+
+<div class="main-container dataTables_wrapper" id="table_view_wrapper">
+    <h2 style="font-weight: 300;" align="center">Create Server</h2>
+
+    <div style="height:400px; overflow-y:scroll;">
+
+        <form action="process.php?action=createServer" method="post" enctype="multipart/form-data">
+
+            <div class="full_width">
+                <label class="field_title">Name</label>
+                <input name="name" type="text" maxlength="40">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Algorithm</label>
+                <input name="algo" type="text" maxlength="40">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Speed (fake)</label>
+                <input name="speed" type="text" maxlength="40">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Duration (days)</label>
+                <input name="duration" type="number" oninput="this.value=this.value.slice(0,3)">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Earning</label>
+                <input name="earning" type="text">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Price</label>
+                <input name="price" type="text">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Sats per minute</label>
+                <input name="true_speed" type="number" oninput="this.value=this.value.slice(0,7)">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Google package id</label>
+                <input name="package" type="text">
+            </div>
+
+            <div class="full_width" style="margin-top: 20px; margin-bottom: 10px">
+                <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
+                    align="center">
+                    Submit
+                </button>
+            </div>
+        </form>
+
+
+
+    </div>
+</div>
+
+<?php
+}
+
+if($_GET['q']=="createInvestmentPlan"){
+
+    ?>
+    
+    <div class="main-container dataTables_wrapper" id="table_view_wrapper">
+        <h2 style="font-weight: 300;" align="center">Create Investment Plan</h2>
+    
+        <div style="height:auto; overflow: hidden;">
+    
+        <form action="process.php?action=createInvestmentPlan" method="post" enctype="multipart/form-data">
+    
+            <div class="full_width">
+                <label class="field_title">Name</label>
+                <input name="name" type="text" maxlength="40">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Profit %</label>
+                <input name="profit_rate" type="number" step="any">
+                
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Duration (days)</label>
+                <input name="duration" type="number" oninput="this.value=this.value.slice(0,3)">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Minimum amount ($)</label>
+                <input name="minimum_amount" type="number" oninput="this.value=this.value.slice(0,7)">
+            </div>
+
+            <div class="full_width" style="margin-top: 20px;">
+                <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
+                    align="center">
+                    Submit
+                </button>
+            </div>
+</form>
+    
+    
+    
+        </div>
+    </div>
+    
+    <?php
+}
+}
 
 ?>

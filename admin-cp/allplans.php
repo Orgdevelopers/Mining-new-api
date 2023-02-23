@@ -22,8 +22,8 @@ $allplans = getAllPlans();
                         </div>
 
                         <div class="right" style="padding: 10px 0;">
-                            <button onclick="createPlan()" class="com-button com-submit-button com-button--large com-button--default">
-                                <div class="com-submit-button__content"><span>Create Plan</span></div>
+                            <button onclick="createServer()" class="com-button com-submit-button com-button--large com-button--default">
+                                <div class="com-submit-button__content"><span>Create Server</span></div>
                             </button>
                         </div>
 
@@ -94,7 +94,7 @@ $allplans = getAllPlans();
                                                                 </a>
                                                             </li>
                                                             <li class="more-menu-item" role="presentation">
-                                                                <a href="process.php?action=deletePlan&id=<?php echo $singleRow['id']; ?>&from=plans">
+                                                                <a href="process.php?action=deleteServer&id=<?php echo $singleRow['id']; ?>&from=plans">
                                                                     <button type="button" class="more-menu-btn" role="menuitem">Delete</button>
                                                                 </a>
                                                                 

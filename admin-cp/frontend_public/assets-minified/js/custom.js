@@ -79,6 +79,25 @@ function rejectServerPurchaseRequest(id) {
     xmlhttp.send();
 }
 
+function rejectInvestmentPurchaseRequest(id) {
+    document.getElementById("PopupParent").style.display = "block";
+    document.getElementById("contentReceived").innerHTML = "loading...";
+
+    var xmlhttp;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            // alert(xmlhttp.responseText);
+            document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET", "ajex-events.php?q=rejectInvestmentPurchaseRequest&id=" + id);
+    xmlhttp.send();
+}
 
 function editInvestmentPlan(id) {
     document.getElementById("PopupParent").style.display = "block";
@@ -121,7 +140,7 @@ function editServer(id) {
     xmlhttp.send();
 }
 
-function createPlan() {
+function createServer() {
     document.getElementById("PopupParent").style.display = "block";
     document.getElementById("contentReceived").innerHTML = "loading...";
 
@@ -137,7 +156,27 @@ function createPlan() {
             document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
         }
     }
-    xmlhttp.open("GET", "ajex-events.php?q=createplan");
+    xmlhttp.open("GET", "ajex-events.php?q=createServer");
+    xmlhttp.send();
+}
+
+function createInvestmentPlan() {
+    document.getElementById("PopupParent").style.display = "block";
+    document.getElementById("contentReceived").innerHTML = "loading...";
+
+    var xmlhttp;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            // alert(xmlhttp.responseText);
+            document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET", "ajex-events.php?q=createInvestmentPlan");
     xmlhttp.send();
 }
 

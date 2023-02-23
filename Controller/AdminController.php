@@ -646,7 +646,7 @@ class AdminController extends Controller {
             echo json_encode($output);
 
         }else{
-            echo json_encode(array('code'=>200,'msg'=>'error'));
+            echo json_encode(array('code'=>201,'msg'=>'error plan'));
         }
 
         die;
@@ -665,7 +665,7 @@ class AdminController extends Controller {
 
         $request = $this->BuyWithCrypto->getDetailsById($this->params['id']);
 
-        if($request && $request['action'] == 'plan' ){
+        if($request && $request['action'] == 'investment' ){
             $user = $this->User->showDetailsById($request['user_id']);
             //$plan = $this->Plans->showDetailById($request['plan_id']);
 
@@ -691,7 +691,7 @@ class AdminController extends Controller {
             echo json_encode($output);
 
         }else{
-            echo json_encode(array('code'=>200,'msg'=>'error'));
+            echo json_encode(array('code'=>201,'msg'=>'not found'));
         }
 
         die;
@@ -889,7 +889,7 @@ class AdminController extends Controller {
     public function editServer()
     {
         $this->checkParams(['id','token']);
-        $this->validateToken($this->params['token']);
+        //$this->validateToken($this->params['token']);
 
         $this->loadModel('Plans');
 
@@ -899,6 +899,29 @@ class AdminController extends Controller {
         unset($data['token']);
 
         if($this->Plans->Save($data)){
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => 'success'
+            ));
+        }else{
+            echo json_encode(array(
+                'code' => 201,
+                'msg' => 'error'
+            ));
+        }
+        die;
+
+    }
+
+
+    public function deleteServer()
+    {
+        $this->checkParams(['id','token']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('Plans');
+
+        if($this->Plans->delete($this->params['id'])){
             echo json_encode(array(
                 'code' => 200,
                 'msg' => 'success'
@@ -989,6 +1012,55 @@ class AdminController extends Controller {
         die;
 
     }
+
+
+    public function createServer()
+    {
+        $this->checkParams(['token','name']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('Plans');
+
+        if($this->Plans->create($this->params)){
+            $output = array(
+                'code' => 200,
+                'msg' => 'success'
+            );
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => 'error'
+            );
+        }
+
+        echo json_encode($output);
+        
+    }
+
+
+    public function createInvestmentPlan()
+    {
+        $this->checkParams(['token','name']);
+        $this->validateToken($this->params['token']);
+
+        $this->loadModel('InvestPlans');
+
+        if($this->InvestPlans->create($this->params)){
+            $output = array(
+                'code' => 200,
+                'msg' => 'success'
+            );
+        }else{
+            $output = array(
+                'code' => 201,
+                'msg' => 'error'
+            );
+        }
+
+        echo json_encode($output);
+        
+    }
+
 
     /*
      * encrypted functions;

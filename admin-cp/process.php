@@ -529,6 +529,90 @@ if (isset($_GET['action'])) {
     $json_data = http_request($data, null, $url);
 
     if($json_data['code']=="200"){
+      returnToServers(true);
+      //echo json_encode($json_data);
+
+    }else{
+
+      if (isset($json_data['msg'])) {
+        $error = $json_data['msg'];
+      } else {
+        $error = json_encode($json_data);
+      }
+      $_SESSION[PRE_FIX . 'error'] = $error;
+      returnToServers(false);
+
+    }
+
+  }else
+  if($_GET['action']=="deleteServer"){
+
+    $data["id"] = $_GET['id']; 
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+  
+
+    $url = API_URL . "deleteServer";
+    //echo encrypt_password($password);
+
+    $json_data = http_request($data, null, $url);
+
+    if($json_data['code']=="200"){
+      returnToServers(true);
+      //echo json_encode($json_data);
+
+    }else{
+
+      if (isset($json_data['msg'])) {
+        $error = $json_data['msg'];
+      } else {
+        $error = json_encode($json_data);
+      }
+      $_SESSION[PRE_FIX . 'error'] = $error;
+      returnToServers(false);
+
+    }
+
+  }else
+  if($_GET['action']=="createServer"){
+
+    $data = $_POST;
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+  
+
+    $url = API_URL . "createServer";
+    //echo encrypt_password($password);
+
+    $json_data = http_request($data, null, $url);
+
+    if($json_data['code']=="200"){
+      returnToServers(true);
+      //echo json_encode($json_data);
+
+    }else{
+
+      if (isset($json_data['msg'])) {
+        $error = $json_data['msg'];
+      } else {
+        $error = json_encode($json_data);
+      }
+      $_SESSION[PRE_FIX . 'error'] = $error;
+      returnToServers(false);
+
+    }
+
+  }else
+  if($_GET['action']=="createInvestmentPlan"){
+
+    $data = $_POST;
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+  
+
+    $url = API_URL . "createInvestmentPlan";
+    //echo encrypt_password($password);
+
+    $json_data = http_request($data, null, $url);
+
+    if($json_data['code']=="200"){
       returnToInvestPlans(true);
       //echo json_encode($json_data);
 
@@ -606,6 +690,16 @@ function returnToInvestPlans($success){
     echo "<script>window.location = 'dashboard.php?p=investmentPlans&action=success'</script>";
   }else{
     echo "<script>window.location = 'dashboard.php?p=investmentPlans&action=error'</script>";
+  }
+
+}
+
+function returnToServers($success){
+
+  if($success){
+    echo "<script>window.location = 'dashboard.php?p=servers&action=success'</script>";
+  }else{
+    echo "<script>window.location = 'dashboard.php?p=servers&action=error'</script>";
   }
 
 }

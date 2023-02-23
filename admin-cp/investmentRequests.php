@@ -94,7 +94,7 @@ $allplans = getAllInvestPlans();
                                                             
                                                             <li class="more-menu-item" role="presentation">
                                                                 
-                                                                    <button onclick="rejectInvestmentPurchaseRequest('<?php echo $singleRow['id']; ?>')" type="button" class="more-menu-btn" role="menuitem">Reject</button>
+                                                                    <button onClick="rejectInvestmentPurchaseRequest('<?php echo $singleRow['id']; ?>')" type="button" class="more-menu-btn" role="menuitem">Reject</button>
                                                                 
                                                                 
                                                             </li>

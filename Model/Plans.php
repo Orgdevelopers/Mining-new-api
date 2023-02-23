@@ -46,9 +46,25 @@ class Plans extends AppModel {
     }
 
 
-    public function create()
+    public function create($data)
     {
-        # code...
+        try {
+            $name = $data['name'];
+            $algo = $data['algo'];
+            $speed = $data['speed'];
+            $duration = $data['duration'];
+            $earning = $data['earning'];
+            $price = $data['price'];
+            $package = $data['package'];
+            $true_speed = $data['true_speed'];
+            $time = Utility::GetTimeStamp();
+
+        return $this->Query("INSERT INTO `plans`(`id`, `name`, `algo`, `speed`, `duration`, `earning`, `price`, `package`, `true_speed`, `updated`, `created`)
+                                 VALUES ('0','$name','$algo','$speed','$duration','$earning','$price','$package','$true_speed','$time','$time')");
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
     }
 
     public function showFreePlan()
@@ -59,10 +75,10 @@ class Plans extends AppModel {
 
     public function Save($data)
     {
-        if($this->id != "0" || isset($data['user_id'])){
+        if($this->id != "0" || isset($data['id'])){
 
-            if(isset($data['user_id'])){
-                $this->id = $data['user_id'];
+            if(isset($data['id'])){
+                $this->id = $data['id'];
             }
 
             $keys = array_keys($data);
@@ -70,10 +86,9 @@ class Plans extends AppModel {
             $qry = "UPDATE plans SET ";
 
             for ($i=0; $i < count($keys); $i++) { 
-
                 $key = $keys[$i];
 
-                if($key != "user_id"){
+                if($key != "id"){
                     $value = $data[$key];
                     $qry .= $key . " = '$value' ";
 
@@ -83,8 +98,8 @@ class Plans extends AppModel {
                 }
             }
 
-            $qry .= "WHERE user_id = '$this->id' ;";
-
+            $qry .= "WHERE id = '$this->id' ;";
+            //echo $qry;
             $result = $this->Query($qry);
 
         }else{
@@ -92,6 +107,12 @@ class Plans extends AppModel {
         }
 
         return $result;
+    }
+
+
+    public function delete($id)
+    {
+        return $this->Query("DELETE FROM plans WHERE id = '$id' ;");
     }
 
 

@@ -1023,7 +1023,7 @@ class AdminController extends Controller {
         }else{
             $output = array(
                 'code' => 201,
-                'msg' => 'error'
+                'msg' => 'error '.$this->Plans->conn->error
             );
         }
 

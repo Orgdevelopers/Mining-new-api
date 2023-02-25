@@ -11,14 +11,15 @@ define('APP_NAME',"TEST");
 
 try {
   require '../Lib/PasswordUtil.php';
+
 } catch (\Throwable $th) {
   //throw $th;
 }
 
 //Access Your API URL in browser and you will get a code to put over here that will be something like this https://prnt.sc/w309sg
 
-$baseurl = "https://hosting.tiktalkvideo.online/";
-//$baseurl = "http://localhost/new_api/";
+//$baseurl = "https://hosting.tiktalkvideo.online/";
+$baseurl = "http://localhost/new_api/";
 $baseurl = str_replace("admin-cp","",$baseurl);
 // $api_url =  
 

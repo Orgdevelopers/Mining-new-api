@@ -584,6 +584,8 @@ if (isset($_GET['action'])) {
 
     $json_data = http_request($data, null, $url);
 
+    echo json_encode($json_data);
+    die;
     if($json_data['code']=="200"){
       returnToServers(true);
       //echo json_encode($json_data);

@@ -1499,7 +1499,7 @@ class ApiController extends Controller {
                 $sp = $this->params['sp'];
             }
 
-            $investments = $this->Investments->getUserAll($this->params['user_id'],$this->params['sp']);
+            $investments = $this->Investments->getUserAllPending($this->params['user_id'],$this->params['sp']);
 
             if($investments){
 

@@ -31,6 +31,13 @@ class Investments extends AppModel
         return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' ORDER BY id DESC LIMIT $sp,$limit;")->fetch_all(1);
     }
 
+
+    public function getUserAllPending($user_id,$sp,$limit = APP_RECORDS_PER_PAGE)
+    {
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' AND status = '0' ORDER BY id DESC LIMIT $sp,$limit;")->fetch_all(1);
+    }
+
+
     public function getField($id, $field)
     {
         return $this->Query("SELECT $field FROM $this->db WHERE id = '$id' ;")->fetch_array(1);

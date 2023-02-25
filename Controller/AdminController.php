@@ -597,17 +597,18 @@ class AdminController extends Controller {
     public function acceptInvestmentPurchaseRequest()
     {
         $this->checkParams(['id','token']);
-        $this->validateToken($this->params['token']);
+        //$this->validateToken($this->params['token']);
 
         $this->loadModel('BuyWithCrypto');
         $this->loadModel('InvestPlans');
+        $this->loadModel('Investments');
         $this->loadModel('User');
 
         $request = $this->BuyWithCrypto->getDetailsById($this->params['id']);
 
-        if($request && $request['action'] == 'plan' ){
+        if($request && $request['action'] == 'investment' ){
             $user = $this->User->showDetailsById($request['user_id']);
-            $plan = $this->InvestPlans->showDetailsById($request['plan_id']);
+            $plan = $this->InvestPlans->showDetailsById($request['investment_plan_id']);
 
             $date = Utility::GetTimeStamp();
 
@@ -618,35 +619,28 @@ class AdminController extends Controller {
             $old_purchase = $user['plan_purchased'];
             $expiry = Utility::GetPlanExpiry($date,$plan['duration']);
 
+            $body = str_replace('%p_n%',$plan['name'],INV_PURCHASE_REQUEST_ACCEPTED_BODY);
+            $body = str_replace("%a_m%",'$'.$request['amount'],$body);
             //notification
-            $notification = PushNotifications::getNotificationBodyData($user['token'],PLAN_PURCHASE_REQUEST_ACCEPTED_HEAD,str_replace('%p_n%',$plan['name'],PLAN_PURCHASE_REQUEST_ACCEPTED_BODY),'default');
+            $notification = PushNotifications::getNotificationBodyData($user['token'],INV_PURCHASE_REQUEST_ACCEPTED_HEAD,$body,'default');
             PushNotifications::send($notification);
 
-            $data = array(
-                'id' => $user['id'],
-                'plan' => $plan['id'],
-                'last_plan' => $old_plan,
-                'plan_purchased' => $date,
-                'last_plan_purchased' => $old_purchase,
-                'plan_ending' => $expiry
-            );
-
-            if($this->User->update($data)){
+            if($this->Investments->create($user['id'],$plan['id'],$request['amount'],$expiry)){
                 $output = array(
                     'code' => 200,
                     'msg'=>'success'
                 );
             }else{
                 $output = array(
-                    'code' => 200,
-                    'msg'=>'success'
+                    'code' => 201,
+                    'msg'=>'failed to update DB'
                 );
             }
 
             echo json_encode($output);
 
         }else{
-            echo json_encode(array('code'=>201,'msg'=>'error plan'));
+            echo json_encode(array('code'=>201,'msg'=>'error: investment plan not found'));
         }
 
         die;

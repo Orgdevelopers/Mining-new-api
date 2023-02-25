@@ -14,7 +14,7 @@ class Investments extends AppModel
     }
 
 
-    public function create($user_id,$investment_id,$amount,$attachment,$ending,$status = 0)
+    public function create($user_id,$investment_id,$amount,$ending,$status = 0)
     {
         $time = Utility::GetTimeStamp();
         return $this->Query("INSERT INTO investments(id, user_id, investment_plan_id, amount, status, ending_date, created) 

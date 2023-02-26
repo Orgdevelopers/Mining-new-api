@@ -17,7 +17,7 @@ class PayoutMethods extends AppModel
     public function create($user_id,$name,$method)
     {
         $created = Utility::GetTimeStamp();
-        $result = $this->Query("INSERT INTO $this->db(id,user_id,name,method,created) VALUES() ");
+        $result = $this->Query("INSERT INTO $this->db(id,user_id,name,method,created) VALUES('0','$user_id','$name','$method','$created') ");
         return $result;
     }
     
@@ -78,6 +78,11 @@ class PayoutMethods extends AppModel
         }
 
         return $result;
+    }
+
+    public function delete($id = 0)
+    {
+        return $this->Query("DELETE FROM $this->db WHERE id = '$id' ;");
     }
 
 }

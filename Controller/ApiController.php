@@ -1302,6 +1302,40 @@ class ApiController extends Controller {
     }
 
 
+    public function addPayoutMethods()
+    {
+        if (isset($this->params['user_id'])) {
+            $this->loadModel('AppSettings');
+            $this->loadModel('PayoutMethods');
+
+            $settings = $this->AppSettings->getAppSettings();
+            $methods = json_decode($settings['withdraw_methods'],true);
+
+            foreach ($methods as $key => $method) {
+                if(isset($this->params[$method['name']])){
+                    //check if already exists
+                    $ifExists = $this->PayoutMethods->getByName($this->params['user_id'],$method['name']);
+                    if($ifExists){
+                        //$this->PayoutMethods->id = $ifExists['id'];
+                        $this->PayoutMethods->delete( $ifExists['id']);
+                    }
+
+                    $this->PayoutMethods->create($this->params['user_id'],$method['name'],$this->params[$method['name']]);
+
+                }
+            }
+
+            echo json_encode(array(
+                'code' => 200,
+                'msg' => 'success'
+            ));
+            die;
+            
+        }else{
+            Response::IncompleteParams();
+        }
+    }
+
     public function confirmTransaction()
     {
         if (isset($this->params['user_id'])) {

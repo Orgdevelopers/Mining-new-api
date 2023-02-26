@@ -3,7 +3,7 @@ require_once("config.php");
 
 if (isset($_GET['action'])) {
 
-  if ($_GET['action'] == "login") {
+  if ($_GET['action'] == "login"){
     $email = htmlspecialchars($_POST['email'], ENT_QUOTES);
     $password = @$_POST['password'];
 
@@ -32,8 +32,8 @@ if (isset($_GET['action'])) {
     }
 
 
-  } else
-  if ($_GET['action'] == "updateCryptoModel") {
+  }else
+  if ($_GET['action'] == "updateCryptoModel"){
 
     $data = $_POST;
 
@@ -584,8 +584,6 @@ if (isset($_GET['action'])) {
 
     $json_data = http_request($data, null, $url);
 
-    echo json_encode($json_data);
-    die;
     if($json_data['code']=="200"){
       returnToServers(true);
       //echo json_encode($json_data);
@@ -696,7 +694,8 @@ function returnToInvestPlans($success){
 
 }
 
-function returnToServers($success){
+function returnToServers($success)
+{
 
   if($success){
     echo "<script>window.location = 'dashboard.php?p=servers&action=success'</script>";

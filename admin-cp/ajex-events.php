@@ -518,6 +518,87 @@ if($_GET['q']=="createInvestmentPlan"){
     
     <?php
 }
+
+if($_GET['q']=="editUser"){
+
+    $allPlans = getAllPlans();
+    $user = getuserDetails($_GET['id']);
+    ?>
+    
+    <div class="main-container dataTables_wrapper" id="table_view_wrapper">
+        <h2 style="font-weight: 300;" align="center">Edit User</h2>
+    
+        <div style="height:auto; overflow: hidden;">
+    
+        <form action="process.php?action=updateUser&id=<?php echo $_GET['id'];?>" method="post" enctype="multipart/form-data">
+    
+            <div class="full_width">
+                <label class="field_title">Server</label>
+                <select name="plan">
+                    
+                <?php
+                if($user['plan']=="0"){
+                    echo '<option value="0" selected>NONE</option>';
+                }else{
+                    echo '<option value="0">NONE</option>';
+                }
+                foreach ($allPlans as $key => $plan) {
+                    if($user['User']['plan'] == $plan['id']){
+                        //echo "Free";
+                        echo '<option value="'.$plan['id'].'" selected>'.$plan['name'].'</option>';
+                    }else{
+                        echo '<option value="'.$plan['id'].'">'.$plan['name'].'</option>';
+                    }
+                    
+                }
+                ?>
+                </select>
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Status</label>
+                <select name="status">
+                    <option value="1" <?php if($user['User']['status'] == 1){echo 'selected';} ?>>Active</option>
+                    <option value="2" <?php if($user['User']['status'] == 2){echo 'selected';} ?>>Blocked</option>
+                </select>
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Balance Mining (Sats)</label>
+                <input name="balance_mine" type="number" step="1" oninput="this.value=this.value.slice(0,7)" value="<?php echo $user['Wallets']['balance_mine'] ; ?>">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Balance Task (TP)</label>
+                <input name="balance_task" type="number" step="1" oninput="this.value=this.value.slice(0,7)" value="<?php echo $user['Wallets']['balance_task'] ; ?>">
+            </div>
+
+            <div class="full_width">
+                <label class="field_title">Balance Invest ($)</label>
+                <input name="balance_invest" type="number" step="any"  value="<?php echo $user['Wallets']['balance_invest'] ; ?>">
+            </div>
+
+            <!-- <div class="full_width">
+                <label class="field_invest">Balance Invest ($)</label>
+                <input name="balance_invest" type="number" step="any">
+            </div> -->
+
+            <div class="full_width" style="margin-top: 20px;">
+                <button class="com-button com-submit-button com-button--large " type="submit" style="width: 100%;"
+                    align="center">
+                    Submit
+                </button>
+            </div>
+</form>
+    
+    
+    
+        </div>
+    </div>
+    
+    <?php
+}
+
 }
 
 ?>

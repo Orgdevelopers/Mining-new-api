@@ -180,7 +180,7 @@ function createInvestmentPlan() {
     xmlhttp.send();
 }
 
-function createwalletaddress() {
+function editUser(id) {
     document.getElementById("PopupParent").style.display = "block";
     document.getElementById("contentReceived").innerHTML = "loading...";
 
@@ -196,7 +196,7 @@ function createwalletaddress() {
             document.getElementById('contentReceived').innerHTML = xmlhttp.responseText;
         }
     }
-    xmlhttp.open("GET", "ajex-events.php?q=createwalletaddress");
+    xmlhttp.open("GET", "ajex-events.php?q=editUser&id="+id);
     xmlhttp.send();
 }
 

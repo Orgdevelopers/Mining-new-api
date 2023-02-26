@@ -628,6 +628,35 @@ if (isset($_GET['action'])) {
 
     }
 
+  }else
+  if($_GET['action']=="updateUser"){
+
+    $data = $_POST;
+    $data['id'] = $_GET['id']; 
+    $data['token'] = PasswordUtil::EncryptPassword($_SESSION[PRE_FIX . 'id']);
+  
+
+    $url = API_URL . "updateUser";
+    //echo encrypt_password($password);
+
+    $json_data = http_request($data, null, $url);
+
+    if($json_data['code']=="200"){
+      returnToUsers(true);
+      //echo json_encode($json_data);
+
+    }else{
+
+      if (isset($json_data['msg'])) {
+        $error = $json_data['msg'];
+      } else {
+        $error = json_encode($json_data);
+      }
+      $_SESSION[PRE_FIX . 'error'] = $error;
+      returnToUsers(false);
+
+    }
+
   }
 
   
@@ -638,6 +667,14 @@ function returnToSettings($success){
     echo "<script>window.location = 'dashboard.php?p=appSettings&action=success'</script>";
   }else{
     echo "<script>window.location = 'dashboard.php?p=appSettings&action=error'</script>";
+  }
+}
+
+function returnToUsers($success){
+  if($success){
+    echo "<script>window.location = 'dashboard.php?p=users&action=success'</script>";
+  }else{
+    echo "<script>window.location = 'dashboard.php?p=users&action=error'</script>";
   }
 }
 

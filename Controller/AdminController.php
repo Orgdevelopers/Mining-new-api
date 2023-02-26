@@ -1032,6 +1032,71 @@ class AdminController extends Controller {
     }
 
 
+    public function updateUser()
+    {
+        $this->checkParams(['token','id']);
+        //$this->validateToken($this->params['token']);
+        $this->loadModel('User');
+        $this->loadModel('Wallets');
+
+        //
+
+        if($this->User->update($this->params)){
+
+            //$data = ['user_id'=>$this->params['id']];
+            $this->Wallets->id = $this->params['id'];
+
+            if (isset($this->params['balance_mine'])) {
+                //$data['balance_mine'] = $this->params['balance_mine'];
+                $this->Wallets->saveField('balance_mine',$this->params['balance_mine']);
+            }
+
+            if (isset($this->params['balance_task'])) {
+                //$data['balance_task'] = $this->params['balance_task'];
+                $this->Wallets->saveField('balance_task',$this->params['balance_task']);
+            }
+
+            if (isset($this->params['balance_invest'])) {
+                //$data['balance_invest'] = $this->params['balance_invest'];
+                $this->Wallets->saveField('balance_invest',$this->params['balance_invest']);
+            }
+
+            //$this->Wallets->Save($data);
+
+            echo json_encode(array(
+                'code' => 200,
+                'error' => "success"
+            ));
+
+        }else{
+            echo json_encode(array(
+                'code' => 201,
+                'meg' => 'error'. json_encode($this->params)
+            ));
+        }
+
+        die;
+
+    }
+
+    public function showUserDetails()
+    {
+        $this->checkParams(['user_id']);
+
+        $this->loadModel('User');
+        $this->loadModel('Wallets');
+
+        $user = $this->User->showDetailsById($this->params['user_id']);
+        $wallets = $this->Wallets->getUserWallets($this->params['user_id']);
+
+        $output['User'] = $user;
+        $output['Wallets'] = $wallets;
+
+        echo json_encode(array('code'=>200,'msg'=>$output));
+        die;
+
+    }
+
     public function createInvestmentPlan()
     {
         $this->checkParams(['token','name']);

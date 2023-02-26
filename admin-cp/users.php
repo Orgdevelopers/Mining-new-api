@@ -74,7 +74,7 @@ $allplans = getAllPlans();
                                                         </div>
                                                         <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
 
-                                                            <li class="more-menu-item" role="presentation" onclick="edituser(<?php echo $singleRow['id'] ?>)">
+                                                            <li class="more-menu-item" role="presentation" onclick="editUser('<?php echo $singleRow['id'] ?>')">
                                                                 <button type="button" class="more-menu-btn" role="menuitem">Edit</button>
                                                             </li>
                                                             

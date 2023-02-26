@@ -454,9 +454,9 @@ function getuserDetails($id)
         
     ];
     
-    $data = ["id"=>$id];
+    $data = ["user_id"=>$id];
     
-    $url = API_URL."getuserdetails";
+    $url = API_URL."showUserDetails";
 
     //echo encrypt_password($password);
 

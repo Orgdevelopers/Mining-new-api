@@ -1314,7 +1314,7 @@ class ApiController extends Controller {
             //$this->params = json_decode('{"user_id":"1","PayPal":"test@gmail.com","Crypto (USDT-TRC)":"sbdhhd","Binance (email)":"sjjdjd"}',true);
 
             foreach ($methods as $key => $method) {
-                if(isset($this->params[$method['name']])){
+                //if(isset($this->params[$method['name']])){
                     //check if already exists
                     $ifExists = $this->PayoutMethods->getByName($this->params['user_id'],$method['name']);
                     if($ifExists){
@@ -1328,7 +1328,7 @@ class ApiController extends Controller {
 
                     }
 
-                }
+                //}
             }
 
             echo json_encode(array(

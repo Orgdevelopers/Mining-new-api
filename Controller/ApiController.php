@@ -1311,9 +1311,6 @@ class ApiController extends Controller {
             $settings = $this->AppSettings->getAppSettings();
             $methods = json_decode($settings['withdraw_methods'],true);
 
-            echo json_encode($this->params);
-            die;
-
             foreach ($methods as $key => $method) {
                 if(isset($this->params[$method['name']])){
                     //check if already exists

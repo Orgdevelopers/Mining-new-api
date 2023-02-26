@@ -1311,7 +1311,7 @@ class ApiController extends Controller {
             $settings = $this->AppSettings->getAppSettings();
             $methods = json_decode($settings['withdraw_methods'],true);
 
-            $this->params = json_decode('{"user_id":"1","PayPal":"test@gmail.com","Crypto (USDT-TRC)":"sbdhhd","Binance (email)":"sjjdjd"}',true);
+            //$this->params = json_decode('{"user_id":"1","PayPal":"test@gmail.com","Crypto (USDT-TRC)":"sbdhhd","Binance (email)":"sjjdjd"}',true);
 
             foreach ($methods as $key => $method) {
                 if(isset($this->params[$method['name']])){

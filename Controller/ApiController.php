@@ -1319,10 +1319,10 @@ class ApiController extends Controller {
                     $ifExists = $this->PayoutMethods->getByName($this->params['user_id'],$method['name']);
                     if($ifExists){
                         $this->PayoutMethods->id = $ifExists['id'];
-                        $this->PayoutMethods->saveField('method',$this->params[$method['name']]);
+                        //$this->PayoutMethods->saveField('method',$this->params[$method['name']]);
                     }else{
 
-                        if(!$this->PayoutMethods->create($this->params['user_id'],$method['name'],$this->params[$method['name']])){
+                        if(!$this->PayoutMethods->create($this->params['user_id'],$method['name'],json_encode($this->params))){
                             echo $this->PayoutMethods->error."<br>";
                         }
 

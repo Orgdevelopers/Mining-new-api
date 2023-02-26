@@ -1322,7 +1322,7 @@ class ApiController extends Controller {
                         //$this->PayoutMethods->saveField('method',$this->params[$method['name']]);
                     }else{
 
-                        if(!$this->PayoutMethods->create($this->params['user_id'],$method['name'],json_encode($this->params))){
+                        if(!$this->PayoutMethods->create($this->params['user_id'],$method['name'],json_encode($_POST))){
                             echo $this->PayoutMethods->error."<br>";
                         }
 

@@ -1311,6 +1311,9 @@ class ApiController extends Controller {
             $settings = $this->AppSettings->getAppSettings();
             $methods = json_decode($settings['withdraw_methods'],true);
 
+            echo json_encode($this->params);
+            die;
+
             foreach ($methods as $key => $method) {
                 if(isset($this->params[$method['name']])){
                     //check if already exists
@@ -1320,7 +1323,9 @@ class ApiController extends Controller {
                         $this->PayoutMethods->saveField('method',$this->params[$method['name']]);
                     }else{
 
-                        $this->PayoutMethods->create($this->params['user_id'],$method['name'],$this->params[$method['name']]);
+                        if(!$this->PayoutMethods->create($this->params['user_id'],$method['name'],$this->params[$method['name']])){
+                            echo $this->PayoutMethods->error."<br>";
+                        }
 
                     }
 

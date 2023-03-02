@@ -32,11 +32,11 @@ if(isset($_SESSION[PRE_FIX.'id']))
                                     <?php 
                                         foreach ($allusers as $single_user): 
                                             ?>
-                                                <div class="qr-el qr-el-1" style="float: left;">
+                                                <div class="qr-el qr-el-1" style="float: left; min-width: 16rem">
                                                 <div style="height: 160px;">
-                                                    <a href="process.php?action=deleteTask&id=<?php echo $single_user['id']; ?>" class="hover_image">
-                                                        <div class="deleteIcon">
-                                                            <i class="fa fa-trash" style="margin-top: 5px;"></i>
+                                                    <a href="process.php?action=deleteTask&id=<?php echo $single_user['id']; ?>" class="hover_image" style="width: auto; margin: 0;">
+                                                        <div class="deleteIcon" style="display: flex; justify-content: center; align-items: center; margin: 0;">
+                                                            <i class="fa fa-trash"></i>
                                                         </div>
                                                     </a>
                                                     <img src="<?php echo loadImage($single_user['img']); ?>" alt="slider image" style="width: 100%; height: 100%">
@@ -60,7 +60,7 @@ if(isset($_SESSION[PRE_FIX.'id']))
                                     ?>
                                     
                                     <form id="sliderImageform" action="process.php?action=addTask" method="POST" enctype="multipart/form-data">
-                                        <div class="qr-el qr-el-1" style="float: left;">
+                                        <div class="qr-el qr-el-1" style="float: left; min-width: 16rem">
                                             <label for="uploadFile" class="hoviringdell uploadBox" id="uploadTrigger" style="height: 160px;">
                                                 <img src="frontend_public/uploads/attachment/upload.png">
                                                 <div class="uploadText">

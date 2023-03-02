@@ -40,7 +40,9 @@ class ApiController extends Controller {
         // echo $date . "<br>";
         // echo Utility::GetPlanExpiry($date, 5). "<br>";
 
-        $this->sendNotification('eUttHAAcSfqYhB2mPYCUVd:APA91bHc54d0xo6bzFtDKlgBqS02VboJ6tRB8oq-0_uN2ah-TpccrxMre3-r3F0Efcwya3lU1IY7beq1ZS5MVGZNPjmJHsr5aLhtvLGkHg1UpHdci8Um2fuunsW4VjGeeLfYQYVdhtI6');
+        echo Utility::GetPlanExpiry(Utility::GetTimeStamp(),-5);
+
+        //$this->sendNotification('eUttHAAcSfqYhB2mPYCUVd:APA91bHc54d0xo6bzFtDKlgBqS02VboJ6tRB8oq-0_uN2ah-TpccrxMre3-r3F0Efcwya3lU1IY7beq1ZS5MVGZNPjmJHsr5aLhtvLGkHg1UpHdci8Um2fuunsW4VjGeeLfYQYVdhtI6');
 
         return;
         $methods = get_class_methods($this);
@@ -1588,7 +1590,7 @@ class ApiController extends Controller {
     {
         $this->loadModel('CryptoModel');
 
-        $model = $this->CryptoModel->getModel();
+        $model = $this->CryptoModel->getAll();
 
         if($model){
             $output = array(

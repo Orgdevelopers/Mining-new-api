@@ -14,9 +14,14 @@ class CryptoModel extends AppModel
     }
 
 
-    public function getModel()
+    public function getModel($id = 1)
     {
-        return $this->Query("SELECT * FROM $this->db WHERE id = 1 ;")->fetch_array(1);
+        return $this->Query("SELECT * FROM $this->db WHERE id = '$id';")->fetch_array(1);
+    }
+
+    public function getAll()
+    {
+        return $this->Query("SELECT * FROM $this->db;")->fetch_all(1);
     }
 
     public function getField($id, $field)
@@ -54,7 +59,7 @@ class CryptoModel extends AppModel
                     $value = $data[$key];
                     $qry .= $key . " = '$value' ";
 
-                    if(count($keys) != ($i+2)){
+                    if(count($keys) != ($i+1)){
                         $qry .= ", ";
                     }
                 }

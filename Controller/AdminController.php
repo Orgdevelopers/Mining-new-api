@@ -286,7 +286,7 @@ class AdminController extends Controller {
         $this->loadModel('CryptoModel');
 
         $appSettings = $this->AppSettings->getAppSettings();
-        $crypto_settings = $this->CryptoModel->getModel();
+        $crypto_settings = $this->CryptoModel->getAll();
 
         $msg['AppSettings'] = $appSettings;
         $msg['CryptoModel'] = $crypto_settings;
@@ -310,10 +310,53 @@ class AdminController extends Controller {
         $this->loadModel('CryptoModel');
 
         $data = $this->params;
-        $data['id'] = 1;
         unset($data['token']);
 
-        $a = $this->CryptoModel->Save($data);
+        if(isset($data['wallet_address1'])){
+            $save = array(
+                'id'=>1,
+                'title' =>$data['title'],
+                'subtitle' => $data['subtitle'],
+                'wallet_address' => $data['wallet_address1'],
+                'network' => $data['network1']
+            );
+            
+            $a = $this->CryptoModel->Save($save);
+        }
+
+        if(isset($data['wallet_address2'])){
+            $this->CryptoModel->id = 2;
+            $save = array(
+                //'id'=>2,
+                'wallet_address' => $data['wallet_address2'],
+                'network' => $data['network2']
+            );
+            
+            $a = $this->CryptoModel->Save($save);
+        }
+
+        if(isset($data['wallet_address3'])){
+            $save = array(
+                'id'=>3,
+                'wallet_address' => $data['wallet_address3'],
+                'network' => $data['network3']
+            );
+            
+            $a = $this->CryptoModel->Save($save);
+        }
+
+
+        if(isset($data['wallet_address4'])){
+            $save = array(
+                'id'=>4,
+                'wallet_address' => $data['wallet_address4'],
+                'network' => $data['network4']
+            );
+            
+            $a = $this->CryptoModel->Save($save);
+        }
+
+        //$a = $this->CryptoModel->Save($data);
 
         if($a){
             $output['code'] = 200;

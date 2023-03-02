@@ -13,6 +13,7 @@ $appSettings = getAppSettings();
     background-color: #fff;
     padding: 20px;
     margin-top: 20px;
+    min-width: 250px;
 }
 
 h6.card-title {
@@ -95,82 +96,7 @@ h6.card-title {
                         
                         <div class="row">
                             
-        <div class="col-lg-6 col-md-6 pull-left">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-title">Wallet Address Settings</h6>
-                    <div class="site-settings-alert"></div>
-                    <form class="site-settings" method="POST" action="process.php?action=updateCryptoModel">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="form-label">Title</label>
-                                <input required type="text" name="title" class="form-control" value="<?php echo $appSettings['CryptoModel']['title'] ;?>">
-                                <small class="admin-info">This will be the title of purchase dialog in app. ex- Buy with Crypto.</small>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="form-label">Subtitle</label>
-                                <textarea required name="subtitle" id="subtitle" class="form-control" cols="30" rows="3"><?php echo $appSettings['CryptoModel']['subtitle'] ;?></textarea>
-                                <small class="admin-info">text/instruction for user to complete transaction</small>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="form-label">Wallet Address</label>
-                                <input required type="text" name="wallet_address" class="form-control" value="<?php echo $appSettings['CryptoModel']['wallet_address'] ;?>">
-                                <small class="admin-info">Sysetm wallet address to show users</small>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="form-label">Crypto Network</label>
-                                <input required type="text" name="network" class="form-control" value="<?php echo $appSettings['CryptoModel']['network'] ;?>">
-                                <small class="admin-info">Crypto network ex- USDT-TRC, USDT-ETH</small>
-                                
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <hr>
-
-                        <div style="text-align: center;">
-                            <div class="form-line">
-                                <!-- <label class="form-label">Crypto Network</label> -->
-                                <input type="submit" class="btn btn-success m-t-15 waves-effect" value="Update">
-                                <!-- <small class="admin-info">Crypto network ex- USDT-TRC, USDT-ETH</small> -->
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-
-            
-            <!-- <div class="card">
-                <div class="card-body">
-                <h6 class="card-title">Wallet Address Settings</h6>
-                    <div class="site-settings-alert"></div>
-                    <form class="site-settings" method="POST" action="process.php?p=updateCryptoModel">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="form-label">Title</label>
-                                <input type="text" name="title" class="form-control" value="">
-                                <small class="admin-info">This will be the title of purchase dialog in app. ex- Buy with Crypto.</small>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <hr>
-                    </form>
-                </div>
-            </div> -->
-
-        </div>
+        
 
         <div class="col-lg-6 col-md-6 pull-left">
             <div class="card">
@@ -256,6 +182,194 @@ h6.card-title {
                 </div>
             </div>
         </div>
+        
+
+        <div class="col-lg-6 col-md-6 pull-left">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Wallet Address Settings</h6>
+                    <div class="site-settings-alert"></div>
+                    <form class="site-settings" method="POST" action="process.php?action=updateCryptoModel">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Title</label>
+                                <input required type="text" name="title" class="form-control" value="<?php echo $appSettings['CryptoModel'][0]['title'] ;?>">
+                                <small class="admin-info">This will be the title of purchase dialog in app. ex- Buy with Crypto.</small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Subtitle</label>
+                                <textarea required name="subtitle" id="subtitle" class="form-control" cols="30" rows="3"><?php echo $appSettings['CryptoModel'][0]['subtitle'] ;?></textarea>
+                                <small class="admin-info">text/instruction for user to complete transaction</small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        
+                        <h6 class="card-title">Wallet Address</h6>
+
+                        <?php
+                        if (count($appSettings['CryptoModel'])>0){
+                            ?>
+
+                            
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Address-1</label>
+                                <input required type="text" name="wallet_address1" class="form-control" value="<?php echo $appSettings['CryptoModel'][0]['wallet_address'] ;?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <!-- <div class="clearfix"></div>
+                        <hr> -->
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Crypto Network-1</label>
+                                <input required type="text" name="network1" class="form-control" value="<?php echo $appSettings['CryptoModel'][0]['network'] ;?>">
+                                <small class="admin-info"></small>
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="clearfix"></div>
+                        <hr>
+                        <hr>
+
+                        <?php
+                        }
+                        ?>
+
+                        <?php
+                        if (count($appSettings['CryptoModel'])>1){
+                            ?>
+
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Address-2</label>
+                                <input required type="text" name="wallet_address2" class="form-control" value="<?php echo $appSettings['CryptoModel'][1]['wallet_address'] ;?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <!-- <div class="clearfix"></div>
+                        <hr> -->
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Crypto Network-2</label>
+                                <input required type="text" name="network2" class="form-control" value="<?php echo $appSettings['CryptoModel'][1]['network'] ;?>">
+                                <small class="admin-info"></small>
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="clearfix"></div>
+                        <hr>
+                        <hr>
+
+                        <?php
+                        }
+                        ?>
+
+                        <?php
+                        if (count($appSettings['CryptoModel'])>2){
+                            ?>
+
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Address-3</label>
+                                <input required type="text" name="wallet_address3" class="form-control" value="<?php echo $appSettings['CryptoModel'][2]['wallet_address'] ;?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <!-- <div class="clearfix"></div>
+                        <hr> -->
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Crypto Network-3</label>
+                                <input required type="text" name="network3" class="form-control" value="<?php echo $appSettings['CryptoModel'][2]['network'] ;?>">
+                                <small class="admin-info"></small>
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="clearfix"></div>
+                        <hr>
+                        <hr>
+                        
+                        <?php
+                        }
+                        ?>
+
+                        <?php
+                        if (count($appSettings['CryptoModel'])>3){
+                            ?>
+
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Address-4</label>
+                                <input required type="text" name="wallet_address4" class="form-control" value="<?php echo $appSettings['CryptoModel'][3]['wallet_address'] ;?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <!-- <div class="clearfix"></div>
+                        <hr> -->
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Crypto Network-4</label>
+                                <input required type="text" name="network4" class="form-control" value="<?php echo $appSettings['CryptoModel'][3]['network'] ;?>">
+                                <small class="admin-info"></small>
+                                
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+
+                        <?php
+                        }
+                        ?>
+
+                        <div style="text-align: center;">
+                            <div class="form-line">
+                                <!-- <label class="form-label">Crypto Network</label> -->
+                                <input type="submit" class="btn btn-success m-t-15 waves-effect" value="Update">
+                                <!-- <small class="admin-info">Crypto network ex- USDT-TRC, USDT-ETH</small> -->
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            
+            <!-- <div class="card">
+                <div class="card-body">
+                <h6 class="card-title">Wallet Address Settings</h6>
+                    <div class="site-settings-alert"></div>
+                    <form class="site-settings" method="POST" action="process.php?p=updateCryptoModel">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Title</label>
+                                <input type="text" name="title" class="form-control" value="">
+                                <small class="admin-info">This will be the title of purchase dialog in app. ex- Buy with Crypto.</small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                    </form>
+                </div>
+            </div> -->
+
+        </div>
+
+
+        
+
+
         <div class="clearfix"></div>
     </div>
 

@@ -171,6 +171,17 @@ h6.card-title {
                         </div>
                         <div class="clearfix"></div>
                         <hr>
+
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="form-label">Support Email</label>
+                                <input type="text" name="version" class="form-control" value="<?php echo $appSettings['AppSettings']['version']; ?>">
+                                <small class="admin-info"></small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+
                         <div style="text-align: center;">
                             <div class="form-line">
                                 <!-- <label class="form-label">Crypto Network</label> -->

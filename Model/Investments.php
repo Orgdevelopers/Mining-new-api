@@ -28,7 +28,7 @@ class Investments extends AppModel
 
     public function getUserAll($user_id,$sp,$limit = APP_RECORDS_PER_PAGE)
     {
-        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' ORDER BY id DESC LIMIT $sp,$limit;")->fetch_all(1);
+        return $this->Query("SELECT * FROM $this->db WHERE user_id = '$user_id' ORDER BY status ASC LIMIT $sp,$limit;")->fetch_all(1);
     }
 
 

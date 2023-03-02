@@ -1741,7 +1741,7 @@ class ApiController extends Controller {
             $user = $this->User->showDetailsById($obj['user_id']);
             $wallets = $this->Wallets->getUserWallets($obj['user_id']);
 
-            $amount = $obj['amount'] + (($plan['profit_rate'] * $obj['amount']) / 100);
+            $amount = (($plan['profit_rate'] * $obj['amount']) / 100);
 
             $this->Wallets->id = $user['id'];
             $this->Wallets->saveField('balance_invest',$wallets['balance_invest']+$amount);
@@ -1836,9 +1836,68 @@ class ApiController extends Controller {
     }
 
 
-    public function showUsersPayoutMethods(Type $var = null)
+    public function reinvest()
     {
-        # code...
+        if (isset($this->params['id'])) {
+            $this->loadModel('Investments');
+            $this->loadModel('InvestPlans');
+            $this->loadModel('User');
+
+            $investment = $this->Investments->getDetailsById($this->params['id']);
+            $plan = $this->InvestPlans->showDetailsById($investment['id']);
+
+            $expiry = Utility::GetPlanExpiry(Utility::GetTimeStamp(),$plan['duration']);
+
+            $this->Investments->id = $this->params['id'];
+            $this->Investments->saveField('status','0');
+            $this->Investments->saveField('ending_date',$expiry);
+
+            echo json_encode(array(
+                'code'=>200,
+                'msg' => 'success'
+            ));
+
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
+    }
+
+
+    public function cancelInvestment()
+    {
+        if (isset($this->params['id']) && isset($this->params['user_id'])) {
+            $this->loadModel('Investments');
+            $this->loadModel('InvestPlans');
+            $this->loadModel('User');
+            $this->loadModel('Wallets');
+
+            $investment = $this->Investments->getDetailsById($this->params['id']);
+            $plan = $this->InvestPlans->showDetailsById($investment['id']);
+            $wallet = $this->Wallets->getUserWallets($this->params['user_id']);
+            // $expiry = Utility::GetPlanExpiry(Utility::GetTimeStamp(),$plan['duration']);
+
+            if($investment['status'] == '1'){
+                $this->Investments->id = $this->params['id'];
+                $this->Investments->saveField('status','2');
+                //$this->Investments->saveField('ending_date',$expiry);
+
+                $this->Wallets->id = $investment['user_id'];
+                $amount = $wallet['balance_invest'] + $investment['amount'];
+                $this->Wallets->saveField('balance_invest',$amount);
+
+                echo json_encode(array(
+                    'code'=>200,
+                    'msg' => 'success'
+                ));
+            }
+
+            die;
+
+        }else{
+            Response::IncompleteParams();
+        }
     }
 
 

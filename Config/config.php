@@ -59,7 +59,7 @@ define('REFERRAL_PLAN_PURCHASE_HEAD',CONGRATULATIONS." You received Referral bon
 define('REFERRAL_PLAN_PURCHASE_BODY','%u_n% has just Upgraded mining server. you received %a_m% bouns'); //%u_n% = username , %d_am% => doller amount
 
 define('INVESTMENT_RETURN_HEAD',CONGRATULATIONS.'');
-define('INVESTMENT_RETURN_BODY','Investment id %i_n% has been completed successfully. %a_m% has been added to your Invest Wallet');
+define('INVESTMENT_RETURN_BODY','Investment id %i_n% has been completed successfully. %a_m% interest has been added to your Invest Wallet');
 
 define('WITHDRAW_SUCCESS_HEAD',CONGRATULATIONS.'');
 define('WITHDRAW_SUCCESS_BODY','Your withdraw request for %a_m% has been accepted. The amount has been sent to your connected payout method');

@@ -88,9 +88,9 @@ define('INV_PURCHASE_REQUEST_ACCEPTED_BODY','Your investment request for amount 
 
 
 define('DATABASE_HOST', 'localhost');
-define('DATABASE_USER', 'host_min');
-define('DATABASE_PASSWORD', 'host_min');
-define('DATABASE_NAME', 'host_min');
+define('DATABASE_USER', 'startmine_db');
+define('DATABASE_PASSWORD', 'startmine_db');
+define('DATABASE_NAME', 'startmine_db');
 
 
 
